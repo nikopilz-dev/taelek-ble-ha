@@ -1,0 +1,792 @@
+; fn#1294 "<anonymous>" params=8 frame=23 regs=2(num=1,nonptr=1) size=1343 offset=0x145740
+0000  CreateFunctionEnvironment r3, 39
+0003  LoadParam r4, 2
+0006  LoadParam r10, 6
+0009  LoadParam r2, 7
+000c  GetGlobalObject r9
+000e  TryGetById r8, r9, 0, "Object"
+0014  GetByIdShort r7, r8, 1, "defineProperty"
+0019  LoadConstString r6, "__esModule"
+001d  NewObjectWithBuffer r5, 26, 155
+0023  Call4 r5, r7, r8, r10, r6, r5
+002a  TryGetById r8, r9, 0, "Object"
+0030  GetByIdShort r7, r8, 1, "defineProperty"
+0035  NewObjectWithBuffer r6, 27, 19022
+003b  CreateClosure r5, r3, 7438
+0040  PutOwnBySlotIdx r6, r5, 1
+0044  LoadConstString r5, "default"
+0048  Call4 r5, r7, r8, r10, r5, r6
+004f  TryGetById r8, r9, 0, "Object"
+0055  GetByIdShort r7, r8, 1, "defineProperty"
+005a  NewObjectWithBuffer r6, 27, 19022
+0060  CreateClosure r5, r3, 7439
+0065  PutOwnBySlotIdx r6, r5, 1
+0069  LoadConstString r5, "suppressDisconnectForPeripheral"
+006d  Call4 r5, r7, r8, r10, r5, r6
+0074  TryGetById r8, r9, 0, "Object"
+007a  GetByIdShort r7, r8, 1, "defineProperty"
+007f  NewObjectWithBuffer r6, 27, 19022
+0085  CreateClosure r5, r3, 7440
+008a  PutOwnBySlotIdx r6, r5, 1
+008e  LoadConstString r5, "clearDisconnectSuppression"
+0092  Call4 r5, r7, r8, r10, r5, r6
+0099  TryGetById r8, r9, 0, "Object"
+009f  GetByIdShort r7, r8, 1, "defineProperty"
+00a4  NewObjectWithBuffer r6, 27, 19022
+00aa  CreateClosure r5, r3, 7441
+00af  PutOwnBySlotIdx r6, r5, 1
+00b3  LoadConstString r5, "COMMAND_WINK"
+00b7  Call4 r5, r7, r8, r10, r5, r6
+00be  TryGetById r8, r9, 0, "Object"
+00c4  GetByIdShort r7, r8, 1, "defineProperty"
+00c9  NewObjectWithBuffer r6, 27, 19022
+00cf  CreateClosure r5, r3, 7442
+00d4  PutOwnBySlotIdx r6, r5, 1
+00d8  LoadConstString r5, "COMMAND_OPEN"
+00dc  Call4 r5, r7, r8, r10, r5, r6
+00e3  TryGetById r8, r9, 0, "Object"
+00e9  GetByIdShort r7, r8, 1, "defineProperty"
+00ee  NewObjectWithBuffer r6, 27, 19022
+00f4  CreateClosure r5, r3, 7443
+00f9  PutOwnBySlotIdx r6, r5, 1
+00fd  LoadConstString r5, "COMMAND_CLOSE"
+0101  Call4 r5, r7, r8, r10, r5, r6
+0108  TryGetById r8, r9, 0, "Object"
+010e  GetByIdShort r7, r8, 1, "defineProperty"
+0113  NewObjectWithBuffer r6, 27, 19022
+0119  CreateClosure r5, r3, 7444
+011e  PutOwnBySlotIdx r6, r5, 1
+0122  LoadConstString r5, "COMMAND_NORMAL"
+0126  Call4 r5, r7, r8, r10, r5, r6
+012d  TryGetById r8, r9, 0, "Object"
+0133  GetByIdShort r7, r8, 1, "defineProperty"
+0138  NewObjectWithBuffer r6, 27, 19022
+013e  CreateClosure r5, r3, 7445
+0143  PutOwnBySlotIdx r6, r5, 1
+0147  LoadConstString r5, "COMMAND_FACTORY_RESET"
+014b  Call4 r5, r7, r8, r10, r5, r6
+0152  TryGetById r8, r9, 0, "Object"
+0158  GetByIdShort r7, r8, 1, "defineProperty"
+015d  NewObjectWithBuffer r6, 27, 19022
+0163  CreateClosure r5, r3, 7446
+0168  PutOwnBySlotIdx r6, r5, 1
+016c  LoadConstString r5, "COMMAND_COUNTER_RESET"
+0170  Call4 r5, r7, r8, r10, r5, r6
+0177  TryGetById r8, r9, 0, "Object"
+017d  GetByIdShort r7, r8, 1, "defineProperty"
+0182  NewObjectWithBuffer r6, 27, 19022
+0188  CreateClosure r5, r3, 7447
+018d  PutOwnBySlotIdx r6, r5, 1
+0191  LoadConstString r5, "CONFIRMATION_CODE"
+0195  Call4 r5, r7, r8, r10, r5, r6
+019c  GetByIndex r5, r2, 0
+01a0  LoadConstUndefined r1
+01a2  Call2 r7, r4, r1, r5
+01a7  StoreToEnvironment r3, 0, r7
+01ab  JmpFalse L441, r7
+01ae  GetByIdShort r6, r7, 2, "__esModule"
+01b3  Mov r5, r7
+01b6  JmpTrue L454, r6
+L441:
+01b9  NewObjectWithBuffer r6, 25, 20
+01bf  PutOwnBySlotIdx r6, r7, 0
+01c3  Mov r5, r6
+L454:
+01c6  StoreToEnvironment r3, 1, r5
+01ca  GetByIndex r5, r2, 1
+01ce  Call2 r7, r4, r1, r5
+01d3  JmpFalse L481, r7
+01d6  GetByIdShort r6, r7, 2, "__esModule"
+01db  Mov r5, r7
+01de  JmpTrue L494, r6
+L481:
+01e1  NewObjectWithBuffer r6, 25, 20
+01e7  PutOwnBySlotIdx r6, r7, 0
+01eb  Mov r5, r6
+L494:
+01ee  StoreToEnvironment r3, 2, r5
+01f2  GetByIndex r5, r2, 2
+01f6  Call2 r7, r4, r1, r5
+01fb  JmpFalse L521, r7
+01fe  GetByIdShort r6, r7, 2, "__esModule"
+0203  Mov r5, r7
+0206  JmpTrue L534, r6
+L521:
+0209  NewObjectWithBuffer r6, 25, 20
+020f  PutOwnBySlotIdx r6, r7, 0
+0213  Mov r5, r6
+L534:
+0216  StoreToEnvironment r3, 3, r5
+021a  GetByIndex r5, r2, 3
+021e  Call2 r7, r4, r1, r5
+0223  JmpFalse L561, r7
+0226  GetByIdShort r6, r7, 2, "__esModule"
+022b  Mov r5, r7
+022e  JmpTrue L574, r6
+L561:
+0231  NewObjectWithBuffer r6, 25, 20
+0237  PutOwnBySlotIdx r6, r7, 0
+023b  Mov r5, r6
+L574:
+023e  StoreToEnvironment r3, 4, r5
+0242  GetByIndex r5, r2, 4
+0246  Call2 r7, r4, r1, r5
+024b  JmpFalse L601, r7
+024e  GetByIdShort r6, r7, 2, "__esModule"
+0253  Mov r5, r7
+0256  JmpTrue L614, r6
+L601:
+0259  NewObjectWithBuffer r6, 25, 20
+025f  PutOwnBySlotIdx r6, r7, 0
+0263  Mov r5, r6
+L614:
+0266  StoreToEnvironment r3, 5, r5
+026a  GetByIndex r5, r2, 5
+026e  Call2 r5, r4, r1, r5
+0273  StoreToEnvironment r3, 6, r5
+0277  GetByIndex r5, r2, 6
+027b  Call2 r7, r4, r1, r5
+0280  CreateFunctionEnvironment r8, 2
+0283  StoreToEnvironment r8, 0, r7
+0287  StoreNPToEnvironment r8, 1, r1
+028b  JmpFalse L665, r7
+028e  GetByIdShort r6, r7, 2, "__esModule"
+0293  Mov r5, r7
+0296  JmpTrue L714, r6
+L665:
+0299  NewObject r6
+029b  StoreToEnvironment r8, 1, r6
+029f  JmpFalse L705, r7
+02a2  TryGetById r11, r9, 0, "Object"
+02a8  GetByIdShort r10, r11, 3, "keys"
+02ad  Call2 r11, r10, r11, r7
+02b2  GetByIdShort r10, r11, 4, "forEach"
+02b7  CreateClosure r8, r8, 11292
+02bc  Call2 r8, r10, r11, r8
+L705:
+02c1  PutByIdStrict r6, r7, 0, "default"
+02c7  Mov r5, r6
+L714:
+02ca  StoreToEnvironment r3, 7, r5
+02ce  GetByIndex r5, r2, 7
+02d2  Call2 r7, r4, r1, r5
+02d7  CreateFunctionEnvironment r8, 2
+02da  StoreToEnvironment r8, 0, r7
+02de  StoreNPToEnvironment r8, 1, r1
+02e2  JmpFalse L752, r7
+02e5  GetByIdShort r6, r7, 2, "__esModule"
+02ea  Mov r5, r7
+02ed  JmpTrue L801, r6
+L752:
+02f0  NewObject r6
+02f2  StoreToEnvironment r8, 1, r6
+02f6  JmpFalse L792, r7
+02f9  TryGetById r11, r9, 0, "Object"
+02ff  GetByIdShort r10, r11, 3, "keys"
+0304  Call2 r11, r10, r11, r7
+0309  GetByIdShort r10, r11, 4, "forEach"
+030e  CreateClosure r8, r8, 11292
+0313  Call2 r8, r10, r11, r8
+L792:
+0318  PutByIdStrict r6, r7, 0, "default"
+031e  Mov r5, r6
+L801:
+0321  StoreToEnvironment r3, 8, r5
+0325  GetByIndex r5, r2, 8
+0329  Call2 r7, r4, r1, r5
+032e  StoreToEnvironment r3, 9, r7
+0332  CreateFunctionEnvironment r8, 2
+0335  StoreToEnvironment r8, 0, r7
+0339  StoreNPToEnvironment r8, 1, r1
+033d  JmpFalse L843, r7
+0340  GetByIdShort r6, r7, 2, "__esModule"
+0345  Mov r5, r7
+0348  JmpTrue L892, r6
+L843:
+034b  NewObject r6
+034d  StoreToEnvironment r8, 1, r6
+0351  JmpFalse L883, r7
+0354  TryGetById r11, r9, 0, "Object"
+035a  GetByIdShort r10, r11, 3, "keys"
+035f  Call2 r11, r10, r11, r7
+0364  GetByIdShort r10, r11, 4, "forEach"
+0369  CreateClosure r8, r8, 11292
+036e  Call2 r8, r10, r11, r8
+L883:
+0373  PutByIdStrict r6, r7, 0, "default"
+0379  Mov r5, r6
+L892:
+037c  StoreToEnvironment r3, 10, r5
+0380  GetByIndex r5, r2, 9
+0384  Call2 r7, r4, r1, r5
+0389  CreateFunctionEnvironment r8, 2
+038c  StoreToEnvironment r8, 0, r7
+0390  StoreNPToEnvironment r8, 1, r1
+0394  JmpFalse L930, r7
+0397  GetByIdShort r6, r7, 2, "__esModule"
+039c  Mov r5, r7
+039f  JmpTrue L979, r6
+L930:
+03a2  NewObject r6
+03a4  StoreToEnvironment r8, 1, r6
+03a8  JmpFalse L970, r7
+03ab  TryGetById r10, r9, 0, "Object"
+03b1  GetByIdShort r9, r10, 3, "keys"
+03b6  Call2 r10, r9, r10, r7
+03bb  GetByIdShort r9, r10, 4, "forEach"
+03c0  CreateClosure r8, r8, 11292
+03c5  Call2 r8, r9, r10, r8
+L970:
+03ca  PutByIdStrict r6, r7, 0, "default"
+03d0  Mov r5, r6
+L979:
+03d3  StoreToEnvironment r3, 11, r5
+03d7  GetByIndex r5, r2, 10
+03db  Call2 r5, r4, r1, r5
+03e0  GetByIndex r5, r2, 11
+03e4  Call2 r7, r4, r1, r5
+03e9  JmpFalse L1015, r7
+03ec  GetByIdShort r6, r7, 2, "__esModule"
+03f1  Mov r5, r7
+03f4  JmpTrue L1028, r6
+L1015:
+03f7  NewObjectWithBuffer r6, 25, 20
+03fd  PutOwnBySlotIdx r6, r7, 0
+0401  Mov r5, r6
+L1028:
+0404  StoreToEnvironment r3, 12, r5
+0408  GetByIndex r5, r2, 12
+040c  Call2 r7, r4, r1, r5
+0411  JmpFalse L1055, r7
+0414  GetByIdShort r6, r7, 2, "__esModule"
+0419  Mov r5, r7
+041c  JmpTrue L1068, r6
+L1055:
+041f  NewObjectWithBuffer r6, 25, 20
+0425  PutOwnBySlotIdx r6, r7, 0
+0429  Mov r5, r6
+L1068:
+042c  StoreToEnvironment r3, 13, r5
+0430  GetByIndex r5, r2, 13
+0434  Call2 r7, r4, r1, r5
+0439  JmpFalse L1095, r7
+043c  GetByIdShort r6, r7, 2, "__esModule"
+0441  Mov r5, r7
+0444  JmpTrue L1108, r6
+L1095:
+0447  NewObjectWithBuffer r6, 25, 20
+044d  PutOwnBySlotIdx r6, r7, 0
+0451  Mov r5, r6
+L1108:
+0454  StoreToEnvironment r3, 14, r5
+0458  GetByIndex r5, r2, 14
+045c  Call2 r7, r4, r1, r5
+0461  StoreToEnvironment r3, 15, r7
+0465  JmpFalse L1139, r7
+0468  GetByIdShort r6, r7, 2, "__esModule"
+046d  Mov r5, r7
+0470  JmpTrue L1152, r6
+L1139:
+0473  NewObjectWithBuffer r6, 25, 20
+0479  PutOwnBySlotIdx r6, r7, 0
+047d  Mov r5, r6
+L1152:
+0480  StoreToEnvironment r3, 16, r5
+0484  GetByIndex r2, r2, 15
+0488  Call2 r2, r4, r1, r2
+048d  StoreToEnvironment r3, 17, r2
+0491  LoadConstString r2, "on"
+0495  StoreToEnvironment r3, 18, r2
+0499  LoadConstString r2, "off"
+049d  StoreToEnvironment r3, 19, r2
+04a1  LoadConstInt r0, 60000
+04a7  StoreNPToEnvironment r3, 20, r0
+04ab  LoadConstInt r0, 25000
+04b1  StoreNPToEnvironment r3, 21, r0
+04b5  LoadConstInt r0, 15000
+04bb  StoreNPToEnvironment r3, 22, r0
+04bf  LoadConstInt r0, 30000
+04c5  StoreNPToEnvironment r3, 23, r0
+04c9  LoadConstString r2, "scanning"
+04cd  StoreToEnvironment r3, 24, r2
+04d1  LoadConstString r2, "idle"
+04d5  StoreToEnvironment r3, 25, r2
+04d9  LoadConstString r2, "connected"
+04dd  StoreToEnvironment r3, 26, r2
+04e1  NewObject r2
+04e3  StoreToEnvironment r3, 27, r2
+04e7  CreateClosure r2, r3, 7448
+04ec  StoreToEnvironment r3, 28, r2
+04f0  CreateClosure r2, r3, 7449
+04f5  StoreToEnvironment r3, 29, r2
+04f9  CreateClosure r2, r3, 7450
+04fe  StoreToEnvironment r3, 30, r2
+0502  LoadConstUInt8 r0, 81
+0505  StoreNPToEnvironment r3, 31, r0
+0509  LoadConstUInt8 r0, 98
+050c  StoreNPToEnvironment r3, 32, r0
+0510  LoadConstUInt8 r0, 115
+0513  StoreNPToEnvironment r3, 33, r0
+0517  LoadConstUInt8 r0, 132
+051a  StoreNPToEnvironment r3, 34, r0
+051e  LoadConstUInt8 r0, 149
+0521  StoreNPToEnvironment r3, 35, r0
+0525  LoadConstUInt8 r0, 166
+0528  StoreNPToEnvironment r3, 36, r0
+052c  LoadConstUInt8 r0, 131
+052f  StoreNPToEnvironment r3, 37, r0
+0533  CreateBaseClass r2, r2, r3, 7451
+0539  StoreToEnvironment r3, 38, r2
+053d  Ret r1
+
+
+; fn#7451 "Ble" params=1 frame=13 regs=1(num=0,nonptr=1) size=570 offset=0x201154
+0000  GetParentEnvironment r2, 0
+0003  GetNewTarget r1
+0005  GetByIdShort r1, r1, 0, "prototype"
+000a  NewObjectWithParent r1, r1
+000d  CreateFunctionEnvironment r3, 1
+0010  StoreToEnvironment r3, 0, r1
+0014  CreateClosure r4, r3, 11293
+0019  DefineOwnById r1, r4, 0, "initialize"
+001f  CreateClosure r4, r2, 11294
+0024  DefineOwnById r1, r4, 1, "getBleState"
+002a  CreateClosure r4, r2, 11295
+002f  DefineOwnById r1, r4, 2, "requestEnableBluetooth"
+0035  CreateClosure r4, r3, 11296
+003a  DefineOwnById r1, r4, 3, "getSchedule"
+0040  CreateClosure r4, r3, 11297
+0045  DefineOwnById r1, r4, 4, "setSchedule"
+004b  CreateClosure r4, r3, 11298
+0050  DefineOwnById r1, r4, 5, "getSpotSchedule"
+0056  CreateClosure r4, r3, 11299
+005b  DefineOwnById r1, r4, 6, "setSpotSchedule"
+0061  CreateClosure r4, r3, 11300
+0066  DefineOwnById r1, r4, 7, "sendSaveConfirmation"
+006c  CreateClosure r4, r3, 11301
+0071  DefineOwnById r1, r4, 8, "_writeChar"
+0077  CreateClosure r4, r3, 11302
+007c  DefineOwnById r1, r4, 9, "_loadPairingKey"
+0082  CreateClosure r4, r3, 11303
+0087  DefineOwnById r1, r4, 10, "getSingleValve"
+008d  CreateClosure r4, r3, 11304
+0092  DefineOwnById r1, r4, 11, "_getSpotSchedulerPromises"
+0098  CreateClosure r4, r3, 11305
+009d  DefineOwnById r1, r4, 12, "getSingleValveSettings"
+00a3  CreateClosure r4, r3, 11306
+00a8  DefineOwnById r1, r4, 13, "saveSettings"
+00ae  CreateClosure r4, r3, 11307
+00b3  DefineOwnById r1, r4, 14, "refreshValve"
+00b9  CreateClosure r4, r3, 11308
+00be  DefineOwnById r1, r4, 15, "setBleAdapterStateChangeListener"
+00c4  CreateClosure r4, r3, 11309
+00c9  DefineOwnById r1, r4, 16, "clearNobleEventHandlers"
+00cf  CreateClosure r4, r3, 11310
+00d4  DefineOwnById r1, r4, 17, "pairDevice"
+00da  CreateClosure r4, r3, 11311
+00df  DefineOwnById r1, r4, 18, "_handleGenericValve"
+00e5  LoadConstUndefined r0
+00e7  CreateClosure r4, r0, 11312
+00ec  DefineOwnById r1, r4, 19, "reorderValues"
+00f2  CreateClosure r4, r3, 11313
+00f7  DefineOwnById r1, r4, 20, "shouldShowHumidity"
+00fd  CreateClosure r4, r0, 11314
+0102  DefineOwnById r1, r4, 21, "checkHumidity"
+0108  CreateClosure r4, r0, 11315
+010d  DefineOwnById r1, r4, 22, "showHumidity"
+0113  CreateClosure r4, r0, 11316
+0118  DefineOwnById r1, r4, 23, "getHumidity"
+011e  CreateClosure r4, r2, 11317
+0123  DefineOwnById r1, r4, 24, "_sortValveInfo"
+0129  CreateClosure r4, r3, 11318
+012e  DefineOwnById r1, r4, 25, "wink"
+0134  CreateClosure r4, r3, 11319
+0139  DefineOwnById r1, r4, 26, "_wink"
+013f  CreateClosure r4, r3, 11320
+0144  DefineOwnById r1, r4, 27, "_handleDisconnect"
+014a  CreateClosure r4, r3, 11321
+014f  DefineOwnById r1, r4, 28, "disconnect"
+0155  CreateClosure r4, r3, 11322
+015a  DefineOwnById r1, r4, 29, "disconnectAll"
+0160  CreateClosure r4, r3, 11323
+0165  DefineOwnById r1, r4, 30, "disconnectAllKeepPeripherals"
+016b  CreateClosure r4, r3, 11324
+0170  DefineOwnById r1, r4, 31, "restartApp"
+0176  CreateClosure r4, r3, 11325
+017b  DefineOwnById r1, r4, 32, "startDisconnectTimer"
+0181  CreateClosure r4, r2, 11326
+0186  DefineOwnById r1, r4, 33, "cancelTimedDisconnect"
+018c  CreateClosure r4, r3, 11327
+0191  DefineOwnById r1, r4, 34, "sendFactoryReset"
+0197  CreateClosure r4, r3, 11328
+019c  DefineOwnById r1, r4, 35, "sendCommand"
+01a2  CreateClosure r4, r3, 11329
+01a7  DefineOwnById r1, r4, 36, "_sendCommand"
+01ad  CreateClosure r4, r3, 11330
+01b2  DefineOwnById r1, r4, 37, "_getPeripheralById"
+01b8  CreateClosure r4, r3, 11331
+01bd  DefineOwnById r1, r4, 38, "registerPeripheral"
+01c3  CreateClosure r4, r3, 11332
+01c8  DefineOwnById r1, r4, 39, "stopScanning"
+01ce  CreateClosure r4, r3, 11333
+01d3  DefineOwnById r1, r4, 40, "finalizeStopScanning"
+01d9  CreateClosure r4, r3, 11334
+01de  DefineOwnById r1, r4, 41, "readTimeData"
+01e4  CreateClosure r4, r3, 11335
+01e9  DefineOwnById r1, r4, 42, "readPrettyTimeData"
+01ef  CreateClosure r4, r3, 11336
+01f4  DefineOwnById r1, r4, 43, "writeTimeData"
+01fa  CreateClosure r3, r3, 11337
+01ff  DefineOwnById r1, r3, 44, "getValves"
+0205  CreateClosure r3, r2, 11338
+020a  DefineOwnById r1, r3, 45, "_parseSinglePeripheral"
+0210  LoadFromEnvironment r2, r2, 1
+0214  GetByIdShort r2, r2, 1, "default"
+0219  CreateThisForNew r3, r2, 0
+021d  Mov r5, r3
+0220  Construct r2, r2, 1
+0224  SelectObject r2, r3, r2
+0228  PutByIdStrict r1, r2, 46, "bleSpec"
+022e  NewArray r2, 0
+0232  PutByIdStrict r1, r2, 47, "eventListeners"
+0238  Ret r1
+
+
+; fn#8129 "StateToggleButton" params=2 frame=35 regs=3(num=1,nonptr=2) size=1098 offset=0x21ab2e flags=[strict]
+0000  GetParentEnvironment r11, 0
+0003  LoadParam r3, 1
+0006  GetById r9, r3, 0, "rowData"
+000c  GetById r14, r3, 1, "buttonStateType"
+0012  GetById r15, r3, 2, "styles"
+0018  GetByIdShort r8, r9, 3, "state"
+001d  LoadFromEnvironment r3, r11, 3
+0021  GetByIdShort r5, r3, 4, "default"
+0026  GetById r4, r5, 5, "isNotAbbEcoHeat"
+002c  Call1 r4, r4, r5
+0030  JmpTrue L59, r4
+0033  GetById r7, r15, 6, "ecoHeatStateToggleTextSelected"
+0039  Jmp L65
+L59:
+003b  GetById r7, r15, 7, "stateToggleTextSelected"
+L65:
+0041  GetByIdShort r5, r3, 4, "default"
+0046  GetById r4, r5, 5, "isNotAbbEcoHeat"
+004c  Call1 r4, r4, r5
+0050  JmpTrue L91, r4
+0053  GetById r6, r15, 8, "ecoHeatStateToggleTextNotSelected"
+0059  Jmp L97
+L91:
+005b  GetById r6, r15, 9, "stateToggleText"
+L97:
+0061  LoadFromEnvironment r5, r11, 4
+0065  GetByIdShort r4, r5, 4, "default"
+006a  GetById r4, r4, 10, "AUTO"
+0070  JStrictEqual L225, r4, r14
+0074  GetByIdShort r4, r5, 4, "default"
+0079  GetById r4, r4, 11, "COM"
+007f  JStrictEqual L203, r4, r14
+0083  GetByIdShort r4, r5, 4, "default"
+0088  GetById r4, r4, 12, "ECO"
+008e  JStrictEqual L171, r4, r14
+0092  GetByIdShort r4, r5, 4, "default"
+0097  GetById r10, r4, 13, "BOOST"
+009d  LoadConstFalse r4
+009f  JStrictNotEqual L245, r10, r14
+00a3  GetById r4, r9, 14, "boost"
+00a9  Jmp L245
+L171:
+00ab  LoadConstUInt8 r0, 2
+00ae  StrictEq r1, r8, r0
+00b2  JmpTrue L188, r1
+00b5  LoadConstUInt8 r0, 4
+00b8  StrictEq r1, r8, r0
+L188:
+00bc  JmpTrue L198, r1
+00bf  LoadConstUInt8 r0, 6
+00c2  StrictEq r1, r8, r0
+L198:
+00c6  Mov r4, r1
+00c9  Jmp L245
+L203:
+00cb  LoadConstUInt8 r0, 1
+00ce  StrictEq r1, r8, r0
+00d2  JmpTrue L220, r1
+00d5  LoadConstUInt8 r0, 3
+00d8  StrictEq r1, r8, r0
+L220:
+00dc  Mov r4, r1
+00df  Jmp L245
+L225:
+00e1  LoadConstUInt8 r0, 3
+00e4  StrictEq r1, r8, r0
+00e8  JmpTrue L242, r1
+00eb  LoadConstUInt8 r0, 4
+00ee  StrictEq r1, r8, r0
+L242:
+00f2  Mov r4, r1
+L245:
+00f5  JmpFalse L251, r4
+00f8  Mov r6, r7
+L251:
+00fb  NewArray r16, 1
+00ff  DefineOwnInDenseArray r16, r6, 0
+0103  GetByIdShort r7, r3, 4, "default"
+0108  GetById r6, r7, 15, "isSphere"
+010e  Call1 r6, r6, r7
+0112  JmpFalse L330, r6
+0115  GetByIdShort r6, r5, 4, "default"
+011a  GetById r6, r6, 12, "ECO"
+0120  JStrictEqual L330, r14, r6
+0124  JmpFalse L330, r4
+0127  GetByIdShort r7, r16, 16, "push"
+012c  NewObjectWithBuffer r6, 225, 20
+0132  LoadFromEnvironment r8, r11, 2
+0136  GetByIdShort r8, r8, 17, "Colors"
+013b  GetById r8, r8, 18, "primaryDark"
+0141  PutOwnBySlotIdx r6, r8, 0
+0145  Call2 r6, r7, r16, r6
+L330:
+014a  GetByIdShort r7, r3, 4, "default"
+014f  GetByIdShort r6, r7, 19, "isEcoControl"
+0154  Call1 r6, r6, r7
+0158  JmpFalse L363, r6
+015b  GetByIdShort r7, r16, 16, "push"
+0160  NewObjectWithBuffer r6, 886, 16903
+0166  Call2 r6, r7, r16, r6
+L363:
+016b  JmpTrue L374, r4
+016e  GetById r17, r15, 20, "ecoHeatStateInnerTextNotSelected"
+0174  Jmp L380
+L374:
+0176  GetById r17, r15, 21, "ecoHeatStateInnerTextSelected"
+L380:
+017c  GetByIdShort r7, r3, 4, "default"
+0181  GetByIdShort r6, r7, 22, "isAbbEcoHeat"
+0186  Call1 r6, r6, r7
+018a  LoadFromEnvironment r8, r11, 7
+018e  GetByIdShort r19, r8, 23, "jsx"
+0193  LoadFromEnvironment r13, r11, 0
+0197  JmpTrue L464, r6
+019a  GetByIdShort r7, r13, 24, "Text"
+019f  NewObjectWithBuffer r6, 1129, 17933
+01a5  PutOwnBySlotIdx r6, r16, 0
+01a9  LoadFromEnvironment r12, r11, 5
+01ad  GetByIdShort r10, r12, 4, "default"
+01b2  GetByIdShort r9, r10, 25, "t"
+01b7  Call2 r9, r9, r10, r14
+01bc  PutOwnBySlotIdx r6, r9, 1
+01c0  LoadConstUndefined r1
+01c2  Call3 r6, r19, r1, r7, r6
+01c8  Mov r9, r13
+01cb  Mov r10, r8
+01ce  Jmp L549
+L464:
+01d0  GetByIdShort r18, r13, 26, "View"
+01d5  NewObjectWithBuffer r7, 1129, 17933
+01db  PutOwnBySlotIdx r7, r16, 0
+01df  GetByIdShort r22, r8, 23, "jsx"
+01e4  GetByIdShort r21, r13, 24, "Text"
+01e9  NewObjectWithBuffer r20, 1129, 17933
+01ef  PutOwnBySlotIdx r20, r17, 0
+01f3  LoadFromEnvironment r17, r11, 5
+01f7  GetByIdShort r24, r17, 4, "default"
+01fc  GetByIdShort r23, r24, 25, "t"
+0201  Call2 r23, r23, r24, r14
+0206  PutOwnBySlotIdx r20, r23, 1
+020a  LoadConstUndefined r1
+020c  Call3 r20, r22, r1, r21, r20
+0212  PutOwnBySlotIdx r7, r20, 1
+0216  Call3 r6, r19, r1, r18, r7
+021c  Mov r12, r17
+021f  Mov r9, r13
+0222  Mov r10, r8
+L549:
+0225  GetByIdShort r8, r3, 4, "default"
+022a  GetById r7, r8, 5, "isNotAbbEcoHeat"
+0230  Call1 r7, r7, r8
+0234  JmpTrue L586, r7
+0237  JmpTrue L578, r4
+023a  GetById r7, r15, 27, "ecoHeatToggleButtonContainerNotSelected"
+0240  Jmp L584
+L578:
+0242  GetById r7, r15, 28, "ecoHeatToggleButtonContainerSelected"
+L584:
+0248  Jmp L592
+L586:
+024a  GetById r7, r15, 29, "toggleButtonContainer"
+L592:
+0250  JmpFalse L631, r4
+0253  GetByIdShort r13, r3, 4, "default"
+0258  GetById r8, r13, 15, "isSphere"
+025e  Call1 r8, r8, r13
+0262  JmpFalse L631, r8
+0265  GetByIdShort r5, r5, 4, "default"
+026a  GetById r5, r5, 12, "ECO"
+0270  JStrictEqualLong L920, r14, r5
+L631:
+0277  JmpFalse L651, r4
+027a  GetByIdShort r4, r3, 4, "default"
+027f  GetByIdShort r3, r4, 19, "isEcoControl"
+0284  Call1 r3, r3, r4
+0288  JmpTrue L685, r3
+L651:
+028b  GetByIdShort r5, r10, 23, "jsx"
+0290  GetByIdShort r4, r9, 26, "View"
+0295  NewObjectWithBuffer r3, 1129, 17933
+029b  PutOwnBySlotIdx r3, r7, 0
+029f  PutOwnBySlotIdx r3, r6, 1
+02a3  LoadConstUndefined r1
+02a5  Call3 r3, r5, r1, r4, r3
+02ab  Ret r3
+L685:
+02ad  LoadFromEnvironment r3, r11, 8
+02b1  GetByVal r13, r3, r14
+02b5  JmpTrue L706, r13
+02b8  NewArrayWithBufferLong r13, 2, 2, 82378
+L706:
+02c2  GetByIdShort r5, r10, 23, "jsx"
+02c7  GetByIdShort r4, r9, 26, "View"
+02cc  NewObjectWithBuffer r3, 1129, 17933
+02d2  GetById r7, r15, 29, "toggleButtonContainer"
+02d8  NewArray r6, 3
+02dc  DefineOwnInDenseArray r6, r7, 0
+02e0  LoadFromEnvironment r7, r11, 9
+02e4  DefineOwnInDenseArray r6, r7, 1
+02e8  NewObjectWithBuffer r7, 1927, 64481
+02ee  DefineOwnInDenseArray r6, r7, 2
+02f2  PutOwnBySlotIdx r3, r6, 0
+02f6  GetByIdShort r8, r10, 23, "jsx"
+02fb  LoadFromEnvironment r6, r11, 1
+02ff  GetById r7, r6, 30, "LinearGradient"
+0305  NewObjectWithBuffer r6, 1440, 18199
+030b  PutOwnBySlotIdx r6, r13, 0
+030f  NewObjectWithBuffer r13, 49, 63436
+0315  PutOwnBySlotIdx r6, r13, 1
+0319  NewObjectWithBufferLong r13, 49, 82383
+0323  PutOwnBySlotIdx r6, r13, 2
+0327  NewObjectWithBuffer r13, 497, 62279
+032d  PutOwnBySlotIdx r6, r13, 3
+0331  GetByIdShort r18, r10, 23, "jsx"
+0336  GetByIdShort r17, r9, 24, "Text"
+033b  NewObjectWithBuffer r13, 1129, 17933
+0341  GetById r20, r15, 9, "stateToggleText"
+0347  NewArray r19, 3
+034b  DefineOwnInDenseArray r19, r20, 0
+034f  NewObjectWithBuffer r20, 142, 64486
+0355  DefineOwnInDenseArray r19, r20, 1
+0359  NewObjectWithBuffer r20, 886, 16903
+035f  DefineOwnInDenseArray r19, r20, 2
+0363  PutOwnBySlotIdx r13, r19, 0
+0367  GetByIdShort r20, r12, 4, "default"
+036c  GetByIdShort r19, r20, 25, "t"
+0371  Call2 r19, r19, r20, r14
+0376  PutOwnBySlotIdx r13, r19, 1
+037a  LoadConstUndefined r1
+037c  Call3 r13, r18, r1, r17, r13
+0382  PutOwnBySlotIdx r6, r13, 4
+0386  Call3 r6, r8, r1, r7, r6
+038c  PutOwnBySlotIdx r3, r6, 1
+0390  Call3 r3, r5, r1, r4, r3
+0396  Ret r3
+L920:
+0398  GetByIdShort r5, r10, 23, "jsx"
+039d  GetByIdShort r4, r9, 26, "View"
+03a2  NewObjectWithBuffer r3, 1129, 17933
+03a8  GetById r7, r15, 29, "toggleButtonContainer"
+03ae  NewArray r6, 2
+03b2  DefineOwnInDenseArray r6, r7, 0
+03b6  GetById r7, r15, 31, "ecoLeafView"
+03bc  DefineOwnInDenseArray r6, r7, 1
+03c0  PutOwnBySlotIdx r3, r6, 0
+03c4  GetByIdShort r8, r10, 23, "jsx"
+03c9  GetById r7, r9, 32, "ImageBackground"
+03cf  NewObjectWithBuffer r6, 1830, 18026
+03d5  LoadFromEnvironment r11, r11, 2
+03d9  GetById r11, r11, 33, "Images"
+03df  GetById r11, r11, 34, "leaf"
+03e5  PutOwnBySlotIdx r6, r11, 0
+03e9  GetById r11, r15, 35, "ecoLeafImage"
+03ef  PutOwnBySlotIdx r6, r11, 1
+03f3  GetByIdShort r11, r10, 23, "jsx"
+03f8  GetByIdShort r10, r9, 24, "Text"
+03fd  NewObjectWithBuffer r9, 1129, 17933
+0403  NewArray r13, 2
+0407  DefineOwnInDenseArray r13, r16, 0
+040b  GetById r15, r15, 36, "ecoLeafText"
+0411  DefineOwnInDenseArray r13, r15, 1
+0415  PutOwnBySlotIdx r9, r13, 0
+0419  GetByIdShort r13, r12, 4, "default"
+041e  GetByIdShort r12, r13, 25, "t"
+0423  Call2 r12, r12, r13, r14
+0428  PutOwnBySlotIdx r9, r12, 1
+042c  LoadConstUndefined r1
+042e  Call3 r9, r11, r1, r10, r9
+0434  PutOwnBySlotIdx r6, r9, 2
+0438  Call3 r6, r8, r1, r7, r6
+043e  PutOwnBySlotIdx r3, r6, 1
+0442  Call3 r3, r5, r1, r4, r3
+0448  Ret r3
+
+
+; fn#11329 "_sendCommand" params=2 frame=12 regs=0(num=0,nonptr=0) size=44 offset=0x26f124 flags=[strict]
+0000  CreateFunctionEnvironment r0, 1
+0003  LoadParam r1, 1
+0006  StoreToEnvironment r0, 0, r1
+000a  GetParentEnvironment r1, 1
+000d  LoadFromEnvironment r1, r1, 12
+0011  GetByIdShort r2, r1, 0, "default"
+0016  CreateThisForNew r1, r2, 1
+001a  CreateClosure r3, r0, 13718
+001f  Mov r4, r1
+0022  Construct r0, r2, 2
+0026  SelectObject r0, r1, r0
+002a  Ret r0
+
+
+; fn#13718 "<anonymous>" params=3 frame=17 regs=1(num=0,nonptr=1) size=175 offset=0x2adea1 flags=[strict]
+0000  CreateFunctionEnvironment r1, 2
+0003  LoadParam r2, 1
+0006  StoreToEnvironment r1, 0, r2
+000a  LoadParam r3, 2
+000d  StoreToEnvironment r1, 1, r3
+0011  GetParentEnvironment r2, 1
+0014  LoadFromEnvironment r5, r2, 0
+0018  GetById r2, r5, 0, "commandCharacteristic"
+001e  JmpFalse L43, r2
+0021  GetParentEnvironment r2, 0
+0024  LoadFromEnvironment r2, r2, 0
+0028  JmpTrue L51, r2
+L43:
+002b  LoadConstUndefined r0
+002d  Call1 r3, r3, r0
+0031  Ret r0
+L51:
+0033  GetParentEnvironment r3, 2
+0036  LoadFromEnvironment r3, r3, 17
+003a  GetById r3, r3, 1, "Buffer"
+0040  GetByIdShort r6, r3, 2, "from"
+0045  NewArray r4, 1
+0049  DefineOwnInDenseArray r4, r2, 0
+004d  CreateThisForNew r3, r6, 3
+0051  LoadConstString r7, "hex"
+0055  Mov r9, r3
+0058  Mov r8, r4
+005b  Construct r2, r6, 3
+005f  SelectObject r4, r3, r2
+0063  GetGlobalObject r2
+0065  TryGetById r6, r2, 4, "console"
+006b  GetByIdShort r3, r6, 5, "log"
+0070  LoadConstString r2, "_sendCommandor "
+0074  Call3 r2, r3, r6, r2, r4
+007a  GetById r3, r5, 6, "_writeChar"
+0080  GetById r2, r5, 0, "commandCharacteristic"
+0086  Call3 r4, r3, r5, r4, r2
+008c  GetByIdShort r3, r4, 7, "then"
+0091  CreateClosure r2, r1, 14538
+0096  Call2 r3, r3, r4, r2
+009b  GetById r2, r3, 8, "catch"
+00a1  CreateClosure r1, r1, 14539
+00a6  Call2 r1, r2, r3, r1
+00ab  LoadConstUndefined r0
+00ad  Ret r0
+

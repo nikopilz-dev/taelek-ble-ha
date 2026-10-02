@@ -14,6 +14,9 @@ Hermes-decomp v0.2.4 identifies HBC v98, Modern12 layout, 15,404 functions,
 27,855 strings and 1,643 detected Metro modules. Deep/stable output has
 365,602 lines. Full output and bytecode are ignored by Git. Modern closure
 recovery contains wrong variable references, so disassembly takes precedence.
+Selected complete instruction listings are preserved in
+`../evidence/ecocontrol-selected-disassembly.txt`; regenerate them with
+`python tools/record_ecocontrol_evidence.py` after extracting the same bundle.
 
 ## Confirmed command sender
 
@@ -76,3 +79,12 @@ one acknowledged command write and a post-read, under the same session lock
 as ordinary reads. No settings writes, save confirmation or automatic retries
 occur. An ACK is not treated as semantic success. CLOSE is not exposed as an
 ECO switch. Hardware results will be recorded separately after the experiment.
+
+### First CLOSE observation
+
+The HA test on 2026-10-02 returned an acknowledged `0x73` write and successful
+State A read-back in the same connection. OperationMode stayed 0 and setpoint
+stayed 35.0 °C; the whole before/after State A payload was identical. Param B
+was not written and no `0x83` confirmation was sent. The pending LED observation
+and NORMAL restoration will be recorded after completion. An unchanged immediate
+read is not proof that a command is unsupported, nor proof of an ECO transition.
