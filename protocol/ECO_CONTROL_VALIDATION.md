@@ -110,7 +110,38 @@ No ECO temperature or other settings were written in this repeat. The installed
 and experimental GATT polling was temporarily disabled while the ambiguous report
 was clarified. A single relay transition was confirmed by the user.
 Do not describe CLOSE as an ECO command or the relay sound as proof of successful
-temperature control. A below/above-temperature experiment has not been performed.
+temperature control.
+
+Version 0.1.5 adds explicit manualEco experiments (10 / 25 °C and restore).
+The client reads Param B and State A before writing, preserves every byte except
+Param B offsets 2–3, writes once with response and reads Param B and State A back.
+It sends no save confirmation and changes neither ecoMode nor wireless ECO flags.
+The original target is retained for explicit restore, even on failed read-back,
+only during the current integration load. This is not an ECO activation command.
+Tests cover preserved bytes, restoration, pre-read failure preventing writes,
+post-read failure retaining the backup, and setup never invoking writes.
+
+During preparation, before any temperature write, the user also observed both
+heating-on and heating-off using a multimeter. Natural switching is therefore
+a confounder for interpreting a single LED or relay change.
+
+### First manualEco target write on hardware
+
+HA 0.1.5 (commit 703606c, CI passed, 104 local tests passed) was installed
+through HACS and restarted. The first 10 °C experiment at 20:37 Helsinki time
+read manualEco 19 °C both before and immediately after the acknowledged write.
+State A also remained `000000005e01db00a3000000`: setpoint 35 °C, floor 16.3 °C,
+operationMode 0. The user observed slow red pulsing, relay release, then steady
+red and later relay engagement. Since neither manualEco nor active setpoint
+changed, this is not proof of temperature control.
+
+The 25 °C comparison was not executed after the first target failed read-back.
+Explicit restoration wrote the original 19 °C once and read it back as 19 °C
+at 20:38. State A before/after was `000000005e01de00a3000000` (35 °C setpoint,
+16.3 °C floor, operationMode 0). The user reported another release afterward.
+No save confirmation or additional runtime command was sent during this
+temperature experiment. Whether a save/physical confirmation or another
+write path is needed remains unresolved; do not infer that cause from an ACK.
 
 Etherma's official E-2001-BLE manual (attachment fileID 183 on product 44371)
 specifies external control as **230 V / 50 Hz** and shows the clock-symbol
