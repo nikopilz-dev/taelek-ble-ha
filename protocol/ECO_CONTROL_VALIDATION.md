@@ -85,6 +85,27 @@ ECO switch. Hardware results will be recorded separately after the experiment.
 The HA test on 2026-10-02 returned an acknowledged `0x73` write and successful
 State A read-back in the same connection. OperationMode stayed 0 and setpoint
 stayed 35.0 °C; the whole before/after State A payload was identical. Param B
-was not written and no `0x83` confirmation was sent. The pending LED observation
-and NORMAL restoration will be recorded after completion. An unchanged immediate
-read is not proof that a command is unsupported, nor proof of an ECO transition.
+was not written and no `0x83` confirmation was sent. No LED observation was
+received during the experiment. The subsequent NORMAL restoration (`0x84`) was
+acknowledged and its before/after payload was also identical:
+`000000005e01d100a2000000`. OperationMode remained 0 and setpoint 35.0 °C.
+An unchanged immediate read is not proof that a command is unsupported, nor
+proof of an ECO transition; neither command's semantic effect is established.
+
+## Clock and external wired input
+
+Etherma's official E-2001-BLE manual (attachment fileID 183 on product 44371)
+specifies external control as **230 V / 50 Hz** and shows the clock-symbol
+terminal in the wiring diagram (page 1). It is not a low-voltage jumper input.
+Page 2 requires correct time for the internal weekly program, says MAI Smart
+updates it on connection, and gives less than two hours of power-loss retention.
+Clock error 10 falls back to the knob's temperature. This does not establish
+that forced BLE ECO requires the clock. The current HA client does not write
+the Time characteristic or initialize commissioning parameters.
+
+Taelek's Homey guide instead disables the internal user program and uses forced
+ECO with an ECO setpoint for displayless models. It contains no jumper step.
+
+Sources checked 2026-10-02:
+- https://etherma.fi/downloadAttachment.php?class=Tuote&classID=44371&fileID=183
+- https://taelek.fi/Documents/easy_manual_homey.pdf

@@ -7,6 +7,8 @@ evidence/**/index.android.bundle
 evidence/**/*.hdcache
 evidence/decompiled-*.js
 evidence/disassembly-*.txt
+evidence/E-2001-ble-official.pdf
+evidence/E-2001-page*.png
 tools/hermes-decomp*/
 dist/
 build/

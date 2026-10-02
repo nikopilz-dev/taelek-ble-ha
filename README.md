@@ -22,6 +22,16 @@ lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
   CLOSE- tai NORMAL-testipainike lähettää yhden erikseen pyydetyn komennon. Climate- ja
   number-entiteettejä ei vielä ole.
 
+Kellonaikaa, viikko-ohjelmaa tai muita käyttöönottoasetuksia ei vielä kirjoiteta.
+E-2001-BLE:n ohjeen mukaan oikea kellonaika tarvitaan sisäiseen viikko-ohjelmaan;
+MAI Smart päivittää sen yhteyden yhteydessä ja kello säilyy alle kahden tunnin
+sähkökatkojen yli. HA:n GATT-luku ei tällä hetkellä tee vastaavaa kellopäivitystä.
+Homeyn ohje suosittelee sisäisen viikko-ohjelman poistamista käytöstä ja näyttöttömillä
+malleilla pakotettua ECO-ohjausta. Ohje ei edellytä kellotulon hyppyjohtoa.
+Kellosymbolin ulkoinen ohjaustulo on E-2001-BLE:n käyttöohjeessa 230 V / 50 Hz.
+Lähteet: [Etherman käyttöohje](https://etherma.fi/downloadAttachment.php?class=Tuote&classID=44371&fileID=183),
+[Taelekin Homey-ohje](https://taelek.fi/Documents/easy_manual_homey.pdf).
+
 GATT on oletuksena pois käytöstä. Kun sen sallii, lukemat päivittyvät viiden minuutin
 välein vain käytössä olevien GATT-entiteettien kuunnellessa. Yhteys avataan joka lukua
 varten uudelleen ja suljetaan lopuksi. Ilma- ja ulkoisen lämpötilan entiteetit ovat aluksi
