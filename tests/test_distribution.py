@@ -29,8 +29,7 @@ def test_bluetooth_dependencies_use_home_assistant_versions():
     # Core Bluetooth supplies Bleak and bleak-retry-connector under HA's constraints.
     assert {"bluetooth", "bluetooth_adapters"} <= set(manifest["dependencies"])
     assert not any(
-        requirement.startswith(("bleak", "habluetooth"))
-        for requirement in manifest["requirements"]
+        requirement.startswith(("bleak", "habluetooth")) for requirement in manifest["requirements"]
     )
 
 
