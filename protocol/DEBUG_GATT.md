@@ -6,15 +6,16 @@ ei tarvita kutakin koetta varten. Tämä ei ole aktiivisen ECO:n valmis ohjaus.
 
 Päivitä integraatio kerran HACSilla ja käynnistä HA uudelleen. Ota sen asetuksista
 käyttöön **GATT-lukemat** ja **raaka GATT-debuggaus**. Debuggaus on oletuksena pois.
-Avaa **Kehittäjän työkalut → Toiminnot → YAML**. Tämän testilaitteen config entry
-on `01M3YN94DEE4X4STA504JRX83N`. Muissa asennuksissa valitse oma Taelek-entry.
+Avaa **Kehittäjän työkalut → Toiminnot → YAML**. Valitse oman laitteen Taelek-entry.
+Korvaa esimerkkien `YOUR_TAELEK_CONFIG_ENTRY_ID` sen tunnisteella. Tarkat laitetunnisteet
+säilytetään paikallisissa muistiinpanoissa, eivät julkisessa dokumentaatiossa.
 
 Pelkkä tilan luku (ei kirjoitusta):
 
 ```yaml
 action: taelek.debug_gatt
 data:
-  config_entry_id: 01M3YN94DEE4X4STA504JRX83N
+  config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
   steps:
     - operation: read
       uuid: 2be32db1-5f6b-4cbd-8843-8d6dfb164900
@@ -25,7 +26,7 @@ Esimerkki erikseen pyydetystä NORMAL-komennosta ja takaisinluvusta:
 ```yaml
 action: taelek.debug_gatt
 data:
-  config_entry_id: 01M3YN94DEE4X4STA504JRX83N
+  config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
   steps:
     - operation: read
       uuid: 2be32db1-5f6b-4cbd-8843-8d6dfb164900
@@ -51,7 +52,7 @@ myös pidemmän sanoman loppuosan. Esimerkiksi Param B:n manualEco-tavoitteen
 ```yaml
 action: taelek.debug_gatt
 data:
-  config_entry_id: 01M3YN94DEE4X4STA504JRX83N
+  config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
   steps:
     - operation: read
       uuid: 2be32db1-5f6b-5bd8-8238-d6dfb1649000

@@ -1,4 +1,9 @@
 .venv/
+# Local session memory must never enter the product repository.
+/HANDOFF.md
+/SIDE_FINDINGS.md
+/protocol/SIDE_FINDINGS.md
+/local-work/
 __pycache__/
 .pytest_cache/
 .ruff_cache/
