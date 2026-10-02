@@ -4,7 +4,7 @@ from homeassistant.components.button import ButtonEntity
 from homeassistant.const import EntityCategory
 
 from .entity import TaelekEntity
-from .taelek_ble.const import COMMAND_NORMAL
+from .taelek_ble.const import COMMAND_CLOSE, COMMAND_NORMAL
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
@@ -13,6 +13,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
         async_add_entities(
             [
                 TaelekRefreshButton(active, entry),
+                TaelekCommandTestButton(active, entry, COMMAND_CLOSE, "Test CLOSE command"),
                 TaelekCommandTestButton(active, entry, COMMAND_NORMAL, "Test NORMAL command"),
             ]
         )

@@ -186,7 +186,8 @@ async def test_command_button_disabled_by_default_and_never_writes_during_setup(
     ha.entry.runtime_data = SimpleNamespace(active=active)
     add_entities = Mock()
     await button.async_setup_entry(ha.hass, ha.entry, add_entities)
-    refresh, command = add_entities.call_args.args[0]
+    refresh, close, command = add_entities.call_args.args[0]
+    assert close._attr_entity_registry_enabled_default is False
     assert command._attr_entity_registry_enabled_default is False
     await command.async_added_to_hass()
     await refresh.async_press()

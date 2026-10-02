@@ -11,6 +11,7 @@ from typing import Protocol
 
 from .codec import decode_param_a, decode_param_b, decode_state_a
 from .const import (
+    COMMAND_CLOSE,
     COMMAND_NORMAL,
     PRODUCT_BUTTONS,
     PRODUCT_BUTTONS_2,
@@ -109,14 +110,14 @@ class TaelekClient:
     async def test_runtime_command(
         self, command: int, *, device_type: int | None = None
     ) -> tuple[StateA, StateA]:
-        """Send the documented NORMAL command once; ECO semantics are unverified.
+        """Send documented CLOSE or NORMAL once; ECO semantics are unverified.
 
         A successful pre-read is required. Never retry a write, send save
         confirmation, or replay the command after an ambiguous failure.
         The returned states are observations, not proof of semantic success.
         """
-        if command != COMMAND_NORMAL:
-            raise ValueError("Only NORMAL is allowed until ECO command evidence is available")
+        if command not in (COMMAND_CLOSE, COMMAND_NORMAL):
+            raise ValueError("Only CLOSE and NORMAL are allowed in command experiments")
         async with self._session() as client:
             before = decode_state_a(
                 bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type

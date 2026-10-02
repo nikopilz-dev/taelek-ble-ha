@@ -6,6 +6,7 @@ import pytest
 
 from taelek_ble.client import TaelekClient
 from taelek_ble.const import (
+    COMMAND_CLOSE,
     COMMAND_NORMAL,
     PRODUCT_BUTTONS,
     PRODUCT_BUTTONS_2,
@@ -102,7 +103,8 @@ def test_timeout_minimum():
         TaelekClient(AsyncMock(), timeout=9)
 
 
-async def test_normal_command_reads_before_and_after_exactly_one_write():
+@pytest.mark.parametrize("command", [COMMAND_CLOSE, COMMAND_NORMAL])
+async def test_runtime_command_reads_before_and_after_exactly_one_write(command):
     client = AsyncMock()
     after = struct.pack("<BBBBhHHH", 40, 0, 1, 0, 190, 210, 245, 65535)
     calls = []
@@ -113,19 +115,19 @@ async def test_normal_command_reads_before_and_after_exactly_one_write():
 
     async def write(uuid, data, *, response):
         calls.append("write")
-        assert uuid == PRODUCT_COMMANDS and data == b"\x84" and response is True
+        assert uuid == PRODUCT_COMMANDS and data == bytes([command]) and response is True
 
     client.read_gatt_char.side_effect = read
     client.write_gatt_char.side_effect = write
     before, observed = await TaelekClient(AsyncMock(return_value=client)).test_runtime_command(
-        COMMAND_NORMAL
+        command
     )
     assert calls == ["read", "write", "read"]
     assert before.raw_data == STATE and observed.raw_data == after
     client.disconnect.assert_awaited_once()
 
 
-@pytest.mark.parametrize("command", [0x73, 0x62, 0x95, 0xA6, 0x83, 0, 256])
+@pytest.mark.parametrize("command", [0x62, 0x95, 0xA6, 0x83, 0, 256])
 async def test_unverified_or_destructive_commands_rejected_before_connection(command):
     connector = AsyncMock()
     with pytest.raises(ValueError):

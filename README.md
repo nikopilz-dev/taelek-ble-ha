@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.3, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.4, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
@@ -19,7 +19,7 @@ lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
 - Käyttää Home Assistantin Bluetooth-tietoja ja yhteyksiä tukevia välityslaitteita.
   Passiivinen osuus toimii myös ilman GATT-yhteyksiä.
 - Ei kirjoita automaattisesti. Oletuksena poistettu käytöstä oleva diagnostinen
-  NORMAL-testipainike lähettää yhden erikseen pyydetyn komennon. Climate- ja
+  CLOSE- tai NORMAL-testipainike lähettää yhden erikseen pyydetyn komennon. Climate- ja
   number-entiteettejä ei vielä ole.
 
 GATT on oletuksena pois käytöstä. Kun sen sallii, lukemat päivittyvät viiden minuutin
@@ -46,7 +46,7 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 ## Manuaalinen asennus
 
-1. Pura `dist/taelek-ble-0.1.3.zip` Home Assistantin asetuskansioon.
+1. Pura `dist/taelek-ble-0.1.4.zip` Home Assistantin asetuskansioon.
    Tuloksena pitää olla `<config>/custom_components/taelek/manifest.json`.
    Voit myös kopioida tämän projektin `custom_components/taelek`-kansion samaan paikkaan.
 2. Käynnistä Home Assistant uudelleen. Bluetooth-integraation ja käytettävän sovittimen
@@ -89,18 +89,21 @@ valitsee manuaali-/viikko-ohjelman; sitä ei käytetä aktiivisen ECO:n kytkimen
 ECO ON/OFF -kirjoitustesti odottaa täsmällistä komentotietoa ja takaisinluvun
 varmennusta. MAI Smartia tai muuta ohjaussovellusta ei edellytetä tähän testiin.
 
-### NORMAL-komennon rajattu testi versiossa 0.1.3
+### Rajatut komentotestit versiossa 0.1.4
 
-Diagnostiikan **Test NORMAL command** on aluksi poistettu käytöstä. Sen
-käyttöönotto ja painaminen lukee State A:n, kirjoittaa `0x84` productCommands-
+Diagnostiikan **Test CLOSE command** ja **Test NORMAL command** ovat aluksi
+poistettu käytöstä. Painaminen lukee State A:n, kirjoittaa `0x73` tai `0x84` productCommands-
 kenttään kerran ja lukee State A:n takaisin. Se ei lähetä save confirmationia
 eikä muuta Param A/B -asetuksia. Kirjoitusta ei toisteta virheessä. Epäonnistunut
 takaisinluku tarkoittaa, että komennon vaikutus voi olla tuntematon.
 Operation mode code -anturin attribuutti `last_command_test` sisältää ennen/jälkeen-
 sanomat. Bluetooth-kuittaus ei yksin todista ECO-tilan vaihtumista.
 
-Forced ECO -tavua etsitään ecoControlin (`com.taelek.termos`) APK:sta. Sovellusta
-ei tarvitse asentaa tai yhdistää termostaattiin staattista analyysiä varten.
+CLOSE-komentoa ei nimetä ECO-komennoksi. Koepainikkeet on tarkoitettu kuormattoman
+testilaitteen käyttäjän pyytämiin kokeisiin; niiden vaikutus riippuu laitteesta.
+ecoControl 3.0.11:n (`com.taelek.termos`) staattinen analyysi ei varmistanut forced ECO
+-tavua. Katso `protocol/ECO_CONTROL_VALIDATION.md`. Sovellusta ei asennettu tai
+yhdistetty termostaattiin analyysin aikana.
 
 `ecoMode` tarkoittaa ohjelmavalintaa (1 = manuaalinen, 2 = viikko-ohjelma), eikä sitä
 esitetä aktiivisen ECO-tilan kytkimenä. Taelekin [Homey-ohje](https://taelek.fi/Documents/easy_manual_homey.pdf)
