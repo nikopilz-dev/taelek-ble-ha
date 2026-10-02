@@ -21,6 +21,19 @@ def test_bundled_library_matches_source():
         assert bundled.read_bytes() == source.read_bytes(), f"Rebundle {source.name}"
 
 
+def test_bluetooth_dependencies_use_home_assistant_versions():
+    root = Path(__file__).resolve().parents[1]
+    manifest = json.loads(
+        (root / "custom_components/taelek/manifest.json").read_text(encoding="utf-8")
+    )
+    # Core Bluetooth supplies Bleak and bleak-retry-connector under HA's constraints.
+    assert {"bluetooth", "bluetooth_adapters"} <= set(manifest["dependencies"])
+    assert not any(
+        requirement.startswith(("bleak", "habluetooth"))
+        for requirement in manifest["requirements"]
+    )
+
+
 def test_manifest_and_translation_schema():
     root = Path(__file__).resolve().parents[1] / "custom_components/taelek"
     manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))

@@ -4,7 +4,7 @@ Executed locally with Python 3.12.14 in the project's Windows virtual environmen
 
 | Check | Result |
 |---|---|
-| `python -m pytest tests -q` | 85 passed, including HACS repository layout |
+| `python -m pytest tests -q` | 86 passed, including HACS layout and HA-managed Bluetooth dependencies |
 | Ruff checks and formatting | Passed |
 | Python compilation of library, integration, tools and HA test sources | Passed |
 | Bundled library equals standalone source | Passed in distribution test |
@@ -13,8 +13,8 @@ Executed locally with Python 3.12.14 in the project's Windows virtual environmen
 | APK and extracted bundle checksums | Match supplied references |
 | Hermes v96 decompilation/disassembly using hermes-decomp v0.2.4 | Completed; differences documented |
 | `tests_ha` with the actual HA framework | Not executed |
-| HA component loading, entity registry, scheduling and unloading | Not validated in actual HA |
-| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Deferred; thermostat acquired but not powered |
+| HA component loading, entity registry, scheduling and unloading | 0.1.0 requirement conflict observed in HA; 0.1.1 fix pending HA restart |
+| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Supplied advertisement accepted by parser; GATT and heating remain unvalidated |
 
 Twenty integration logic test cases run against explicit HA boundary doubles. They do not
 substitute for the real HA tests. Other tests exercise codecs, transport cleanup,

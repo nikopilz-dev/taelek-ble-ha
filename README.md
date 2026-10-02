@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.0, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.1, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on hankittu, mutta sitä ei
 ole vielä kytketty sähköihin eikä testattu.
 Etherma E-2001 BLE:n yhteensopivuutta tai lämpötilalukemien merkitystä ei ole varmennettu.
@@ -43,7 +43,7 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 ## Manuaalinen asennus
 
-1. Pura `dist/taelek-ble-0.1.0.zip` Home Assistantin asetuskansioon.
+1. Pura `dist/taelek-ble-0.1.1.zip` Home Assistantin asetuskansioon.
    Tuloksena pitää olla `<config>/custom_components/taelek/manifest.json`.
    Voit myös kopioida tämän projektin `custom_components/taelek`-kansion samaan paikkaan.
 2. Käynnistä Home Assistant uudelleen. Bluetooth-integraation ja käytettävän sovittimen
@@ -54,6 +54,14 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 Integraatiota ei ole vielä käynnistetty aidossa Home Assistant -ympäristössä.
 ZIP on kehitysversio, ei laitteella varmennettu julkaisu.
+
+### Korjaus versiossa 0.1.1
+
+Integraatio käyttää HA:n Bluetooth-integraation asentamia Bleak- ja
+`bleak-retry-connector`-versioita. Erillinen 4.7.1-lukitus esti lataamisen HA:ssa,
+jonka pakettirajoitus vaati versiota 4.7.0. Jos lisäys antoi virheen
+**Config flow could not be loaded: 500**, lataa uusin oletushaaran versio HACSista
+ja käynnistä Home Assistant uudelleen.
 
 ## Laitteen ominaisuudet ja epäselvät tulkinnat
 
