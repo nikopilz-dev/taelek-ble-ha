@@ -69,7 +69,38 @@ are limited accordingly. Instruction listings take precedence over misleading ge
    established merely from this type mapping. The HA integration excludes
    ECO_PLUG, TSENSE_3PHASE and MSC from thermostat temperatures and GATT reads.
 
-## Advertisement change
+## ECO runtime control is not the ECO program selector
+
+The thermostat Param B schema in Metro module 1350 / F8588 contains `autoEco`,
+`manualEco` and `ecoMode` (byte 15). The 2.0.3 English translation calls values
+1 and 2 "Manual mode" and "Program mode" respectively; the older OFF/AUTO
+labels refer to this program selection. Neither establishes an active ECO
+ON/OFF command. Param A's byte 9 wireless-ECO nibble configures wireless ECO
+participation, not a demonstrated direct runtime mode switch.
+
+The manufacturer's [Homey guide](https://taelek.fi/Documents/easy_manual_homey.pdf),
+page 2, directs displayless models to use forced ECO mode and an ECO target,
+while the physical knob determines comfort temperature. The
+[official Homey app](https://homey.app/en-us/app/fi.taelek.ecocontrol/ecoControl/)
+offers separate "Set Eco mode" and "Set Normal mode" actions. These sources
+establish the intended functionality, **not its GATT encoding or applicability
+to every firmware/model**.
+
+Metro module 1349 / F8385 exports save confirmation 131 (`0x83`), alongside
+OPEN 98, CLOSE 115 and NORMAL 132. F8536 is the generic command sender.
+No inspected call establishes OPEN/CLOSE as ECO ON/OFF. The integration does
+not send these commands based on their names. Save confirmation is also not
+treated as proof that all physical approval requirements can be bypassed.
+
+On 2026-10-02, the E-2001 test unit returned type `0x22`, productInfo firmware
+byte `54`, State A operationMode `0`, and Param B ecoMode `1`. The user reported
+a red LED, a knob only, and no independent ECO button. Buttons/Buttons2 were
+unavailable while State A and Param B reads succeeded. No device write has
+been performed. A single red-LED snapshot does not establish a complete
+operationMode or advertisement-state mapping. No firmware capability rule is
+inferred from these observations.
+
+## Advertisement change evidence
 
 Legacy JS around character offset 1,449,035 explicitly contains:
 

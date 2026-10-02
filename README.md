@@ -3,7 +3,8 @@
 Versio 0.1.2, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
-Etherma E-2001 BLE:n yhteensopivuutta tai lämpötilalukemien merkitystä ei ole varmennettu.
+E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
+lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
 
 ## Mitä ensimmäinen versio tekee
 
@@ -11,7 +12,7 @@ Etherma E-2001 BLE:n yhteensopivuutta tai lämpötilalukemien merkitystä ei ole
   Nimen perusteella hyväksytään vain yksi sopivan mittainen valmistajasanoma.
 - Näyttää mainostetun lämpötilan sekä raakatilatavun, virheen ja laitetyypin koodit.
   Tila- ja relekentät jäävät tuntemattomiksi, kun laitteen bittitulkintaa ei ole varmennettu.
-  Mainostettu lämpötila on diagnostinen tieto, eikä sitä nimetä lattialämpötilaksi.
+  Mainostettu lämpötila on tavallinen lämpötila-anturi; sitä ei nimetä lattialämpötilaksi.
 - Säilyttää laitetunnuksen sarjanumeron perusteella; puuttuvalle sarjanumerolle käytetään osoitetta.
 - Tarjoaa erikseen sallittavat GATT-lukemat: lattia-, ilma- ja ulkoinen lämpötila,
   asetuslämpötila, anturivirhekoodi sekä lämmitystila.
@@ -52,9 +53,9 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
    → Taelek BLE**. Manuaalinen lisäys käyttää jo havaittujen laitteiden luetteloa.
 4. Ota halutessasi integraation asetuksista kokeelliset GATT-lukemat käyttöön.
 
-Versio 0.1.1 on ladattu aidossa Home Assistantissa: Bluetooth-löytö, laitteen lisäys
-ja passiivisen mainoslämpötilan näyttäminen toimivat. GATT-lukemia, tila-/relebittejä
-ja lämpötilan fyysistä merkitystä ei ole vielä varmennettu.
+Versio 0.1.2 on ladattu aidossa Home Assistantissa: Bluetooth-löytö, laitteen lisäys,
+passiivinen mainoslämpötila ja GATT-lukemat toimivat. Tila-/relebittejä ja
+lämpötilan tarkkuutta ei ole vielä varmennettu.
 ZIP on kokeellinen kehitysversio.
 
 ### Korjaus versiossa 0.1.1
@@ -73,6 +74,18 @@ lukeminen onnistuu. Lattialämpötilan tarkkuutta ei ole vielä vertailtu erilli
 Diagnostiikassa ovat operationMode-raakatila, ECO-ohjelmavalinta, laiteohjelmiston
 versiokoodi ja mahdolliset productButtons-tiedot. Refresh GATT -painike päivittää
 lukemat pyynnöstä. Valinnaisen lisätiedon lukuvika ei hylkää onnistunutta State A -lukua.
+
+Tavoitteena on käyttöönotto ja ohjaus suoraan HA:n kautta. Testilaite palauttaa
+laitetyypin `0x22`, firmware-koodin `54`, toimintatilan `0` ja ECO-ohjelmavalinnan `1`.
+Merkkivalo on käyttäjän mukaan punainen. Nämä ovat yhden laitteen havaintoja,
+eivät kaikkia saman tyypin laitteita koskevia codec-sääntöjä.
+
+[Taelekin Homey-ohje](https://taelek.fi/Documents/easy_manual_homey.pdf) kuvaa
+nupillisen laitteen etäohjauksen ECO-tilan ja ECO-asetuslämpötilan kautta.
+Ohje ei sisällä Bluetooth-komennon UUID:tä tai tavuja. `productParamB.ecoMode`
+valitsee manuaali-/viikko-ohjelman; sitä ei käytetä aktiivisen ECO:n kytkimenä.
+ECO ON/OFF -kirjoitustesti odottaa täsmällistä komentotietoa ja takaisinluvun
+varmennusta. MAI Smartia tai muuta ohjaussovellusta ei edellytetä tähän testiin.
 
 `ecoMode` tarkoittaa ohjelmavalintaa (1 = manuaalinen, 2 = viikko-ohjelma), eikä sitä
 esitetä aktiivisen ECO-tilan kytkimenä. Taelekin [Homey-ohje](https://taelek.fi/Documents/easy_manual_homey.pdf)
