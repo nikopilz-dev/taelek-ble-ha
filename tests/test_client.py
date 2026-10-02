@@ -6,8 +6,10 @@ import pytest
 
 from taelek_ble.client import TaelekClient
 from taelek_ble.const import (
+    COMMAND_NORMAL,
     PRODUCT_BUTTONS,
     PRODUCT_BUTTONS_2,
+    PRODUCT_COMMANDS,
     PRODUCT_INFO,
     PRODUCT_PARAM_B,
     PRODUCT_STATE_A,
@@ -98,6 +100,55 @@ async def test_malformed_read_and_settings_disconnect():
 def test_timeout_minimum():
     with pytest.raises(ValueError):
         TaelekClient(AsyncMock(), timeout=9)
+
+
+async def test_normal_command_reads_before_and_after_exactly_one_write():
+    client = AsyncMock()
+    after = struct.pack("<BBBBhHHH", 40, 0, 1, 0, 190, 210, 245, 65535)
+    calls = []
+
+    async def read(uuid):
+        calls.append("read")
+        return STATE if len(calls) == 1 else after
+
+    async def write(uuid, data, *, response):
+        calls.append("write")
+        assert uuid == PRODUCT_COMMANDS and data == b"\x84" and response is True
+
+    client.read_gatt_char.side_effect = read
+    client.write_gatt_char.side_effect = write
+    before, observed = await TaelekClient(AsyncMock(return_value=client)).test_runtime_command(
+        COMMAND_NORMAL
+    )
+    assert calls == ["read", "write", "read"]
+    assert before.raw_data == STATE and observed.raw_data == after
+    client.disconnect.assert_awaited_once()
+
+
+@pytest.mark.parametrize("command", [0x73, 0x62, 0x95, 0xA6, 0x83, 0, 256])
+async def test_unverified_or_destructive_commands_rejected_before_connection(command):
+    connector = AsyncMock()
+    with pytest.raises(ValueError):
+        await TaelekClient(connector).test_runtime_command(command)
+    connector.assert_not_called()
+
+
+async def test_command_pre_read_failure_prevents_any_write():
+    client = AsyncMock()
+    client.read_gatt_char.side_effect = OSError("pre-read failed")
+    with pytest.raises(OSError, match="pre-read failed"):
+        await TaelekClient(AsyncMock(return_value=client)).test_runtime_command(COMMAND_NORMAL)
+    client.write_gatt_char.assert_not_called()
+    client.disconnect.assert_awaited_once()
+
+
+async def test_command_post_read_failure_never_retries_or_commits():
+    client = AsyncMock()
+    client.read_gatt_char.side_effect = [STATE, OSError("post-read failed")]
+    with pytest.raises(OSError, match="post-read failed"):
+        await TaelekClient(AsyncMock(return_value=client)).test_runtime_command(COMMAND_NORMAL)
+    client.write_gatt_char.assert_awaited_once_with(PRODUCT_COMMANDS, b"\x84", response=True)
+    client.disconnect.assert_awaited_once()
 
 
 async def test_details_read_preserves_state_if_optional_characteristics_fail():

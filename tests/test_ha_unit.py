@@ -87,12 +87,16 @@ def ha(monkeypatch):
     module("homeassistant.config_entries", ConfigFlow=Flow, OptionsFlow=Flow, ConfigEntry=object)
     module("homeassistant.core", callback=lambda fn: fn, HomeAssistant=object)
     module(
+        "homeassistant.exceptions", HomeAssistantError=type("HomeAssistantError", (Exception,), {})
+    )
+    module(
         "homeassistant.const",
         CONF_ADDRESS="address",
         EntityCategory=SimpleNamespace(DIAGNOSTIC="diagnostic"),
         UnitOfTemperature=SimpleNamespace(CELSIUS="°C"),
     )
     module("homeassistant.components")
+    module("homeassistant.components.button", ButtonEntity=type("ButtonEntity", (), {}))
     bluetooth = module(
         "homeassistant.components.bluetooth",
         BluetoothScanningMode=SimpleNamespace(PASSIVE="passive"),
@@ -172,6 +176,36 @@ def ha(monkeypatch):
         hass=hass,
         Abort=Abort,
     )
+
+
+async def test_command_button_disabled_by_default_and_never_writes_during_setup(ha):
+    button = importlib.import_module("custom_components.taelek.button")
+    active = SimpleNamespace(
+        async_request_refresh=AsyncMock(), async_test_runtime_command=AsyncMock()
+    )
+    ha.entry.runtime_data = SimpleNamespace(active=active)
+    add_entities = Mock()
+    await button.async_setup_entry(ha.hass, ha.entry, add_entities)
+    refresh, command = add_entities.call_args.args[0]
+    assert command._attr_entity_registry_enabled_default is False
+    await command.async_added_to_hass()
+    await refresh.async_press()
+    active.async_test_runtime_command.assert_not_called()
+    await command.async_press()
+    active.async_test_runtime_command.assert_awaited_once_with(0x84)
+
+
+async def test_command_failure_preserves_active_data_and_never_retries(ha):
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    original = object()
+    active.data = original
+    active.client.test_runtime_command = AsyncMock(side_effect=OSError("write lost"))
+    with pytest.raises(Exception, match="Taelek command test failed"):
+        await active.async_test_runtime_command(0x84)
+    active.client.test_runtime_command.assert_awaited_once()
+    assert active.data is original
+    assert "not retried" in active.last_command_test["result"]
 
 
 async def test_discovery_confirmation_no_gatt(ha):

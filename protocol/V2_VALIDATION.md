@@ -44,7 +44,7 @@ are limited accordingly. Instruction listings take precedence over misleading ge
    existing snapshot, not constructing zero-filled settings. Generator recovery
    is poor, so exact transaction ordering and preservation of every bit are not
    claimed verified. The new library's pure patchers own only selected temperature
-   and eco fields and preserve all other bytes; its transport has no write API.
+   and eco fields and preserve all other bytes; its transport exposes no settings-write API.
 5. **Save confirmation:** F8385 stores `CONFIRMATION_CODE = 131` (`0x83`) at
    instructions `0x024a`–`0x0253`. The Ble module's sendSaveConfirmation method
    sends that stored value through `_sendCommand`. Whether a physical control
@@ -99,6 +99,14 @@ unavailable while State A and Param B reads succeeded. No device write has
 been performed. A single red-LED snapshot does not establish a complete
 operationMode or advertisement-state mapping. No firmware capability rule is
 inferred from these observations.
+
+Version 0.1.3 adds only an explicit NORMAL (`0x84`) command experiment. Its
+button is disabled by default. A valid State A pre-read is required, followed
+by one acknowledged one-byte write and a State A read-back. No save confirmation,
+settings writes or write retry occurs. CLOSE/OPEN are rejected by this API,
+as are reset and save-confirmation commands. Forced ECO remains pending analysis
+of the separate `com.taelek.termos` ecoControl APK. That analysis does not require
+installing or running another thermostat-control application.
 
 ## Advertisement change evidence
 

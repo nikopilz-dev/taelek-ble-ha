@@ -1,14 +1,21 @@
-"""User-requested refresh of read-only GATT evidence."""
+"""Read refresh and disabled-by-default explicit command experiments."""
 
 from homeassistant.components.button import ButtonEntity
 from homeassistant.const import EntityCategory
 
 from .entity import TaelekEntity
+from .taelek_ble.const import COMMAND_NORMAL
 
 
 async def async_setup_entry(hass, entry, async_add_entities):
     if entry.runtime_data.active is not None:
-        async_add_entities([TaelekRefreshButton(entry.runtime_data.active, entry)])
+        active = entry.runtime_data.active
+        async_add_entities(
+            [
+                TaelekRefreshButton(active, entry),
+                TaelekCommandTestButton(active, entry, COMMAND_NORMAL, "Test NORMAL command"),
+            ]
+        )
 
 
 class TaelekRefreshButton(TaelekEntity, ButtonEntity):
@@ -25,3 +32,16 @@ class TaelekRefreshButton(TaelekEntity, ButtonEntity):
 
     async def async_press(self):
         await self.coordinator.async_request_refresh()
+
+
+class TaelekCommandTestButton(TaelekEntity, ButtonEntity):
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
+
+    def __init__(self, coordinator, entry, command, name):
+        super().__init__(coordinator, entry, f"test_command_{command:02x}", active=True)
+        self._command = command
+        self._attr_name = name
+
+    async def async_press(self):
+        await self.coordinator.async_test_runtime_command(self._command)

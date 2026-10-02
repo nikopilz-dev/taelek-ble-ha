@@ -61,7 +61,10 @@ class TaelekSensor(TaelekEntity, SensorEntity):
     @property
     def extra_state_attributes(self):
         if self._key == "operation_mode" and self.coordinator.data is not None:
-            return {"raw_state_a": self.coordinator.data.raw_data.hex()}
+            return {
+                "raw_state_a": self.coordinator.data.raw_data.hex(),
+                "last_command_test": self.coordinator.last_command_test,
+            }
         if self._key == "eco_program_mode":
             return {"meaning": "1 = manual program, 2 = weekly program; not active ECO state"}
         return None

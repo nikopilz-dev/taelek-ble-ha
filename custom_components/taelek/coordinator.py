@@ -1,6 +1,7 @@
 """Keep passive availability independent of optional active read failures."""
 
 import logging
+from dataclasses import replace
 from datetime import timedelta
 
 from bleak.exc import BleakError
@@ -8,6 +9,7 @@ from bleak_retry_connector import BleakClientWithServiceCache, establish_connect
 from homeassistant.components import bluetooth
 from homeassistant.const import CONF_ADDRESS
 from homeassistant.core import callback
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import DOMAIN
@@ -79,6 +81,34 @@ class ActiveCoordinator(DataUpdateCoordinator):
         self.address = entry.data[CONF_ADDRESS]
         self.unique_id = entry.unique_id
         self.client = TaelekClient(self._connect)
+        self.last_command_test = None
+
+    async def async_test_runtime_command(self, command):
+        """Explicit diagnostic experiment; periodic updates never call this."""
+        self.last_command_test = {"command": f"0x{command:02x}", "result": "pending"}
+        try:
+            advertisement = self._get_advertisement()
+            before, after = await self.client.test_runtime_command(
+                command, device_type=advertisement.device_type
+            )
+        except (BleakError, OSError, TimeoutError, ValueError, UpdateFailed) as err:
+            self.last_command_test["result"] = "failed; effect may be unknown; not retried"
+            self.async_update_listeners()
+            raise HomeAssistantError(f"Taelek command test failed: {err}") from err
+        self.last_command_test.update(
+            result="write acknowledged; ECO effect unverified",
+            before_state_a=before.raw_data.hex(),
+            after_state_a=after.raw_data.hex(),
+        )
+        if self.data is not None:
+            after = replace(
+                after,
+                eco_program_mode=self.data.eco_program_mode,
+                device_version=self.data.device_version,
+                buttons_raw=self.data.buttons_raw,
+                buttons2_raw=self.data.buttons2_raw,
+            )
+        self.async_set_updated_data(after)
 
     def _get_advertisement(self):
         info = bluetooth.async_last_service_info(self.hass, self.address, connectable=False)

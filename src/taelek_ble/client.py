@@ -1,4 +1,4 @@
-"""Read-only sessions over a caller-supplied, connected Bleak-compatible client."""
+"""GATT reads and explicit, bounded command experiments."""
 
 from __future__ import annotations
 
@@ -11,8 +11,10 @@ from typing import Protocol
 
 from .codec import decode_param_a, decode_param_b, decode_state_a
 from .const import (
+    COMMAND_NORMAL,
     PRODUCT_BUTTONS,
     PRODUCT_BUTTONS_2,
+    PRODUCT_COMMANDS,
     PRODUCT_INFO,
     PRODUCT_PARAM_A,
     PRODUCT_PARAM_B,
@@ -25,13 +27,16 @@ _LOGGER = logging.getLogger(__name__)
 
 class ReadTransport(Protocol):
     async def read_gatt_char(self, characteristic: str) -> bytearray: ...
+    async def write_gatt_char(
+        self, characteristic: str, data: bytes, *, response: bool
+    ) -> None: ...
     async def disconnect(self) -> bool: ...
 
 
 class TaelekClient:
     """The connector must create a fresh connected client for each session.
 
-    No scanner and no write API. Read errors and cancellation propagate to the
+    No scanner or automatic writes. Read errors and cancellation propagate to the
     caller; cleanup must not hide them. The deadline covers connection and reads.
     """
 
@@ -100,6 +105,28 @@ class TaelekClient:
 
     async def read_state(self, *, device_type: int | None = None) -> StateA:
         return decode_state_a((await self._read(PRODUCT_STATE_A))[0], device_type=device_type)
+
+    async def test_runtime_command(
+        self, command: int, *, device_type: int | None = None
+    ) -> tuple[StateA, StateA]:
+        """Send the documented NORMAL command once; ECO semantics are unverified.
+
+        A successful pre-read is required. Never retry a write, send save
+        confirmation, or replay the command after an ambiguous failure.
+        The returned states are observations, not proof of semantic success.
+        """
+        if command != COMMAND_NORMAL:
+            raise ValueError("Only NORMAL is allowed until ECO command evidence is available")
+        async with self._session() as client:
+            before = decode_state_a(
+                bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type
+            )
+            await client.write_gatt_char(PRODUCT_COMMANDS, bytes([command]), response=True)
+            await asyncio.sleep(0.5)
+            after = decode_state_a(
+                bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type
+            )
+            return before, after
 
     async def read_settings(self) -> tuple[ParamA, ParamB]:
         a, b = await self._read(PRODUCT_PARAM_A, PRODUCT_PARAM_B)
