@@ -185,3 +185,56 @@ async def test_details_read_returns_program_mode_without_exposing_network_key():
         PRODUCT_INFO,
     ]
     client.write_gatt_char.assert_not_called()
+
+
+async def test_eco_target_preserves_other_fields_and_restores_original():
+    client = AsyncMock()
+    raw = bytearray(range(18))
+    raw[2:4] = struct.pack("<H", 190)
+    current = bytes(raw)
+
+    async def read(uuid):
+        return STATE if uuid == PRODUCT_STATE_A else current
+
+    async def write(uuid, data, *, response):
+        nonlocal current
+        assert uuid == PRODUCT_PARAM_B and response
+        assert data[:2] == current[:2] and data[4:] == current[4:]
+        current = data
+
+    client.read_gatt_char.side_effect = read
+    client.write_gatt_char.side_effect = write
+    reader = TaelekClient(AsyncMock(return_value=client))
+    assert (await reader.test_manual_eco_temperature(10.0))[:2] == (19.0, 10.0)
+    assert (await reader.test_manual_eco_temperature(25.0))[:2] == (10.0, 25.0)
+    assert (await reader.test_manual_eco_temperature(None))[:2] == (25.0, 19.0)
+    assert current == raw
+    assert client.write_gatt_char.await_count == 3
+
+
+async def test_eco_target_pre_read_failure_blocks_write():
+    client = AsyncMock()
+    client.read_gatt_char.side_effect = [bytes(16), OSError("state unavailable")]
+    with pytest.raises(OSError):
+        await TaelekClient(AsyncMock(return_value=client)).test_manual_eco_temperature(10.0)
+    client.write_gatt_char.assert_not_called()
+
+
+async def test_eco_target_post_read_failure_keeps_backup_and_does_not_retry():
+    client = AsyncMock()
+    raw = bytearray(16)
+    raw[2:4] = struct.pack("<H", 190)
+    client.read_gatt_char.side_effect = [raw, STATE, OSError("readback failed")]
+    reader = TaelekClient(AsyncMock(return_value=client))
+    with pytest.raises(OSError):
+        await reader.test_manual_eco_temperature(10.0)
+    assert reader.original_manual_eco_c == 19.0
+    client.write_gatt_char.assert_awaited_once()
+
+
+async def test_eco_target_restore_without_backup_does_not_write():
+    client = AsyncMock()
+    client.read_gatt_char.side_effect = [bytes(16), STATE]
+    with pytest.raises(ValueError, match="No original"):
+        await TaelekClient(AsyncMock(return_value=client)).test_manual_eco_temperature(None)
+    client.write_gatt_char.assert_not_called()

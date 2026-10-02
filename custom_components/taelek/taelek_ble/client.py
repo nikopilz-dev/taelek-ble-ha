@@ -9,7 +9,7 @@ from contextlib import asynccontextmanager
 from dataclasses import replace
 from typing import Protocol
 
-from .codec import decode_param_a, decode_param_b, decode_state_a
+from .codec import decode_param_a, decode_param_b, decode_state_a, patch_param_b
 from .const import (
     COMMAND_CLOSE,
     COMMAND_NORMAL,
@@ -52,6 +52,35 @@ class TaelekClient:
         self._connector = connector
         self._timeout = timeout
         self._lock = asyncio.Lock()
+        self.original_manual_eco_c = None
+
+    async def test_manual_eco_temperature(self, target, *, device_type=None):
+        """Patch only manualEco; no mode switch, commit, retry or automatic restore.
+
+        None explicitly restores the first value read during this client lifetime.
+        Keep that backup even if the write or subsequent read fails.
+        """
+        if target is not None and target not in (10.0, 25.0):
+            raise ValueError("Experiment targets are 10 or 25 Celsius")
+        async with self._session() as client:
+            raw = bytes(await client.read_gatt_char(PRODUCT_PARAM_B))
+            before = decode_param_b(raw)
+            state_before = decode_state_a(
+                bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type
+            )
+            if target is None:
+                if self.original_manual_eco_c is None:
+                    raise ValueError("No original ECO target recorded in this session")
+                target = self.original_manual_eco_c
+            elif self.original_manual_eco_c is None:
+                self.original_manual_eco_c = before.manual_eco_c
+            payload = patch_param_b(raw, manual_eco_c=target)
+            await client.write_gatt_char(PRODUCT_PARAM_B, payload, response=True)
+            after = decode_param_b(bytes(await client.read_gatt_char(PRODUCT_PARAM_B)))
+            state_after = decode_state_a(
+                bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type
+            )
+            return before.manual_eco_c, after.manual_eco_c, state_before, state_after
 
     @asynccontextmanager
     async def _session(self):

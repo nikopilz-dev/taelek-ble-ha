@@ -94,6 +94,24 @@ proof of an ECO transition; neither command's semantic effect is established.
 
 ## Clock and external wired input
 
+### Observed command repeat with a person at the thermostat
+
+On 2026-10-02 the user observed the LED while CLOSE and then NORMAL were
+sent once each through HA. Blinking was reported before the first write.
+After CLOSE, the user reported faster blinking followed by steady red.
+After NORMAL, the user reported a relay click, then blinking,
+bright red and blinking again. The user clarified that the child's report of
+"clicking" meant a single click, not repeated chatter. These are user observations, not decoded relay
+state or confirmed ECO transitions. NORMAL's immediate pre/post State A was
+identical: `000000005e01d200a2000000`, with operationMode 0 and setpoint 35 °C.
+
+No ECO temperature or other settings were written in this repeat. The installed
+0.1.4 only provides the two command experiments. Further commands were stopped
+and experimental GATT polling was temporarily disabled while the ambiguous report
+was clarified. A single relay transition was confirmed by the user.
+Do not describe CLOSE as an ECO command or the relay sound as proof of successful
+temperature control. A below/above-temperature experiment has not been performed.
+
 Etherma's official E-2001-BLE manual (attachment fileID 183 on product 44371)
 specifies external control as **230 V / 50 Hz** and shows the clock-symbol
 terminal in the wiring diagram (page 1). It is not a low-voltage jumper input.

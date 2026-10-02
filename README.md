@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.4, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.5, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
@@ -20,7 +20,10 @@ lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
   Passiivinen osuus toimii myös ilman GATT-yhteyksiä.
 - Ei kirjoita automaattisesti. Oletuksena poistettu käytöstä oleva diagnostinen
   CLOSE- tai NORMAL-testipainike lähettää yhden erikseen pyydetyn komennon. Climate- ja
-  number-entiteettejä ei vielä ole.
+  number-entiteettejä ei vielä ole. Versio 0.1.5 lisää erikseen sallittavat
+  10 °C / 25 °C manualEco-testipainikkeet ja alkuperäisen ECO-tavoitteen palautuksen.
+  Ne eivät aktivoi ECO-tilaa tai lähetä tallennuskuittausta. Palautusarvo säilyy
+  vain nykyisen integraatiolatauksen ajan: palauta ennen uudelleenkäynnistystä.
 
 Kellonaikaa, viikko-ohjelmaa tai muita käyttöönottoasetuksia ei vielä kirjoiteta.
 E-2001-BLE:n ohjeen mukaan oikea kellonaika tarvitaan sisäiseen viikko-ohjelmaan;

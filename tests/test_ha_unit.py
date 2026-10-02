@@ -181,12 +181,18 @@ def ha(monkeypatch):
 async def test_command_button_disabled_by_default_and_never_writes_during_setup(ha):
     button = importlib.import_module("custom_components.taelek.button")
     active = SimpleNamespace(
-        async_request_refresh=AsyncMock(), async_test_runtime_command=AsyncMock()
+        async_request_refresh=AsyncMock(),
+        async_test_runtime_command=AsyncMock(),
+        async_test_eco_temperature=AsyncMock(),
     )
     ha.entry.runtime_data = SimpleNamespace(active=active)
     add_entities = Mock()
     await button.async_setup_entry(ha.hass, ha.entry, add_entities)
-    refresh, close, command = add_entities.call_args.args[0]
+    refresh, close, command, low, high, restore = add_entities.call_args.args[0]
+    for entity in (low, high, restore):
+        assert entity._attr_entity_registry_enabled_default is False
+        await entity.async_added_to_hass()
+    active.async_test_eco_temperature.assert_not_called()
     assert close._attr_entity_registry_enabled_default is False
     assert command._attr_entity_registry_enabled_default is False
     await command.async_added_to_hass()
@@ -194,6 +200,14 @@ async def test_command_button_disabled_by_default_and_never_writes_during_setup(
     active.async_test_runtime_command.assert_not_called()
     await command.async_press()
     active.async_test_runtime_command.assert_awaited_once_with(0x84)
+    await low.async_press()
+    await high.async_press()
+    await restore.async_press()
+    assert [call.args[0] for call in active.async_test_eco_temperature.await_args_list] == [
+        10.0,
+        25.0,
+        None,
+    ]
 
 
 async def test_command_failure_preserves_active_data_and_never_retries(ha):

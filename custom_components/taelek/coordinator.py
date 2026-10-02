@@ -1,5 +1,6 @@
 """Keep passive availability independent of optional active read failures."""
 
+import asyncio
 import logging
 from dataclasses import replace
 from datetime import timedelta
@@ -82,8 +83,40 @@ class ActiveCoordinator(DataUpdateCoordinator):
         self.unique_id = entry.unique_id
         self.client = TaelekClient(self._connect)
         self.last_command_test = None
+        self._experiment_lock = asyncio.Lock()
+
+    async def async_test_eco_temperature(self, target):
+        async with self._experiment_lock:
+            self.last_command_test = {"experiment": "manual ECO target", "result": "pending"}
+            try:
+                ad = self._get_advertisement()
+                before_c, after_c, before, after = await self.client.test_manual_eco_temperature(
+                    target, device_type=ad.device_type
+                )
+            except (BleakError, OSError, TimeoutError, ValueError, UpdateFailed) as err:
+                self.last_command_test.update(
+                    result="failed; effect may be unknown; not retried",
+                    original_eco_c=self.client.original_manual_eco_c,
+                )
+                self.async_update_listeners()
+                raise HomeAssistantError(f"Taelek temperature experiment failed: {err}") from err
+            self.last_command_test.update(
+                result="target read back; ECO activation unverified"
+                if after_c == (target if target is not None else self.client.original_manual_eco_c)
+                else "target did not match requested value",
+                before_eco_c=before_c,
+                after_eco_c=after_c,
+                original_eco_c=self.client.original_manual_eco_c,
+                before_state_a=before.raw_data.hex(),
+                after_state_a=after.raw_data.hex(),
+            )
+            self.async_set_updated_data(after)
 
     async def async_test_runtime_command(self, command):
+        async with self._experiment_lock:
+            await self._test_runtime_command(command)
+
+    async def _test_runtime_command(self, command):
         """Explicit diagnostic experiment; periodic updates never call this."""
         self.last_command_test = {"command": f"0x{command:02x}", "result": "pending"}
         try:

@@ -15,6 +15,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
                 TaelekRefreshButton(active, entry),
                 TaelekCommandTestButton(active, entry, COMMAND_CLOSE, "Test CLOSE command"),
                 TaelekCommandTestButton(active, entry, COMMAND_NORMAL, "Test NORMAL command"),
+                TaelekEcoTargetTestButton(active, entry, 10.0, "Test ECO target 10 C"),
+                TaelekEcoTargetTestButton(active, entry, 25.0, "Test ECO target 25 C"),
+                TaelekEcoTargetTestButton(active, entry, None, "Restore tested ECO target"),
             ]
         )
 
@@ -46,3 +49,16 @@ class TaelekCommandTestButton(TaelekEntity, ButtonEntity):
 
     async def async_press(self):
         await self.coordinator.async_test_runtime_command(self._command)
+
+
+class TaelekEcoTargetTestButton(TaelekEntity, ButtonEntity):
+    _attr_entity_category = EntityCategory.DIAGNOSTIC
+    _attr_entity_registry_enabled_default = False
+
+    def __init__(self, coordinator, entry, target, name):
+        super().__init__(coordinator, entry, f"test_eco_target_{target}", active=True)
+        self._target = target
+        self._attr_name = name
+
+    async def async_press(self):
+        await self.coordinator.async_test_eco_temperature(self._target)
