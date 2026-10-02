@@ -13,8 +13,9 @@ Executed locally with Python 3.12.14 in the project's Windows virtual environmen
 | APK and extracted bundle checksums | Match supplied references |
 | Hermes v96 decompilation/disassembly using hermes-decomp v0.2.4 | Completed; differences documented |
 | `tests_ha` with the actual HA framework | Not executed |
-| HA component loading, entity registry, scheduling and unloading | 0.1.0 requirement conflict observed in HA; 0.1.1 fix pending HA restart |
-| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Supplied advertisement accepted by parser; GATT and heating remain unvalidated |
+| HA component loading and entity registration | 0.1.1 installed through HACS, HA restarted, Bluetooth discovery and device creation succeeded; passive temperature shown |
+| HA scheduling and unloading | Not validated |
+| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Advertisement accepted through proxy and displayed in HA; GATT and heating remain unvalidated |
 
 Twenty integration logic test cases run against explicit HA boundary doubles. They do not
 substitute for the real HA tests. Other tests exercise codecs, transport cleanup,
@@ -22,7 +23,7 @@ classification, stable identity and distribution consistency. Synthetic payloads
 come from documented APK layouts; they are not captures from a real thermostat.
 
 The ZIP is an experimental read-only development artifact. No BLE scanner was
-started, no connection was made to hardware, and no thermostat settings were written.
+started by the library, no GATT connection was made to hardware, and no thermostat settings were written.
 
 Added regression coverage for the legal `Tael*` matcher, removal of profile UI/options,
 all non-thermostat discovery classes including the MSC range, unknown-type admission,

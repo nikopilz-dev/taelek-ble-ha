@@ -1,8 +1,8 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
 Versio 0.1.1, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
-2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on hankittu, mutta sitä ei
-ole vielä kytketty sähköihin eikä testattu.
+2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
+välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 Etherma E-2001 BLE:n yhteensopivuutta tai lämpötilalukemien merkitystä ei ole varmennettu.
 
 ## Mitä ensimmäinen versio tekee
@@ -52,8 +52,10 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
    → Taelek BLE**. Manuaalinen lisäys käyttää jo havaittujen laitteiden luetteloa.
 4. Ota halutessasi integraation asetuksista kokeelliset GATT-lukemat käyttöön.
 
-Integraatiota ei ole vielä käynnistetty aidossa Home Assistant -ympäristössä.
-ZIP on kehitysversio, ei laitteella varmennettu julkaisu.
+Versio 0.1.1 on ladattu aidossa Home Assistantissa: Bluetooth-löytö, laitteen lisäys
+ja passiivisen mainoslämpötilan näyttäminen toimivat. GATT-lukemia, tila-/relebittejä
+ja lämpötilan fyysistä merkitystä ei ole vielä varmennettu.
+ZIP on kokeellinen kehitysversio.
 
 ### Korjaus versiossa 0.1.1
 
