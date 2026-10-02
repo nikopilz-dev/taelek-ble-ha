@@ -19,7 +19,9 @@ def register_debug_service(hass):
         if entry.state != ConfigEntryState.LOADED or runtime is None or runtime.active is None:
             raise HomeAssistantError("Taelek must be loaded with GATT enabled")
         try:
-            return await runtime.active.async_debug_gatt(call.data["steps"])
+            return await runtime.active.async_debug_gatt(
+                call.data["steps"], sync_time=call.data.get("sync_time", True)
+            )
         except ValueError as err:
             raise HomeAssistantError(f"Invalid GATT sequence: {err}") from err
 
@@ -27,6 +29,12 @@ def register_debug_service(hass):
         DOMAIN,
         "debug_gatt",
         handle,
-        schema=vol.Schema({vol.Required("config_entry_id"): str, vol.Required("steps"): list}),
+        schema=vol.Schema(
+            {
+                vol.Required("config_entry_id"): str,
+                vol.Required("steps"): list,
+                vol.Optional("sync_time", default=True): bool,
+            }
+        ),
         supports_response=SupportsResponse.ONLY,
     )

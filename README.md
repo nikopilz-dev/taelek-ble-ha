@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.6, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.7, 3.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
@@ -18,17 +18,27 @@ lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
   asetuslämpötila, anturivirhekoodi sekä lämmitystila.
 - Käyttää Home Assistantin Bluetooth-tietoja ja yhteyksiä tukevia välityslaitteita.
   Passiivinen osuus toimii myös ilman GATT-yhteyksiä.
-- Ei kirjoita automaattisesti. Oletuksena poistettu käytöstä oleva diagnostinen
+- Päivittää kellon kerran jokaisen aktiivisen GATT-session alussa. Muita asetuksia
+  ei kirjoiteta automaattisesti. Oletuksena poistettu käytöstä oleva diagnostinen
   CLOSE- tai NORMAL-testipainike lähettää yhden erikseen pyydetyn komennon. Climate- ja
   number-entiteettejä ei vielä ole. Versio 0.1.5 lisää erikseen sallittavat
   10 °C / 25 °C manualEco-testipainikkeet ja alkuperäisen ECO-tavoitteen palautuksen.
   Ne eivät aktivoi ECO-tilaa tai lähetä tallennuskuittausta. Palautusarvo säilyy
   vain nykyisen integraatiolatauksen ajan: palauta ennen uudelleenkäynnistystä.
 
-Kellonaikaa, viikko-ohjelmaa tai muita käyttöönottoasetuksia ei vielä kirjoiteta.
+Versiosta 0.1.7 alkaen kellonaika lähetetään Time-characteristiciin kerran
+onnistuneen connectin jälkeen, ennen session lukuja tai testikirjoituksia.
+Muoto on APK:n mukainen neljä tavua: paikallinen tunti, minuutti, sekunti ja
+ISO-viikonpäivä (ma=1, su=7). Aika otetaan HA:n määritetystä aikavyöhykkeestä,
+ei palvelimen käyttöjärjestelmän aikavyöhykkeestä. Aikaa ei verrata ensin laitteen
+kelloon, eikä lähetyksen jälkeen tehdä automaattista `0x83`-kuittausta.
+Kellokirjoituksen virhe keskeyttää aktiivisen session näkyvästi ilman uusintaa;
+passiiviset mainoslukemat pysyvät erillisinä. Laitevarmennusta ei ole vielä tehty.
+Viikko-ohjelmaa tai muita käyttöönottoasetuksia ei alusteta automaattisesti.
 E-2001-BLE:n ohjeen mukaan oikea kellonaika tarvitaan sisäiseen viikko-ohjelmaan;
 MAI Smart päivittää sen yhteyden yhteydessä ja kello säilyy alle kahden tunnin
-sähkökatkojen yli. HA:n GATT-luku ei tällä hetkellä tee vastaavaa kellopäivitystä.
+sähkökatkojen yli. Kellopolun APK-evidenssi ja HA:n session sijoitusero on kuvattu
+tiedostossa [CLOCK_SYNC.md](protocol/CLOCK_SYNC.md).
 Homeyn ohje suosittelee sisäisen viikko-ohjelman poistamista käytöstä ja näyttöttömillä
 malleilla pakotettua ECO-ohjausta. Ohje ei edellytä kellotulon hyppyjohtoa.
 Kellosymbolin ulkoinen ohjaustulo on E-2001-BLE:n käyttöohjeessa 230 V / 50 Hz.

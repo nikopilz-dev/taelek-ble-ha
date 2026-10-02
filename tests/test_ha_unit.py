@@ -7,6 +7,7 @@ The separate tests_ha suite must run on supported Linux/Python with real HA.
 import importlib
 import struct
 import sys
+from datetime import UTC, datetime
 from types import ModuleType, SimpleNamespace
 from unittest.mock import AsyncMock, Mock
 
@@ -130,6 +131,8 @@ def ha(monkeypatch):
         BinarySensorDeviceClass=SimpleNamespace(HEAT="heat"),
     )
     module("homeassistant.helpers")
+    module("homeassistant.util")
+    module("homeassistant.util.dt", now=lambda: datetime(2026, 10, 3, tzinfo=UTC))
     module(
         "homeassistant.helpers.device_registry", CONNECTION_BLUETOOTH="bluetooth", DeviceInfo=dict
     )
@@ -322,6 +325,30 @@ async def test_gatt_failure_recovery_and_passive_independence(ha):
     assert entity.is_on is None
 
 
+async def test_ha_sessions_sync_configured_clock_and_failure_preserves_passive(ha):
+    from custom_components.taelek.taelek_ble.const import TIME
+
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    passive._receive(ha.info, None)
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    client = AsyncMock()
+    client.read_gatt_char.return_value = struct.pack("<BBBBhHHH", 0, 0, 0, 1, 230, 210, 245, 0)
+    active.client._connector = AsyncMock(return_value=client)
+    await active.async_request_refresh()
+    assert active.last_update_success
+    client.write_gatt_char.assert_awaited_once_with(TIME, bytes((0, 0, 0, 6)), response=True)
+    client.write_gatt_char.reset_mock()
+    client.read_gatt_char.reset_mock()
+    client.write_gatt_char.side_effect = OSError("authorization denied")
+    await active.async_request_refresh()
+    assert not active.last_update_success
+    assert "clock synchronization failed" in str(active.last_exception)
+    assert passive.present and passive.data.temperature_c == 21.5
+    client.write_gatt_char.assert_awaited_once()
+    client.read_gatt_char.assert_not_called()
+
+
 async def test_nonthermostat_blocks_gatt_and_temperature(ha):
     ha.info.manufacturer_data[1162] = struct.pack("<hBBI10s", 300, 0, 0x55, 123, b"Plug")
     ha.bluetooth.async_last_service_info.return_value = ha.info
@@ -420,7 +447,10 @@ async def test_debug_service_is_registered_without_connecting_and_gated(ha):
     active.async_debug_gatt.assert_not_called()
     ha.entry.options["enable_debug_gatt"] = True
     assert await handler(call) == {"success": True}
-    active.async_debug_gatt.assert_awaited_once_with([])
+    active.async_debug_gatt.assert_awaited_once_with([], sync_time=True)
+    call.data["sync_time"] = False
+    assert await handler(call) == {"success": True}
+    active.async_debug_gatt.assert_awaited_with([], sync_time=False)
     ha.entry.state = "not_loaded"
     with pytest.raises(Exception, match="must be loaded"):
         await handler(call)

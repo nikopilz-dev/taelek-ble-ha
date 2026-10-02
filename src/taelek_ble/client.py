@@ -7,8 +7,10 @@ import logging
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from dataclasses import replace
+from datetime import datetime
 from typing import Protocol
 
+from .clock import encode_time
 from .codec import decode_param_a, decode_param_b, decode_state_a, patch_param_b
 from .const import (
     COMMAND_CLOSE,
@@ -20,6 +22,7 @@ from .const import (
     PRODUCT_PARAM_A,
     PRODUCT_PARAM_B,
     PRODUCT_STATE_A,
+    TIME,
 )
 from .debug import validate_steps
 from .models import ParamA, ParamB, StateA
@@ -38,8 +41,9 @@ class ReadTransport(Protocol):
 class TaelekClient:
     """The connector must create a fresh connected client for each session.
 
-    No scanner or automatic writes. Read errors and cancellation propagate to the
-    caller; cleanup must not hide them. The deadline covers connection and reads.
+    No scanner. A supplied local clock enables one clock write per session;
+    without it, reads remain read-only. Errors and cancellation propagate to the
+    caller; cleanup must not hide them. The deadline covers the whole session.
     """
 
     def __init__(
@@ -47,24 +51,31 @@ class TaelekClient:
         connector: Callable[[], Awaitable[ReadTransport]],
         *,
         timeout: float = 45,
+        clock: Callable[[], datetime] | None = None,
     ):
         if timeout < 10:
             raise ValueError("Session timeout must be at least 10 seconds")
         self._connector = connector
         self._timeout = timeout
+        self._clock = clock
         self._lock = asyncio.Lock()
         self.original_manual_eco_c = None
 
-    async def debug_gatt(self, steps):
+    async def debug_gatt(self, steps, *, sync_time: bool = True):
         """Execute user-provided steps once in one serialized connection.
 
         Report partial results on failure. Never retry or infer a save command.
+        The clock prelude is reported separately and can be skipped for A/B tests.
         Raw reads are returned only to the caller, never logged or published.
         """
         steps = validate_steps(steps)
-        result = {"success": False, "steps": []}
+        if not isinstance(sync_time, bool):
+            raise TypeError("sync_time must be a boolean")
+        result = {"success": False, "steps": [], "clock_sync": {"status": "not started"}}
         try:
-            async with self._session() as client:
+            async with self._session(
+                sync_time=sync_time, clock_result=result["clock_sync"]
+            ) as client:
                 for index, step in enumerate(steps):
                     op = step["operation"]
                     observed = {"index": index, "operation": op, "status": "started"}
@@ -127,12 +138,36 @@ class TaelekClient:
             return before.manual_eco_c, after.manual_eco_c, state_before, state_after
 
     @asynccontextmanager
-    async def _session(self):
+    async def _session(self, *, sync_time=True, clock_result=None):
         async with self._lock:
             client = None
             try:
                 async with asyncio.timeout(self._timeout):
                     client = await self._connector()
+                    if clock_result is None:
+                        clock_result = {}
+                    if sync_time and self._clock is not None:
+                        clock_result.update(uuid=TIME, status="preparing")
+                        try:
+                            local_time = self._clock()
+                            payload = encode_time(local_time)
+                            clock_result.update(
+                                status="write attempted; effect may be unknown",
+                                hex=payload.hex(),
+                                local_time=local_time.isoformat(),
+                                response=True,
+                            )
+                            await client.write_gatt_char(TIME, payload, response=True)
+                        except Exception as err:
+                            clock_result["error"] = str(err)
+                            raise OSError(f"Taelek clock synchronization failed: {err}") from err
+                        clock_result["status"] = "completed; device clock not read back"
+                    else:
+                        clock_result["status"] = (
+                            "skipped by request"
+                            if not sync_time
+                            else "no clock provider configured"
+                        )
                     yield client
             finally:
                 if client is not None:
@@ -147,7 +182,7 @@ class TaelekClient:
             return [bytes(await client.read_gatt_char(uuid)) for uuid in characteristics]
 
     async def read_state_with_details(self, *, device_type: int | None = None) -> StateA:
-        """Read state and optional ECO/button evidence without writing any value.
+        """Read state and optional ECO/button evidence after the clock prelude.
 
         Optional characteristic failures leave the successfully read state usable.
         Network-key bytes from Param B are never returned in diagnostic fields.

@@ -234,6 +234,10 @@ The old app writes four bytes:
 hour, minute, second, ISO weekday
 ```
 
+Local wall time, not UTC or a Unix timestamp. ISO weekday is Monday=1 through
+Sunday=7. MAI Smart 2.0.3 F8549 confirms the same order. HA 0.1.7 sends this
+once per active session using HA's configured timezone; see `CLOCK_SYNC.md`.
+
 ## Authentication / nonce
 
 `productPassword` and `nonce` are present in the old model. Old 1.0.17 protocol paths used for ordinary settings do not obviously require them. This must be explicitly rechecked in 2.0.3 and on hardware before claiming that writes are unauthenticated.

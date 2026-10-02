@@ -1,5 +1,22 @@
 # Verification – 2026-10-02
 
+## Clock synchronization update — 2026-10-03, version 0.1.7
+
+- `python -m pytest tests -q`: **133 passed**. Existing read-only standalone
+  coverage retained; new tests cover exact local clock bytes and ISO weekdays,
+  midnight rollover versus UTC, one write per session, debug opt-out, visible
+  failure/no retries, cancellation cleanup and HA passive independence.
+- Ruff lint and formatting: passed. Bundled source consistency is covered by
+  the existing distribution test. Installable 0.1.7 ZIP built successfully;
+  package now includes service YAML as well as Python and JSON.
+- The HA coordinator always supplies HA's configured local clock. Standalone
+  clients without a clock provider retain their previous read-only behavior.
+- No physical device connection or clock write was performed for this change.
+  Actual HA loading and clock-write/readback validation remain pending; HA
+  integration tests here use boundary doubles, not the real HA runtime.
+
+The older verification entries below describe previous versions.
+
 Executed locally with Python 3.12.14 in the project's Windows virtual environment.
 
 | Check | Result |

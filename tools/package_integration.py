@@ -15,6 +15,6 @@ destination = root / f"dist/taelek-ble-{version}.zip"
 destination.parent.mkdir(parents=True, exist_ok=True)
 with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED) as archive:
     for path in sorted(component.rglob("*")):
-        if path.is_file() and path.suffix in (".py", ".json"):
+        if path.is_file() and path.suffix in (".py", ".json", ".yaml"):
             archive.write(path, path.relative_to(root))
 print(destination)

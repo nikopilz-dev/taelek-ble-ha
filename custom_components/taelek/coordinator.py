@@ -12,6 +12,7 @@ from homeassistant.const import CONF_ADDRESS
 from homeassistant.core import callback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
 from .taelek_ble.client import TaelekClient
@@ -81,14 +82,14 @@ class ActiveCoordinator(DataUpdateCoordinator):
         )
         self.address = entry.data[CONF_ADDRESS]
         self.unique_id = entry.unique_id
-        self.client = TaelekClient(self._connect)
+        self.client = TaelekClient(self._connect, clock=dt_util.now)
         self.last_command_test = None
         self._experiment_lock = asyncio.Lock()
 
-    async def async_debug_gatt(self, steps):
+    async def async_debug_gatt(self, steps, *, sync_time=True):
         async with self._experiment_lock:
             self._get_advertisement()
-            return await self.client.debug_gatt(steps)
+            return await self.client.debug_gatt(steps, sync_time=sync_time)
 
     async def async_test_eco_temperature(self, target):
         async with self._experiment_lock:

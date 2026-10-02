@@ -1,17 +1,28 @@
 {
   "domain": "taelek",
   "name": "Taelek BLE",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "config_flow": true,
-  "dependencies": ["bluetooth", "bluetooth_adapters"],
+  "dependencies": [
+    "bluetooth",
+    "bluetooth_adapters"
+  ],
   "bluetooth": [
-    {"manufacturer_id": 1162, "connectable": false},
-    {"local_name": "Tael*", "connectable": false}
+    {
+      "manufacturer_id": 1162,
+      "connectable": false
+    },
+    {
+      "local_name": "Tael*",
+      "connectable": false
+    }
   ],
   "requirements": [],
   "documentation": "https://github.com/nikopilz-dev/taelek-ble-ha#readme",
   "issue_tracker": "https://github.com/nikopilz-dev/taelek-ble-ha/issues",
-  "codeowners": ["@nikopilz-dev"],
+  "codeowners": [
+    "@nikopilz-dev"
+  ],
   "iot_class": "local_push",
   "integration_type": "device"
 }

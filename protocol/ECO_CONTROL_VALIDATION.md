@@ -149,8 +149,10 @@ terminal in the wiring diagram (page 1). It is not a low-voltage jumper input.
 Page 2 requires correct time for the internal weekly program, says MAI Smart
 updates it on connection, and gives less than two hours of power-loss retention.
 Clock error 10 falls back to the knob's temperature. This does not establish
-that forced BLE ECO requires the clock. The current HA client does not write
-the Time characteristic or initialize commissioning parameters.
+that forced BLE ECO requires the clock. At the time of those experiments the HA
+client did not write Time or initialize commissioning parameters. Version 0.1.7
+adds one Time write per active session; see `CLOCK_SYNC.md`. That change has not
+yet been validated on the physical device and proves no ECO prerequisite.
 
 Taelek's Homey guide instead disables the internal user program and uses forced
 ECO with an ECO setpoint for displayless models. It contains no jumper step.

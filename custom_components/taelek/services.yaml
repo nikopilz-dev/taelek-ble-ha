@@ -9,3 +9,7 @@ debug_gatt:
       required: true
       selector:
         object:
+    sync_time:
+      default: true
+      selector:
+        boolean:

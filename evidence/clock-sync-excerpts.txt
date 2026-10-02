@@ -1,0 +1,147 @@
+Clock synchronization — selected pre-existing APK evidence
+MAI Smart 1.0.17 bundle SHA256 b437b3fb1564235dd296bac6a2a8b5171be56ac53d30dc9186e4285993cd0d8d
+MAI Smart 2.0.3 HBC SHA256 f5c9150ccca8bfe396f30ede67446116ee80dad2ec5de6a6fbe1c0b8cb931bb7
+Old source offsets are Unicode character offsets; new disassembly uses HBC function IDs/instruction offsets.
+
+Legacy this.writeTimeData= at character 1447315:
+ute:l,second:s,weekday:u}).format("HH:mm"));case 12:return f.prev=12,f.t0=f.catch(3),console.dlog(t),console.dlog(f.t0),f.abrupt("return","-");case 17:case"end":return f.stop()}},null,null,[[3,12]])},this.writeTimeData=function(){var t=y.default.utc().local(),o=t.hours(),c=t.minutes(),l=t.seconds(),s=t.isoWeekday(),u=[];u.push(o),u.push(c),u.push(l),u.push(s);var f=U.from(u);return S.writeCharacteristicAsync(f,n.timeCharacteristic)}
+
+2.0.3 decompiler lines 138136–138158, BLE Module 1349:
+      this.writeTimeData = () => {
+        const _default = module_eac25f3b.default;
+        const utcResult = _default.utc();
+        const time = utcResult.local();
+        const hoursResult = time.hours();
+        const items = [];
+        const minutesResult = time.minutes();
+        const secondsResult = time.seconds();
+        const isoWeekdayResult = time.isoWeekday();
+        items.push(hoursResult);
+        items.push(minutesResult);
+        items.push(secondsResult);
+        items.push(isoWeekdayResult);
+        let id;
+        const _Buffer = Ble(dependencyMap[17]).Buffer;
+        const currentPeripheral = self.currentPeripheral;
+        const writeCharacteristicAsync = bitFromBuffer.writeCharacteristicAsync;
+        const fromResult = _Buffer.from(items);
+        if (currentPeripheral != null) {
+          id = currentPeripheral.id;
+        }
+        return writeCharacteristicAsync(id, fromResult, self.timeCharacteristic);
+      };
+
+2.0.3 F8549:
+; fn#8549 "<anonymous>" params=1 frame=17 env=0 size=210 offset=0x1d27dc
+0000  GetEnvironment r0, 2
+0003  LoadFromEnvironment r1, r0, 10
+0007  GetByIdShort r2, r1, 1, "default"
+000c  GetById r1, r2, 2, "utc"
+0012  Call1 r2, r1, r2
+0016  GetById r1, r2, 3, "local"
+001c  Call1 r2, r1, r2
+0020  GetById r1, r2, 4, "hours"
+0026  Call1 r6, r1, r2
+002a  GetById r1, r2, 5, "minutes"
+0030  Call1 r5, r1, r2
+0034  GetById r1, r2, 6, "seconds"
+003a  Call1 r3, r1, r2
+003e  GetById r1, r2, 7, "isoWeekday"
+0044  Call1 r2, r1, r2
+0048  NewArray r4, 0
+004c  GetByIdShort r1, r4, 8, "push"
+0051  Call2 r1, r1, r4, r6
+0056  GetByIdShort r1, r4, 8, "push"
+005b  Call2 r1, r1, r4, r5
+0060  GetByIdShort r1, r4, 8, "push"
+0065  Call2 r1, r1, r4, r3
+006a  GetByIdShort r1, r4, 8, "push"
+006f  Call2 r1, r1, r4, r2
+0074  LoadFromEnvironment r3, r0, 0
+0078  LoadFromEnvironment r2, r0, 1
+007c  LoadConstUInt8 r1, 17
+007f  GetByVal r2, r2, r1
+0083  LoadConstUndefined r1
+0085  Call2 r2, r3, r1, r2
+008a  GetById r3, r2, 9, "Buffer"
+0090  GetByIdShort r2, r3, 10, "from"
+0095  Call2 r4, r2, r3, r4
+009a  LoadFromEnvironment r3, r0, 11
+009e  GetById r2, r3, 11, "writeCharacteristicAsync"
+00a4  GetEnvironment r0, 0
+00a7  LoadFromEnvironment r5, r0, 0
+00ab  GetById r5, r5, 12, "currentPeripheral"
+00b1  LoadConstNull r6
+00b3  Eq r6, r5, r6
+00b7  JmpTrue L191, r6
+00ba  GetByIdShort r1, r5, 13, "id"
+L191:
+00bf  LoadFromEnvironment r0, r0, 0
+00c3  GetById r0, r0, 14, "timeCharacteristic"
+00c9  Call4 r0, r2, r3, r1, r4, r0
+00d0  Ret r0
+
+
+; fn#13887 "?anon_0_requestWorker" params=3 frame=36 env=0 size=1604 offset=0x26acaa
+0416  LoadFromEnvironment r16, r11, 1
+041a  GetByVal r16, r16, r15
+041e  Call2 r16, r17, r12, r16
+0423  GetByIdShort r17, r16, 3, "call"
+0428  LoadFromEnvironment r16, r13, 0
+042c  GetById r16, r16, 29, "writeTimeData"
+0432  Call2 r16, r17, r12, r16
+0437  SaveGenerator L1083
+0439  Ret r16
+L1083:
+043b  ResumeGenerator r16, r17
+043e  JmpTrueLong L1392, r17
+0444  LoadFromEnvironment r18, r11, 0
+0448  LoadFromEnvironment r17, r11, 1
+044c  GetByVal r17, r17, r15
+0450  Call2 r17, r18, r12, r17
+0455  GetByIdShort r18, r17, 3, "call"
+045a  LoadFromEnvironment r17, r13, 0
+045e  GetById r17, r17, 30, "readPrettyTimeData"
+
+; fn#13905 "?anon_0__loop" params=1 frame=32 env=1 size=1286 offset=0x26b854
+02e6  LoadFromEnvironment r14, r7, 1
+02ea  GetByVal r14, r14, r11
+02ee  Call2 r14, r15, r8, r14
+02f3  GetByIdShort r15, r14, 4, "call"
+02f8  LoadFromEnvironment r14, r9, 0
+02fc  GetById r14, r14, 24, "writeTimeData"
+0302  Call2 r14, r15, r8, r14
+0307  SaveGenerator L779
+0309  Ret r14
+L779:
+030b  ResumeGenerator r14, r15
+030e  JmpTrueLong L1142, r15
+0314  LoadFromEnvironment r16, r7, 0
+0318  LoadFromEnvironment r15, r7, 1
+031c  GetByVal r15, r15, r11
+0320  Call2 r15, r16, r8, r15
+0325  GetByIdShort r16, r15, 4, "call"
+032a  LoadFromEnvironment r15, r9, 0
+032e  GetById r15, r15, 25, "readPrettyTimeData"
+
+; fn#13923 "?anon_0_requestWorker" params=2 frame=38 env=0 size=831 offset=0x26c1bf
+020d  LoadFromEnvironment r23, r16, 1
+0211  GetByVal r23, r23, r15
+0215  Call2 r23, r24, r5, r23
+021a  GetByIdShort r24, r23, 1, "call"
+021f  LoadFromEnvironment r23, r9, 0
+0223  GetById r23, r23, 13, "writeTimeData"
+0229  Call2 r23, r24, r5, r23
+022e  SaveGenerator L562
+0230  Ret r23
+L562:
+0232  ResumeGenerator r23, r24
+0235  JmpTrue L658, r24
+0238  LoadParam r24, 1
+023b  JmpFalse L596, r24
+023e  LoadFromEnvironment r24, r16, 6
+0242  GetByIdShort r25, r24, 7, "default"
+0247  GetById r24, r25, 14, "isNotSphere"
+024d  Call1 r24, r24, r25
+0251  JmpFalse L652, r24
+

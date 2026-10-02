@@ -2,8 +2,16 @@
   "title": "Taelek BLE",
   "config": {
     "step": {
-      "user": {"title": "Select a Taelek device", "data": {"address": "Device"}},
-      "confirm": {"title": "Add {name}", "description": "Add this device using Bluetooth advertisements. Etherma E-2001 compatibility is awaiting hardware validation. Optional read-only GATT polling can be enabled later in the integration options."}
+      "user": {
+        "title": "Select a Taelek device",
+        "data": {
+          "address": "Device"
+        }
+      },
+      "confirm": {
+        "title": "Add {name}",
+        "description": "Add this device using Bluetooth advertisements. Etherma E-2001 compatibility is awaiting hardware validation. Optional GATT polling with clock synchronization can be enabled later in the integration options."
+      }
     },
     "abort": {
       "already_configured": "This device is already configured.",
@@ -16,18 +24,31 @@
     "step": {
       "init": {
         "title": "Taelek BLE options",
-        "description": "GATT polling reads thermostat state every five minutes while GATT entities are enabled. It requires a connectable adapter or proxy. No settings are written. Unresolved wire interpretations and suspected missing-temperature values remain unknown until device capabilities are validated.",
-        "data": {"enable_gatt": "Enable experimental GATT reads", "enable_debug_gatt": "Enable raw GATT debugging (explicit writes allowed)"}
+        "description": "GATT polling reads thermostat state every five minutes while GATT entities are enabled. It requires a connectable adapter or proxy. Each active connection first sends Home Assistant local time. Other settings are not written automatically. Unresolved wire interpretations and suspected missing-temperature values remain unknown until device capabilities are validated.",
+        "data": {
+          "enable_gatt": "Enable experimental GATT reads",
+          "enable_debug_gatt": "Enable raw GATT debugging (explicit writes allowed)"
+        }
       }
     }
   },
   "services": {
     "debug_gatt": {
       "name": "Raw GATT debugging",
-      "description": "Run explicit read, write, patch and delay steps in one connection. No automatic confirmation or retries. Raw results may contain private device settings; avoid sharing them unchanged.",
+      "description": "Run explicit read, write, patch and delay steps in one connection. Time is sent once first unless sync_time is false. No automatic save confirmation or retries. Raw results may contain private device settings; avoid sharing them unchanged.",
       "fields": {
-        "config_entry_id": {"name": "Taelek entry", "description": "Device configuration entry to use."},
-        "steps": {"name": "Steps", "description": "List of read/write/patch/delay objects. See the integration README for examples."}
+        "config_entry_id": {
+          "name": "Taelek entry",
+          "description": "Device configuration entry to use."
+        },
+        "steps": {
+          "name": "Steps",
+          "description": "List of read/write/patch/delay objects. See the integration README for examples."
+        },
+        "sync_time": {
+          "name": "Synchronize clock",
+          "description": "Send HA local time at session start. Disable for controlled comparison experiments."
+        }
       }
     }
   }

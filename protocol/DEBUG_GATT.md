@@ -4,6 +4,12 @@ Versio 0.1.6 lisää HA-toiminnon `taelek.debug_gatt`. Sen jälkeen kokeen
 UUID:t, tavut ja vaiheet annetaan toimintokutsussa. Uutta koodia tai painiketta
 ei tarvita kutakin koetta varten. Tämä ei ole aktiivisen ECO:n valmis ohjaus.
 
+Versiosta 0.1.7 jokainen aktiivinen sessio lähettää oletuksena kellonajan kerran
+ennen pyydettyjä vaiheita. Tämä näkyy vastauksen erillisessä `clock_sync`-kentässä.
+Kellovirhe keskeyttää session ilman uusintaa tai piilotettua ohitusta. Debug-kutsun
+`sync_time: false` jättää kellokirjoituksen pois A/B-kokeita varten; se ei poista
+normaalia taustapollausta. Katso [CLOCK_SYNC.md](CLOCK_SYNC.md).
+
 Päivitä integraatio kerran HACSilla ja käynnistä HA uudelleen. Ota sen asetuksista
 käyttöön **GATT-lukemat** ja **raaka GATT-debuggaus**. Debuggaus on oletuksena pois.
 Avaa **Kehittäjän työkalut → Toiminnot → YAML**. Valitse oman laitteen Taelek-entry.
@@ -16,6 +22,7 @@ Pelkkä tilan luku (ei kirjoitusta):
 action: taelek.debug_gatt
 data:
   config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
+  sync_time: false
   steps:
     - operation: read
       uuid: 2be32db1-5f6b-4cbd-8843-8d6dfb164900
