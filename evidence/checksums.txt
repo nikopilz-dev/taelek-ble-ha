@@ -1,0 +1,4 @@
+07c372327eae5b80c4a6de3937122fc426097ffb795e1f5931e9c62f7deb202e  MAI+Smart_1.0.17_APKPure.apk
+ee5b8424ff7b55ccaf8d536f24e41ef417c41a52b7ea7b0e0532a336a63a7751  MAI+Smart_2.0.3_APKPure.apk
+b437b3fb1564235dd296bac6a2a8b5171be56ac53d30dc9186e4285993cd0d8d  1.0.17/assets/index.android.bundle
+f5c9150ccca8bfe396f30ede67446116ee80dad2ec5de6a6fbe1c0b8cb931bb7  2.0.3/assets/index.android.bundle

@@ -1,0 +1,527 @@
+
+// === Module 1306: delay ===
+Stable decompilation lines 110372-110394:
+
+export function parse8bitTemp(uInt8) {
+  try {
+    const sum = uInt8 * 0.5 + -50;
+    const _Number = Number;
+    return Number(sum.toFixed(1));
+  } catch (tmp3) {
+    const _console = console;
+    console.dlog("parse 8bit temp failed", tmp3);
+    return null;
+  }
+}
+export function unparse8bitTemp(arg0) {
+  try {
+    const result = (arg0 - -50) / 0.5;
+    const _console = console;
+    console.dlog("unparse8bitTemp ", arg0, result);
+    const _Number = Number;
+    return Number(result.toFixed(1));
+  } catch (tmp4) {
+    const _console2 = console;
+    console.dlog("unparse 8bit temp failed", tmp4);
+    return null;
+  }
+
+// === Module 1308: module_ac2c5065 ===
+Stable decompilation lines 110420-110472:
+
+  RADIATOR_2B: "radiator2b",
+  RADIATOR_2C: "radiator2c",
+  RADIATOR_2D: "radiator2d",
+  RADIATOR2: "radiator2",
+  RADIATOR3: "radiator3",
+  RADIATOR_3B: "radiator3b",
+  RADIATOR_3C: "radiator3c",
+  RADIATOR_EE: "radiatorEE",
+  OLED_4D: "oled4d",
+  OLED_4E: "oled4e",
+  OLED: "oled",
+  ECO_PLUG: "ecoPlug",
+  MSC: "MSC",
+  FLAT_ABB: "Flat ABB",
+  TSENSE_3PHASE: "3phase",
+  parseType(data) {
+    const self = this;
+    if (data === 17) {
+      return self.RADIATOR;
+    } else if (data === 34) {
+      return self.RADIATOR22;
+    } else if (data === 43) {
+      return self.RADIATOR_2B;
+    } else if (data === 44) {
+      return self.RADIATOR_2C;
+    } else if (data === 45) {
+      return self.RADIATOR_2D;
+    } else if (data === 46) {
+      return self.FLAT_ABB;
+    } else if ((data & 240) === 32) {
+      return self.RADIATOR2;
+    } else if (data === 51) {
+      return self.RADIATOR3;
+    } else if (data === 59) {
+      return self.RADIATOR_3B;
+    } else if (data === 60) {
+      return self.RADIATOR_3C;
+    } else if (data === 77) {
+      return self.OLED_4D;
+    } else if (data === 78) {
+      return self.OLED_4E;
+    } else if ((data & 240) === 64) {
+      return self.OLED;
+    } else if (data === 238) {
+      return self.RADIATOR_EE;
+    } else if (data === 85) {
+      return self.ECO_PLUG;
+    } else if (data === 106) {
+      return self.TSENSE_3PHASE;
+    } else {
+      return (data & 240) === 144 ? self.MSC : self.BASE;
+    }
+  },
+
+// === Module 1350: TEMPERATURE_UNIT ===
+Stable decompilation lines 121495-121568:
+
+      obj63 = { uuid: "2be32db1-5f6b-4cbd-8843-8d6dfb164900", name: "productStateA", type: "r", field: "value" };
+      items4 = [, , , , , , , ];
+      items4[0] = { key: "humidity", length: 1, show: false, unit: "%" };
+      obj64 = { key: "sensorErrorFlag", length: 1 };
+      obj64.parseValue = function parseValue(arg0) {
+        if (arg0 !== 0) {
+          if (arg0 !== "0") {
+            return arg0;
+          }
+        }
+        return "-";
+      };
+      items4[1] = obj64;
+      items4[2] = { key: "operationMode", length: 1, show: false };
+      obj65 = { length: 1, key: "valveState", show: false };
+      obj65.parseValue = function parseValue(arg0) {
+        if (arg0 === 0) {
+          const _default3 = translationsInUse.default;
+          return _default3.t("tempBalanced");
+        } else if (arg0 === 1) {
+          const _default2 = translationsInUse.default;
+          return _default2.t("tempWarming");
+        } else if (arg0 === 2) {
+          const _default = translationsInUse.default;
+          return _default.t("tempCooling");
+        } else {
+          return arg0;
+        }
+      };
+      items4[3] = obj65;
+      obj66 = { length: 2, key: "setPoint", factor: 0.1, rightSideDigits: 1 };
+      items5 = [, ];
+      items5[0] = closure_1_5.default.ECO_PLUG;
+      items5[1] = closure_1_5.default.TSENSE_3PHASE;
+      obj66.excludeTypes = items5;
+      obj66.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { key: "pwm" };
+        }
+      };
+      items4[4] = obj66;
+      obj67 = { length: 2, key: "measuredAir", factor: 0.1, unit: "\u00B0C", rightSideDigits: 1 };
+      items6 = [, , ];
+      items6[0] = closure_1_5.default.ECO_PLUG;
+      items6[1] = closure_1_5.default.TSENSE_3PHASE;
+      items6[2] = closure_1_5.default.MSC;
+      obj67.excludeTypes = items6;
+      items4[5] = obj67;
+      obj68 = { length: 2, key: "measuredFloor", factor: 0.1, unit: "\u00B0C", rightSideDigits: 1 };
+      items7 = [, , ];
+      items7[0] = closure_1_5.default.ECO_PLUG;
+      items7[1] = closure_1_5.default.TSENSE_3PHASE;
+      items7[2] = closure_1_5.default.MSC;
+      obj68.excludeTypes = items7;
+      obj68.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { hideFromReport: true };
+        }
+      };
+      items4[6] = obj68;
+      obj69 = { show: false, length: 2, key: "measuredExternal", factor: 0.1, unit: "\u00B0C", rightSideDigits: 1 };
+      obj69.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { hideFromReport: true };
+        }
+      };
+      items4[7] = obj69;
+      obj63.params = items4;
+      items1[3] = obj63;
+      obj70 = { uuid: "2be32db1-5f6b-4cbd-8853-8d6dfb164900", name: "productStateB", type: "rw", field: "value" };
+      obj71 = { key: "rawAir", length: 2, factor: 0.1, unit: "\u00B0C", rightSideDigits: 1, show: false, hideFromReport: true };
+      obj71.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.RADIATOR_2C) {
+          return { key: "heatingWattageLimit", type: "range", show: true, unit: "W", factor: 100, step: 100, min: 0, max: 22000 };
+
+// === Module 1350: TEMPERATURE_UNIT ===
+Stable decompilation lines 121808-121856:
+
+      obj95 = { name: "productParamA", type: "wr", field: "value", uuid: "2be32db1-5f6b-5bd8-8138-d6dfb1649000" };
+      obj96 = { key: "tempAir", length: 2, lowerMin: 5, lowerMax: 25, higherMin: 10, higherMax: 35, type: "dual-range", unit: "\u00B0C" };
+      obj96.parseValueFromRawData = closure_1_10;
+      obj96.writeValue = closure_1_11;
+      items13 = [];
+      items13[0] = closure_1_5.default.MSC;
+      obj96.excludeTypes = items13;
+      items14 = [, , , , , , ];
+      items14[0] = obj96;
+      obj97 = { key: "tempFloor", length: 2, min: 10, lowerMin: 5, lowerMax: 25, higherMin: 10, higherMax: 50, type: "dual-range", unit: "\u00B0C" };
+      obj97.parseValueFromRawData = closure_1_10;
+      obj97.writeValue = closure_1_11;
+      items15 = [, ];
+      items15[0] = closure_1_5.default.RADIATOR;
+      items15[1] = closure_1_5.default.MSC;
+      obj97.excludeTypes = items15;
+      items14[1] = obj97;
+      obj98 = { key: "pwm", length: 2, lowerMin: 0, lowerMax: 50, higherMin: 5, higherMax: 100, step: 5, type: "dual-range", unit: "%" };
+      obj98.parseValueFromRawData = closure_1_14;
+      obj98.writeValue = closure_1_15;
+      items16 = [];
+      items16[0] = closure_1_5.default.FLAT_ABB;
+      obj98.excludeTypes = items16;
+      items14[2] = obj98;
+      range1 = { key: "floorCalib", type: "range", min: -7, max: 7, length: 1, step: 1, unit: "\u00B0C", disableTrack: true };
+      range1.parseValueFromRawData = closure_1_8;
+      range1.writeValue = closure_1_9;
+      items17 = [, ];
+      items17[0] = closure_1_5.default.RADIATOR;
+      items17[1] = closure_1_5.default.MSC;
+      range1.excludeTypes = items17;
+      items14[3] = range1;
+      range2 = { key: "airCalib", type: "range", length: 1, min: -3, max: 3, step: 0.5, unit: "\u00B0C", disableTrack: true };
+      range2.parseValueFromRawData = closure_1_8;
+      range2.writeValue = closure_1_9;
+      items18 = [];
+      items18[0] = closure_1_5.default.MSC;
+      range2.excludeTypes = items18;
+      items14[4] = range2;
+      items14[5] = { key: "ledBrightness", length: 1, type: "range", min: 10, max: 100, unit: "%" };
+      obj99 = { key: "wirelessSensorAndWirelessEco", type: "two-toggles", length: 1 };
+      obj99.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { key: "wirelessSensorAndWirelessEcoMSC" };
+        }
+      };
+      items14[6] = obj99;
+      obj95.params = items14;
+      items19 = [, , , , , , ];
+
+// === Module 1350: TEMPERATURE_UNIT ===
+Stable decompilation lines 121878-121932:
+
+      obj101 = { name: "productParamB", uuid: "2be32db1-5f6b-5bd8-8238-d6dfb1649000", type: "wr", field: "value" };
+      range3 = { key: "autoEco", type: "range", step: 1, unit: "\u00B0C", min: 5, max: 35, length: 2, factor: 0.1, rightSideDigits: 1 };
+      items22 = [];
+      items22[0] = closure_1_5.default.TSENSE_3PHASE;
+      range3.excludeTypes = items22;
+      range3.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { key: "MSCautoEco", unit: "%", min: 0, max: 100, factor: 1 };
+        }
+      };
+      items23 = [, , , , , , ];
+      items23[0] = range3;
+      range4 = { key: "manualEco", type: "range", step: 1, min: 5, max: 35, length: 2, unit: "\u00B0C", factor: 0.1, rightSideDigits: 1 };
+      items24 = [];
+      items24[0] = closure_1_5.default.TSENSE_3PHASE;
+      range4.excludeTypes = items24;
+      range4.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { key: "MSCmanualEco", unit: "%", min: 0, max: 100, factor: 1 };
+        }
+      };
+      items23[1] = range4;
+      obj102 = { key: "mode", type: "picker", length: 1 };
+      items25 = [, , ];
+      items25[0] = closure_1_5.default.RADIATOR;
+      items25[1] = closure_1_5.default.TSENSE_3PHASE;
+      items25[2] = closure_1_5.default.MSC;
+      obj102.excludeTypes = items25;
+      items23[2] = obj102;
+      obj103 = { key: "valveProtection", type: "toggle", pickerData: [0, 1], length: 1 };
+      items26 = [, ];
+      items26[0] = closure_1_5.default.RADIATOR;
+      items26[1] = closure_1_5.default.TSENSE_3PHASE;
+      obj103.excludeTypes = items26;
+      obj103.getComputedFields = function getComputedFields(deviceType) {
+        if (deviceType.deviceType === module_ac2c5065.default.MSC) {
+          return { key: "MSCoffMode", pickerData: [0, 1] };
+        }
+      };
+      items23[3] = obj103;
+      obj104 = { key: "sensorType", type: "picker", length: 1 };
+      items27 = [, , ];
+      items27[0] = closure_1_5.default.RADIATOR;
+      items27[1] = closure_1_5.default.TSENSE_3PHASE;
+      items27[2] = closure_1_5.default.MSC;
+      obj104.excludeTypes = items27;
+      items23[4] = obj104;
+      obj105 = { key: "networkKey", length: 8, type: "string" };
+      obj105.parseValue = function parseValue(arg0) {
+        console.dlog("BluetoothCharasteristics.js networkKey ", arg0);
+        return "";
+      };
+      obj105.writeValue = function writeValue(value) {
+        try {
+          const _Buffer = BleSpec(dependencyMap[7]).Buffer;
+
+// === Module 1350: TEMPERATURE_UNIT ===
+Stable decompilation lines 121950-122009:
+
+          return null;
+        }
+      };
+      items23[5] = obj105;
+      obj106 = { key: "ecoMode", type: "picker", pickerData: [1, 2], length: 1 };
+      items28 = [];
+      items28[0] = closure_1_5.default.TSENSE_3PHASE;
+      obj106.excludeTypes = items28;
+      items23[6] = obj106;
+      obj101.params = items23;
+      items29 = [, ];
+      items29[0] = { key: "spotPriceAbsoluteMaxLimit", length: 2, type: "number", min: 0, max: 99, factor: 0.01, step: 0.01, rightSideDigits: 2 };
+      items29[1] = { key: "noRestrictionsPriceLimit", length: 2, type: "number", min: 0, max: 99, factor: 0.01, step: 0.01, rightSideDigits: 2 };
+      obj101.paramsEcoPlug = items29;
+      items21[1] = obj101;
+      obj107 = { uuid: "2be32db1-5f6b-5bd8-8338-d6dfb1649000", name: "productParamC", type: "wr", field: "value" };
+      obj107.params = [];
+      items30 = [];
+      items30[0] = { key: "WifiPasswordPart1", hideFromReport: true, hiddenInSettings: true, length: 20, byteArray: true, show: false };
+      obj107.paramsEcoPlug = items30;
+      items21[2] = obj107;
+      obj108 = { name: "productButtons", uuid: "2be32db1-5f6b-5bd9-9E8d-6dfb16490000", type: "rw", field: "value" };
+      items31 = [];
+      items31[0] = { key: "WifiPasswordPart3", hideFromReport: true, hiddenInSettings: true, length: 20, byteArray: true, show: false };
+      obj108.paramsEcoPlug = items31;
+      items21[3] = obj108;
+      obj109 = { name: "productButtons2", uuid: "2be32db1-5f6b-5bd0-0E8d-6dfb16490000", type: "rw", field: "value" };
+      items32 = [, ];
+      items32[0] = { key: "WifiPasswordPart4", hideFromReport: true, hiddenInSettings: true, length: 4, byteArray: true, show: false };
+      items32[1] = { key: "WifiSSIDPart2", hideFromReport: true, hiddenInSettings: true, length: 16, byteArray: true, show: false };
+      obj109.paramsEcoPlug = items32;
+      items21[4] = obj109;
+      items21[5] = { uuid: "2be32db1-5f6b-5bd8-8A38-d6dfb1649000", name: "productCommands", type: "w" };
+      items21[6] = { name: "productPassword", uuid: "2be32db1-5f6b-5bd8-8B38-d6dfb1649000", type: "rw" };
+      obj110 = { name: "nonce", uuid: "2be32db1-5f6b-5bd8-8E8d-6dfb16490000", type: "wr", field: "value" };
+      obj111 = { key: "noncePassword", length: 13, show: false, string: true };
+      obj111.parseValue = function parseValue(arg0) {
+        return "";
+      };
+      items33 = [, , , ];
+      items33[0] = obj111;
+      items33[1] = { key: "lockdownMode", length: 1, type: "toggle" };
+      items33[2] = { key: "nonceReserved", length: 1, show: false };
+      items33[3] = { key: "invert", length: 1, type: "toggle" };
+      obj110.params = items33;
+      items34 = [];
+      items34[0] = { key: "WifiPasswordPart2", hideFromReport: true, hiddenInSettings: true, length: 20, byteArray: true, show: false };
+      obj110.paramsEcoPlug = items34;
+      items21[7] = obj110;
+      items21[8] = { uuid: "2be32db1-5f6b-5bd8-8C38-d6dfb1649000", name: "time", type: "wr", length: 4 };
+      items21[9] = { name: "schedule", uuid: "2be32db1-5f6b-5bd8-8D8d-6dfb16490000" };
+      this.services = { info: { uuid: "2be32db1-5f6b-4cbd-8803-38d6dfb16490", characteristics: items1 }, settings: { uuid: "2be32db1-5f6b-5bd8-8033-8d6dfb164900", characteristics: items21 } };
+      return;
+    }
+  }
+  const entry = {
+    key: "findCharUuidByName",
+    value: function findCharUuidByName(passiveListener) {
+      const _default = module_8dca7909.default;
+      const combined = _default.concat(this.services.info.characteristics, this.services.settings.characteristics);
+
+// === Module 1358: bitFromBuffer ===
+Stable decompilation lines 137326-137376:
+
+export function readRawDataUint(arg0, length, data) {
+  try {
+    let uInt8;
+    if (length === 1) {
+      uInt8 = data.readUInt8(arg0);
+    } else if (length === 2) {
+      const _console2 = console;
+      const _console3 = console;
+      console.dlog("readRawDataUint ", arg0, length, data);
+      uInt8 = data.readUInt16LE(arg0);
+    } else if (length === 4) {
+      uInt8 = data.readUInt32LE(arg0);
+    } else {
+      const _console = console;
+      console.dlog("readRawDataUint fallback to string");
+      const str2 = data.slice(arg0, arg0 + length);
+      const str3 = str2.toString();
+      uInt8 = str3.trim();
+    }
+    return uInt8;
+  } catch (err) {
+    return null;
+  }
+}
+export function readRawDataInt(arg0, length, fromResult) {
+  try {
+    let int8;
+    if (length === 1) {
+      int8 = fromResult.readInt8(arg0);
+    } else if (length === 2) {
+      const _console2 = console;
+      const _console3 = console;
+      console.dlog("readRawDataUint ", arg0, length, fromResult);
+      int8 = fromResult.readInt16LE(arg0);
+    } else if (length === 4) {
+      int8 = fromResult.readInt32LE(arg0);
+    } else {
+      const _console = console;
+      console.dlog("readRawDataUint fallback to string");
+      const str2 = fromResult.slice(arg0, arg0 + length);
+      const str3 = str2.toString();
+      int8 = str3.trim();
+    }
+    return int8;
+  } catch (err) {
+    return null;
+  }
+}
+export function flipBitInBuffer(arg0, allocResult) {
+  allocResult[arg0 / 8 | 0] = allocResult[arg0 / 8 | 0] ^ 1 << arg0 % 8;
+}
+
+// === Module 1349: COMMAND_CLOSE ===
+Stable decompilation lines 137825-137850:
+
+            return arg1 === module_ac2c5065.default.ECO_PLUG && paramsEcoPlug.paramsEcoPlug != null;
+          }
+        }
+        return false;
+      };
+      this._has3PhaseParams = (params3Phase, arg1) => {
+        if (params3Phase != null) {
+          if (arg1 != null) {
+            return arg1 === module_ac2c5065.default.TSENSE_3PHASE && params3Phase.params3Phase != null;
+          }
+        }
+        return false;
+      };
+      this._getParseFunction = (arg0, arg1) => {
+        let closure_0 = arg0;
+        let closure_1 = arg1;
+        return function() { /* body not rendered: F8411 */ };
+      };
+      this.sendSaveConfirmation = closure_1_2.default(async () => {
+        try {
+          await closure_1_0._sendCommand(closure_3_26);
+          const _console = console;
+          console.log("save confirmation");
+        } catch (tmp6) {
+          const _console2 = console;
+          console.log("confirmation failed", tmp6);
+
+// === Module 1349: COMMAND_CLOSE ===
+Stable decompilation lines 138165-138264:
+
+      this._parseSinglePeripheral = (advertising) => {
+        let _Buffer;
+        let data;
+        let id;
+        let obj3;
+        let str2;
+        let uuid;
+        const obj = { name: str2.trim(), rawData: data, uuid, id, type: self._parseType(data[3]), error: data[2] & 15, relay: (data[2] & 128) !== 0, green_plug: (data[2] & 64) !== 0, red_plug: (data[2] & 32) !== 0 };
+        const manufacturerData = advertising.advertising.manufacturerData;
+        id = advertising.id;
+        const keys = Object.keys(manufacturerData);
+        if (keys.length > 0) {
+          const obj2 = { uuid: keys[0], data: _Buffer.from(manufacturerData[keys[0]].bytes) };
+          _Buffer = Ble(dependencyMap[17]).Buffer;
+          obj3 = obj2;
+        } else {
+          obj3 = { uuid: undefined, data: undefined };
+        }
+        data = obj3.data;
+        uuid = obj3.uuid;
+        const substr = data.slice(8, 18);
+        let str = "";
+        let num2 = 0;
+        str2 = "";
+        if (0 < substr.length) {
+          while (true) {
+            let text;
+            let sum;
+            let tmp3 = substr[num2];
+            if (tmp3 >= 32) {
+              if (tmp3 <= 126) {
+                let _String = String;
+                text = `${String.fromCharCode(arr3[num2])}`;
+                sum = num2;
+                num2 = sum + 1;
+                str = text;
+                str2 = text;
+                if (num2 >= substr.length) {
+                  break;
+                }
+              }
+            }
+            text = str;
+            sum = num2;
+            if (tmp3 === 195) {
+              text = str;
+              sum = num2;
+              if (num2 < substr.length - 1) {
+                text = str;
+                sum = num2;
+                if (substr[num2 + 1] >= 128) {
+                  text = str;
+                  sum = num2;
+                  if (substr[num2 + 1] < 191) {
+                    let _Buffer2 = Ble(dependencyMap[17]).Buffer;
+                    let items = [substr[num2], substr[num2 + 1]];
+                    let str3 = _Buffer2.from(items);
+                    text = str + str3.toString();
+                    sum = num2 + 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+        if (obj.name.length === 0) {
+          const _console = console;
+          console.log("nameBuffer: ", substr);
+          const _default = translationsInUse.default;
+          obj.name = _default.t("invalidName");
+        }
+        if (obj.type !== module_ac2c5065.default.ECO_PLUG) {
+          if (obj.type !== module_ac2c5065.default.TSENSE_3PHASE) {
+            obj.state = (data[2] & 112) >> 4;
+            obj.error = (data[2] & 12) >> 2;
+            obj.relay = (data[2] & 128) !== 0;
+            obj.boost = (data[2] & 112) === 0;
+            const int16LE = data.readInt16LE(0);
+            if (int16LE === 65535) {
+              obj.temperature = "-.-";
+            } else {
+              const result = int16LE / 10;
+              obj.temperature = result.toFixed(1);
+            }
+          }
+          obj.serial = bitFromBuffer.readRawDataUint(4, 4, data);
+          return obj;
+        }
+        if (obj.type === module_ac2c5065.default.ECO_PLUG) {
+          const int16LE1 = data.readInt16LE(0);
+          obj.onTime = int16LE1.toFixed();
+        } else {
+          const _Math = Math;
+          const rounded = Math.round(data.readUInt16LE(0) / 1440 * 100);
+          obj.onTime = rounded.toFixed(0);
+        }
+      };
+      _default = new closure_1_5.default();
+      this.bleSpec = _default;
+      return;

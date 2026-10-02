@@ -1,0 +1,109 @@
+"""Keep passive availability independent of optional active read failures."""
+
+import logging
+from datetime import timedelta
+
+from bleak.exc import BleakError
+from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
+from homeassistant.components import bluetooth
+from homeassistant.const import CONF_ADDRESS
+from homeassistant.core import callback
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+
+from .const import DOMAIN
+from .taelek_ble.client import TaelekClient
+from .taelek_ble.discovery import device_unique_id, parse_discovery
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class AdvertisementCoordinator(DataUpdateCoordinator):
+    def __init__(self, hass, entry):
+        super().__init__(hass, _LOGGER, name=f"{DOMAIN} advertisements", config_entry=entry)
+        self.entry = entry
+        self.address = entry.data[CONF_ADDRESS]
+        self.present = False
+
+    def start(self):
+        self.entry.async_on_unload(
+            bluetooth.async_register_callback(
+                self.hass,
+                self._receive,
+                {"address": self.address, "connectable": False},
+                bluetooth.BluetoothScanningMode.PASSIVE,
+            )
+        )
+        self.entry.async_on_unload(
+            bluetooth.async_track_unavailable(
+                self.hass,
+                self._unavailable,
+                self.address,
+                connectable=False,
+            )
+        )
+        info = bluetooth.async_last_service_info(self.hass, self.address, connectable=False)
+        if info is not None and bluetooth.async_address_present(
+            self.hass, self.address, connectable=False
+        ):
+            self._receive(info, None)
+
+    @callback
+    def _receive(self, info, change):
+        advertisement = parse_discovery(info.name, info.manufacturer_data)
+        if advertisement is None or not advertisement.thermostat_layout:
+            return
+        # Do not attribute a reused Bluetooth address to a different serial.
+        if (
+            self.entry.unique_id.startswith("serial_")
+            and device_unique_id(advertisement, info.address) != self.entry.unique_id
+        ):
+            return
+        self.present = True
+        self.async_set_updated_data(advertisement)
+
+    @callback
+    def _unavailable(self, info):
+        self.present = False
+        self.async_update_listeners()
+
+
+class ActiveCoordinator(DataUpdateCoordinator):
+    def __init__(self, hass, entry):
+        super().__init__(
+            hass,
+            _LOGGER,
+            name=f"{DOMAIN} GATT",
+            config_entry=entry,
+            update_interval=timedelta(minutes=5),
+        )
+        self.address = entry.data[CONF_ADDRESS]
+        self.unique_id = entry.unique_id
+        self.client = TaelekClient(self._connect)
+
+    def _get_advertisement(self):
+        info = bluetooth.async_last_service_info(self.hass, self.address, connectable=False)
+        advertisement = parse_discovery(info.name, info.manufacturer_data) if info else None
+        if advertisement is None or not advertisement.thermostat_layout:
+            raise UpdateFailed("No supported thermostat advertisement available for GATT reads")
+        if (
+            self.unique_id.startswith("serial_")
+            and device_unique_id(advertisement, self.address) != self.unique_id
+        ):
+            raise UpdateFailed("Advertisement serial does not match the configured device")
+        return advertisement
+
+    async def _connect(self):
+        self._get_advertisement()
+        device = bluetooth.async_ble_device_from_address(self.hass, self.address, connectable=True)
+        if device is None:
+            raise UpdateFailed("No connectable Bluetooth adapter or proxy can reach the device")
+        return await establish_connection(
+            BleakClientWithServiceCache, device, device.name or self.address, timeout=15
+        )
+
+    async def _async_update_data(self):
+        try:
+            advertisement = self._get_advertisement()
+            return await self.client.read_state(device_type=advertisement.device_type)
+        except (BleakError, OSError, TimeoutError, ValueError) as err:
+            raise UpdateFailed(f"Taelek state read failed: {err}") from err

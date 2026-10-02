@@ -1,0 +1,485 @@
+; fn#8588 "BleSpec" params=1 frame=24 env=0 size=2749 offset=0x1d39a4
+0000  CreateEnvironment r6
+0002  LoadThisNS r2
+0004  GetEnvironment r8, 1
+0007  LoadFromEnvironment r0, r8, 2
+000b  GetByIdShort r3, r0, 1, "default"
+0010  GetEnvironment r0, 0
+0013  LoadFromEnvironment r1, r0, 0
+0017  LoadConstUndefined r0
+0019  Call3 r1, r3, r0, r2, r1
+001f  NewObject r1
+0021  NewObject r3
+0023  LoadConstString r4, "2be32db1-5f6b-4cbd-8803-38d6dfb16490"
+0027  PutNewOwnByIdShort r3, r4, "uuid"
+002b  NewObjectWithBuffer r5, 5, 4, 23838, 41985
+0035  NewArray r4, 5
+0039  NewObjectWithBuffer r7, 4, 4, 23845, 40
+0043  PutOwnByIndex r4, r7, 0
+0047  NewObjectWithBuffer r7, 4, 4, 23845, 42001
+0051  PutOwnByIndex r4, r7, 1
+0055  NewObjectWithBuffer r7, 3, 3, 23853, 29350
+005f  PutOwnByIndex r4, r7, 2
+0063  NewObjectWithBuffer r7, 3, 3, 23853, 41883
+006d  PutOwnByIndex r4, r7, 3
+0071  NewObjectWithBuffer r7, 3, 3, 23853, 41898
+007b  PutOwnByIndex r4, r7, 4
+007f  PutNewOwnByIdShort r5, r4, "params"
+0083  NewArray r4, 8
+0087  PutOwnByIndex r4, r5, 0
+008b  NewObjectWithBuffer r5, 5, 4, 23838, 42010
+0095  NewArray r7, 2
+0099  NewObjectWithBuffer r9, 3, 3, 23857, 29380
+00a3  PutOwnByIndex r7, r9, 0
+00a7  NewObjectWithBuffer r9, 4, 4, 23845, 30143
+00b1  PutOwnByIndex r7, r9, 1
+00b5  PutNewOwnByIdShort r5, r7, "params"
+00b9  PutOwnByIndex r4, r5, 1
+00bd  NewObjectWithBuffer r5, 5, 4, 23838, 42019
+00c7  NewArray r7, 4
+00cb  NewObjectWithBuffer r9, 4, 4, 23864, 42028
+00d5  PutOwnByIndex r7, r9, 0
+00d9  NewObjectWithBuffer r9, 10, 7, 23872, 42037
+00e3  CreateClosure r10, r6, 8589
+00e8  PutNewOwnById r9, r10, "getComputedFields"
+00ed  LoadFromEnvironment r10, r8, 12
+00f1  PutNewOwnById r9, r10, "parseValueFromRawData"
+00f6  LoadFromEnvironment r10, r8, 13
+00fa  PutNewOwnById r9, r10, "writeValue"
+00ff  PutOwnByIndex r7, r9, 1
+0103  NewObjectWithBuffer r9, 11, 9, 23883, 29911
+010d  LoadFromEnvironment r10, r8, 16
+0111  PutNewOwnById r9, r10, "parseValueFromRawData"
+0116  LoadFromEnvironment r10, r8, 17
+011a  PutNewOwnById r9, r10, "writeValue"
+011f  PutOwnByIndex r7, r9, 2
+0123  NewObjectWithBuffer r9, 12, 9, 23883, 42063
+012d  CreateClosure r10, r6, 8590
+0132  PutNewOwnById r9, r10, "getComputedFields"
+0137  LoadFromEnvironment r11, r8, 10
+013b  PutNewOwnById r9, r11, "parseValueFromRawData"
+0140  LoadFromEnvironment r10, r8, 11
+0144  PutNewOwnById r9, r10, "writeValue"
+0149  PutOwnByIndex r7, r9, 3
+014d  PutNewOwnByIdShort r5, r7, "params"
+0151  PutOwnByIndex r4, r5, 2
+0155  NewObjectWithBuffer r5, 5, 4, 23838, 42097
+015f  NewArray r7, 8
+0163  NewObjectWithBuffer r9, 4, 4, 23900, 29750
+016d  PutOwnByIndex r7, r9, 0
+0171  NewObjectWithBuffer r9, 3, 2, 23864, 39993
+017b  CreateClosure r12, r6, 8591
+0180  PutNewOwnById r9, r12, "parseValue"
+0185  PutOwnByIndex r7, r9, 1
+0189  NewObjectWithBuffer r9, 3, 3, 23857, 41909
+0193  PutOwnByIndex r7, r9, 2
+0197  NewObjectWithBuffer r9, 4, 3, 23853, 41926
+01a1  CreateClosure r12, r6, 8592
+01a6  PutNewOwnById r9, r12, "parseValue"
+01ab  PutOwnByIndex r7, r9, 3
+01af  NewObjectWithBuffer r12, 6, 4, 23905, 39500
+01b9  LoadFromEnvironment r9, r8, 5
+01bd  GetByIdShort r13, r9, 1, "default"
+01c2  GetById r14, r13, 2, "ECO_PLUG"
+01c8  NewArray r13, 2
+01cc  PutOwnByIndex r13, r14, 0
+01d0  GetByIdShort r14, r9, 1, "default"
+01d5  GetById r14, r14, 3, "TSENSE_3PHASE"
+01db  PutOwnByIndex r13, r14, 1
+01df  PutNewOwnById r12, r13, "excludeTypes"
+01e4  CreateClosure r13, r6, 8593
+01e9  PutNewOwnById r12, r13, "getComputedFields"
+01ee  PutOwnByIndex r7, r12, 4
+01f2  NewObjectWithBuffer r12, 6, 5, 23913, 39535
+01fc  GetByIdShort r13, r9, 1, "default"
+0201  GetById r14, r13, 2, "ECO_PLUG"
+0207  NewArray r13, 3
+020b  PutOwnByIndex r13, r14, 0
+020f  GetByIdShort r14, r9, 1, "default"
+0214  GetById r14, r14, 3, "TSENSE_3PHASE"
+021a  PutOwnByIndex r13, r14, 1
+021e  GetByIdShort r14, r9, 1, "default"
+0223  GetByIdShort r14, r14, 4, "MSC"
+0228  PutOwnByIndex r13, r14, 2
+022c  PutNewOwnById r12, r13, "excludeTypes"
+0231  PutOwnByIndex r7, r12, 5
+0235  NewObjectWithBuffer r12, 7, 5, 23913, 39578
+023f  GetByIdShort r13, r9, 1, "default"
+0244  GetById r14, r13, 2, "ECO_PLUG"
+024a  NewArray r13, 3
+024e  PutOwnByIndex r13, r14, 0
+0252  GetByIdShort r14, r9, 1, "default"
+0257  GetById r14, r14, 3, "TSENSE_3PHASE"
+025d  PutOwnByIndex r13, r14, 1
+0261  GetByIdShort r14, r9, 1, "default"
+0266  GetByIdShort r14, r14, 4, "MSC"
+026b  PutOwnByIndex r13, r14, 2
+026f  PutNewOwnById r12, r13, "excludeTypes"
+0274  CreateClosure r13, r6, 8594
+0279  PutNewOwnById r12, r13, "getComputedFields"
+027e  PutOwnByIndex r7, r12, 6
+0282  NewObjectWithBuffer r12, 7, 6, 23924, 27615
+028c  CreateClosure r13, r6, 8595
+0291  PutNewOwnById r12, r13, "getComputedFields"
+0296  PutOwnByIndex r7, r12, 7
+029a  PutNewOwnByIdShort r5, r7, "params"
+029e  PutOwnByIndex r4, r5, 3
+02a2  NewObjectWithBuffer r5, 5, 4, 23838, 42106
+02ac  NewObjectWithBuffer r12, 8, 7, 23655, 27689
+02b6  CreateClosure r7, r6, 8596
+02bb  PutNewOwnById r12, r7, "getComputedFields"
+02c0  NewArray r7, 2
+02c4  PutOwnByIndex r7, r12, 0
+02c8  NewObjectWithBuffer r12, 8, 7, 23655, 29409
+02d2  CreateClosure r13, r6, 8597
+02d7  PutNewOwnById r12, r13, "getComputedFields"
+02dc  PutOwnByIndex r7, r12, 1
+02e0  PutNewOwnByIdShort r5, r7, "params"
+02e4  PutOwnByIndex r4, r5, 4
+02e8  NewObjectWithBuffer r5, 5, 4, 23838, 42115
+02f2  NewObjectWithBuffer r12, 4, 3, 23857, 41938
+02fc  CreateClosure r7, r6, 8598
+0301  PutNewOwnById r12, r7, "getComputedFields"
+0306  NewArray r7, 3
+030a  PutOwnByIndex r7, r12, 0
+030e  NewObjectWithBuffer r12, 4, 3, 23857, 41950
+0318  CreateClosure r13, r6, 8599
+031d  PutNewOwnById r12, r13, "getComputedFields"
+0322  PutOwnByIndex r7, r12, 1
+0326  NewObjectWithBuffer r12, 6, 5, 23936, 41962
+0330  CreateClosure r13, r6, 8600
+0335  PutNewOwnById r12, r13, "getComputedFields"
+033a  PutOwnByIndex r7, r12, 2
+033e  PutNewOwnByIdShort r5, r7, "params"
+0342  PutOwnByIndex r4, r5, 5
+0346  NewObjectWithBuffer r5, 5, 4, 23945, 42124
+0350  NewArray r7, 7
+0354  NewObjectWithBuffer r12, 3, 3, 23857, 42133
+035e  PutOwnByIndex r7, r12, 0
+0362  NewObjectWithBuffer r12, 3, 3, 23857, 42157
+036c  PutOwnByIndex r7, r12, 1
+0370  NewObjectWithBuffer r12, 3, 3, 23857, 42169
+037a  PutOwnByIndex r7, r12, 2
+037e  NewObjectWithBuffer r12, 3, 3, 23857, 42181
+0388  PutOwnByIndex r7, r12, 3
+038c  NewObjectWithBuffer r12, 3, 3, 23857, 39847
+0396  PutOwnByIndex r7, r12, 4
+039a  NewObjectWithBuffer r12, 3, 3, 23857, 42193
+03a4  PutOwnByIndex r7, r12, 5
+03a8  NewObjectWithBuffer r12, 3, 3, 23857, 42204
+03b2  PutOwnByIndex r7, r12, 6
+03b6  PutNewOwnByIdShort r5, r7, "params"
+03ba  PutOwnByIndex r4, r5, 6
+03be  NewObjectWithBuffer r5, 6, 4, 23945, 42213
+03c8  NewObjectWithBuffer r12, 4, 3, 23952, 40317
+03d2  CreateClosure r7, r6, 8601
+03d7  PutNewOwnById r12, r7, "getComputedFields"
+03dc  NewArray r7, 16
+03e0  PutOwnByIndex r7, r12, 0
+03e4  NewObjectWithBuffer r12, 4, 3, 23952, 40335
+03ee  CreateClosure r13, r6, 8602
+03f3  PutNewOwnById r12, r13, "getComputedFields"
+03f8  PutOwnByIndex r7, r12, 1
+03fc  NewObjectWithBuffer r12, 4, 3, 23952, 40408
+0406  CreateClosure r13, r6, 8603
+040b  PutNewOwnById r12, r13, "getComputedFields"
+0410  PutOwnByIndex r7, r12, 2
+0414  NewObjectWithBuffer r12, 4, 3, 23952, 40488
+041e  CreateClosure r13, r6, 8604
+0423  PutNewOwnById r12, r13, "getComputedFields"
+0428  PutOwnByIndex r7, r12, 3
+042c  NewObjectWithBuffer r12, 4, 3, 23952, 36290
+0436  CreateClosure r13, r6, 8605
+043b  PutNewOwnById r12, r13, "getComputedFields"
+0440  PutOwnByIndex r7, r12, 4
+0444  NewObjectWithBuffer r12, 4, 3, 23952, 40680
+044e  CreateClosure r13, r6, 8606
+0453  PutNewOwnById r12, r13, "getComputedFields"
+0458  PutOwnByIndex r7, r12, 5
+045c  NewObjectWithBuffer r12, 4, 3, 23952, 40756
+0466  CreateClosure r13, r6, 8607
+046b  PutNewOwnById r12, r13, "getComputedFields"
+0470  PutOwnByIndex r7, r12, 6
+0474  NewObjectWithBuffer r12, 4, 3, 23952, 40836
+047e  CreateClosure r13, r6, 8608
+0483  PutNewOwnById r12, r13, "getComputedFields"
+0488  PutOwnByIndex r7, r12, 7
+048c  NewObjectWithBuffer r12, 4, 3, 23952, 40907
+0496  CreateClosure r13, r6, 8609
+049b  PutNewOwnById r12, r13, "getComputedFields"
+04a0  PutOwnByIndex r7, r12, 8
+04a4  NewObjectWithBuffer r12, 4, 3, 23952, 41374
+04ae  CreateClosure r13, r6, 8610
+04b3  PutNewOwnById r12, r13, "getComputedFields"
+04b8  PutOwnByIndex r7, r12, 9
+04bc  NewObjectWithBuffer r12, 4, 3, 23952, 41441
+04c6  CreateClosure r13, r6, 8611
+04cb  PutNewOwnById r12, r13, "getComputedFields"
+04d0  PutOwnByIndex r7, r12, 10
+04d4  NewObjectWithBuffer r12, 4, 3, 23952, 41478
+04de  CreateClosure r13, r6, 8612
+04e3  PutNewOwnById r12, r13, "getComputedFields"
+04e8  PutOwnByIndex r7, r12, 11
+04ec  NewObjectWithBuffer r12, 4, 3, 23952, 860
+04f6  CreateClosure r13, r6, 8613
+04fb  PutNewOwnById r12, r13, "getComputedFields"
+0500  PutOwnByIndex r7, r12, 12
+0504  NewObjectWithBuffer r12, 4, 3, 23952, 40070
+050e  CreateClosure r13, r6, 8614
+0513  PutNewOwnById r12, r13, "getComputedFields"
+0518  PutOwnByIndex r7, r12, 13
+051c  NewObjectWithBuffer r12, 4, 3, 23952, 41807
+0526  CreateClosure r13, r6, 8615
+052b  PutNewOwnById r12, r13, "getComputedFields"
+0530  PutOwnByIndex r7, r12, 14
+0534  NewObjectWithBuffer r12, 4, 3, 23952, 29346
+053e  CreateClosure r13, r6, 8616
+0543  PutNewOwnById r12, r13, "getComputedFields"
+0548  PutOwnByIndex r7, r12, 15
+054c  PutNewOwnByIdShort r5, r7, "params"
+0550  NewArray r7, 1
+0554  NewObjectWithBuffer r12, 6, 6, 23956, 42222
+055e  PutOwnByIndex r7, r12, 0
+0562  PutNewOwnById r5, r7, "paramsEcoPlug"
+0567  PutOwnByIndex r4, r5, 7
+056b  PutNewOwnById r3, r4, "characteristics"
+0570  PutNewOwnById r1, r3, "info"
+0575  NewObject r3
+0577  LoadConstString r4, "2be32db1-5f6b-5bd8-8033-8d6dfb164900"
+057b  PutNewOwnByIdShort r3, r4, "uuid"
+057f  NewObjectWithBuffer r5, 7, 4, 8160, 42233
+0589  NewObjectWithBuffer r7, 11, 8, 23970, 42243
+0593  PutNewOwnById r7, r11, "parseValueFromRawData"
+0598  PutNewOwnById r7, r10, "writeValue"
+059d  GetByIdShort r4, r9, 1, "default"
+05a2  GetByIdShort r12, r4, 4, "MSC"
+05a7  NewArray r4, 1
+05ab  PutOwnByIndex r4, r12, 0
+05af  PutNewOwnById r7, r4, "excludeTypes"
+05b4  NewArray r4, 7
+05b8  PutOwnByIndex r4, r7, 0
+05bc  NewObjectWithBuffer r7, 12, 9, 23985, 42272
+05c6  PutNewOwnById r7, r11, "parseValueFromRawData"
+05cb  PutNewOwnById r7, r10, "writeValue"
+05d0  GetByIdShort r10, r9, 1, "default"
+05d5  GetById r11, r10, 5, "RADIATOR"
+05db  NewArray r10, 2
+05df  PutOwnByIndex r10, r11, 0
+05e3  GetByIdShort r11, r9, 1, "default"
+05e8  GetByIdShort r11, r11, 4, "MSC"
+05ed  PutOwnByIndex r10, r11, 1
+05f1  PutNewOwnById r7, r10, "excludeTypes"
+05f6  PutOwnByIndex r4, r7, 1
+05fa  NewObjectWithBuffer r7, 12, 9, 24001, 39678
+0604  LoadFromEnvironment r10, r8, 14
+0608  PutNewOwnById r7, r10, "parseValueFromRawData"
+060d  LoadFromEnvironment r10, r8, 15
+0611  PutNewOwnById r7, r10, "writeValue"
+0616  GetByIdShort r10, r9, 1, "default"
+061b  GetById r11, r10, 6, "FLAT_ABB"
+0621  NewArray r10, 1
+0625  PutOwnByIndex r10, r11, 0
+0629  PutNewOwnById r7, r10, "excludeTypes"
+062e  PutOwnByIndex r4, r7, 2
+0632  NewObjectWithBuffer r7, 11, 8, 24018, 29457
+063c  LoadFromEnvironment r10, r8, 8
+0640  PutNewOwnById r7, r10, "parseValueFromRawData"
+0645  LoadFromEnvironment r8, r8, 9
+0649  PutNewOwnById r7, r8, "writeValue"
+064e  GetByIdShort r11, r9, 1, "default"
+0653  GetById r12, r11, 5, "RADIATOR"
+0659  NewArray r11, 2
+065d  PutOwnByIndex r11, r12, 0
+0661  GetByIdShort r12, r9, 1, "default"
+0666  GetByIdShort r12, r12, 4, "MSC"
+066b  PutOwnByIndex r11, r12, 1
+066f  PutNewOwnById r7, r11, "excludeTypes"
+0674  PutOwnByIndex r4, r7, 3
+0678  NewObjectWithBuffer r7, 11, 8, 24032, 29503
+0682  PutNewOwnById r7, r10, "parseValueFromRawData"
+0687  PutNewOwnById r7, r8, "writeValue"
+068c  GetByIdShort r8, r9, 1, "default"
+0691  GetByIdShort r10, r8, 4, "MSC"
+0696  NewArray r8, 1
+069a  PutOwnByIndex r8, r10, 0
+069e  PutNewOwnById r7, r8, "excludeTypes"
+06a3  PutOwnByIndex r4, r7, 4
+06a7  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+06b1  PutOwnByIndex r4, r7, 5
+06b5  NewObjectWithBuffer r7, 4, 3, 24053, 41878
+06bf  CreateClosure r8, r6, 8617
+06c4  PutNewOwnById r7, r8, "getComputedFields"
+06c9  PutOwnByIndex r4, r7, 6
+06cd  PutNewOwnByIdShort r5, r4, "params"
+06d1  NewArray r4, 7
+06d5  NewObjectWithBuffer r7, 5, 5, 23872, 42305
+06df  PutOwnByIndex r4, r7, 0
+06e3  NewObjectWithBuffer r7, 3, 3, 23857, 42325
+06ed  PutOwnByIndex r4, r7, 1
+06f1  NewObjectWithBuffer r7, 2, 2, 23864, 41895
+06fb  PutOwnByIndex r4, r7, 2
+06ff  NewObjectWithBuffer r7, 3, 3, 23857, 42334
+0709  PutOwnByIndex r4, r7, 3
+070d  NewObjectWithBuffer r7, 7, 7, 24032, 39752
+0717  PutOwnByIndex r4, r7, 4
+071b  NewObjectWithBuffer r7, 3, 3, 23857, 42343
+0725  PutOwnByIndex r4, r7, 5
+0729  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+0733  PutOwnByIndex r4, r7, 6
+0737  PutNewOwnById r5, r4, "paramsEcoPlug"
+073c  NewArray r4, 7
+0740  NewObjectWithBuffer r7, 3, 3, 23857, 42352
+074a  PutOwnByIndex r4, r7, 0
+074e  NewObjectWithBuffer r7, 2, 2, 23864, 41895
+0758  PutOwnByIndex r4, r7, 1
+075c  NewObjectWithBuffer r7, 3, 3, 23857, 42361
+0766  PutOwnByIndex r4, r7, 2
+076a  NewObjectWithBuffer r7, 8, 8, 24057, 29554
+0774  PutOwnByIndex r4, r7, 3
+0778  NewObjectWithBuffer r7, 3, 3, 23857, 42370
+0782  PutOwnByIndex r4, r7, 4
+0786  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+0790  PutOwnByIndex r4, r7, 5
+0794  NewObjectWithBuffer r7, 4, 3, 24053, 41921
+079e  NewArrayWithBuffer r8, 2, 2, 1836
+07a6  PutNewOwnById r7, r8, "pickerData"
+07ab  PutOwnByIndex r4, r7, 6
+07af  PutNewOwnById r5, r4, "params3Phase"
+07b4  NewArray r4, 10
+07b8  PutOwnByIndex r4, r5, 0
+07bc  NewObjectWithBuffer r5, 6, 4, 23945, 42379
+07c6  NewObjectWithBuffer r8, 11, 9, 24069, 42388
+07d0  GetByIdShort r7, r9, 1, "default"
+07d5  GetById r10, r7, 3, "TSENSE_3PHASE"
+07db  NewArray r7, 1
+07df  PutOwnByIndex r7, r10, 0
+07e3  PutNewOwnById r8, r7, "excludeTypes"
+07e8  CreateClosure r7, r6, 8618
+07ed  PutNewOwnById r8, r7, "getComputedFields"
+07f2  NewArray r7, 7
+07f6  PutOwnByIndex r7, r8, 0
+07fa  NewObjectWithBuffer r8, 11, 9, 24085, 42442
+0804  GetByIdShort r10, r9, 1, "default"
+0809  GetById r11, r10, 3, "TSENSE_3PHASE"
+080f  NewArray r10, 1
+0813  PutOwnByIndex r10, r11, 0
+0817  PutNewOwnById r8, r10, "excludeTypes"
+081c  CreateClosure r10, r6, 8619
+0821  PutNewOwnById r8, r10, "getComputedFields"
+0826  PutOwnByIndex r7, r8, 1
+082a  NewObjectWithBuffer r8, 4, 3, 24053, 25
+0834  GetByIdShort r10, r9, 1, "default"
+0839  GetById r11, r10, 5, "RADIATOR"
+083f  NewArray r10, 3
+0843  PutOwnByIndex r10, r11, 0
+0847  GetByIdShort r11, r9, 1, "default"
+084c  GetById r11, r11, 3, "TSENSE_3PHASE"
+0852  PutOwnByIndex r10, r11, 1
+0856  GetByIdShort r11, r9, 1, "default"
+085b  GetByIdShort r11, r11, 4, "MSC"
+0860  PutOwnByIndex r10, r11, 2
+0864  PutNewOwnById r8, r10, "excludeTypes"
+0869  PutOwnByIndex r7, r8, 2
+086d  NewObjectWithBuffer r8, 6, 4, 24101, 42486
+0877  NewArrayWithBuffer r10, 2, 2, 1836
+087f  PutById r8, r10, 1, "pickerData"
+0885  GetByIdShort r10, r9, 1, "default"
+088a  GetById r11, r10, 5, "RADIATOR"
+0890  NewArray r10, 2
+0894  PutOwnByIndex r10, r11, 0
+0898  GetByIdShort r11, r9, 1, "default"
+089d  GetById r11, r11, 3, "TSENSE_3PHASE"
+08a3  PutOwnByIndex r10, r11, 1
+08a7  PutNewOwnById r8, r10, "excludeTypes"
+08ac  CreateClosure r10, r6, 8620
+08b1  PutNewOwnById r8, r10, "getComputedFields"
+08b6  PutOwnByIndex r7, r8, 3
+08ba  NewObjectWithBuffer r8, 4, 3, 24053, 42512
+08c4  GetByIdShort r10, r9, 1, "default"
+08c9  GetById r11, r10, 5, "RADIATOR"
+08cf  NewArray r10, 3
+08d3  PutOwnByIndex r10, r11, 0
+08d7  GetByIdShort r11, r9, 1, "default"
+08dc  GetById r11, r11, 3, "TSENSE_3PHASE"
+08e2  PutOwnByIndex r10, r11, 1
+08e6  GetByIdShort r11, r9, 1, "default"
+08eb  GetByIdShort r11, r11, 4, "MSC"
+08f0  PutOwnByIndex r10, r11, 2
+08f4  PutNewOwnById r8, r10, "excludeTypes"
+08f9  PutOwnByIndex r7, r8, 4
+08fd  NewObjectWithBuffer r8, 5, 3, 23883, 42525
+0907  CreateClosure r10, r6, 8621
+090c  PutNewOwnById r8, r10, "parseValue"
+0911  CreateClosure r10, r6, 8622
+0916  PutNewOwnById r8, r10, "writeValue"
+091b  PutOwnByIndex r7, r8, 5
+091f  NewObjectWithBuffer r8, 5, 4, 24101, 42536
+0929  NewArrayWithBuffer r10, 2, 2, 24722
+0931  PutById r8, r10, 1, "pickerData"
+0937  GetByIdShort r9, r9, 1, "default"
+093c  GetById r10, r9, 3, "TSENSE_3PHASE"
+0942  NewArray r9, 1
+0946  PutOwnByIndex r9, r10, 0
+094a  PutNewOwnById r8, r9, "excludeTypes"
+094f  PutOwnByIndex r7, r8, 6
+0953  PutNewOwnByIdShort r5, r7, "params"
+0957  NewArray r7, 2
+095b  NewObjectWithBuffer r8, 8, 8, 24109, 42559
+0965  PutOwnByIndex r7, r8, 0
+0969  NewObjectWithBuffer r8, 8, 8, 24109, 42601
+0973  PutOwnByIndex r7, r8, 1
+0977  PutNewOwnById r5, r7, "paramsEcoPlug"
+097c  PutOwnByIndex r4, r5, 1
+0980  NewObjectWithBuffer r5, 6, 4, 23838, 42643
+098a  NewArray r7, 0
+098e  PutNewOwnByIdShort r5, r7, "params"
+0992  NewArray r7, 1
+0996  NewObjectWithBuffer r8, 6, 6, 23956, 42652
+09a0  PutOwnByIndex r7, r8, 0
+09a4  PutNewOwnById r5, r7, "paramsEcoPlug"
+09a9  PutOwnByIndex r4, r5, 2
+09ad  NewObjectWithBuffer r5, 5, 4, 23945, 42663
+09b7  NewArray r7, 1
+09bb  NewObjectWithBuffer r8, 6, 6, 23956, 42672
+09c5  PutOwnByIndex r7, r8, 0
+09c9  PutNewOwnById r5, r7, "paramsEcoPlug"
+09ce  PutOwnByIndex r4, r5, 3
+09d2  NewObjectWithBuffer r5, 5, 4, 23945, 42683
+09dc  NewArray r7, 2
+09e0  NewObjectWithBuffer r8, 6, 6, 23956, 42692
+09ea  PutOwnByIndex r7, r8, 0
+09ee  NewObjectWithBuffer r8, 6, 6, 23956, 42703
+09f8  PutOwnByIndex r7, r8, 1
+09fc  PutNewOwnById r5, r7, "paramsEcoPlug"
+0a01  PutOwnByIndex r4, r5, 4
+0a05  NewObjectWithBuffer r5, 3, 3, 23838, 42714
+0a0f  PutOwnByIndex r4, r5, 5
+0a13  NewObjectWithBuffer r5, 3, 3, 23945, 42721
+0a1d  PutOwnByIndex r4, r5, 6
+0a21  NewObjectWithBuffer r5, 6, 4, 23945, 42728
+0a2b  NewObjectWithBuffer r7, 5, 4, 23857, 29600
+0a35  CreateClosure r6, r6, 8623
+0a3a  PutNewOwnById r7, r6, "parseValue"
+0a3f  NewArray r6, 4
+0a43  PutOwnByIndex r6, r7, 0
+0a47  NewObjectWithBuffer r7, 3, 3, 23883, 42737
+0a51  PutOwnByIndex r6, r7, 1
+0a55  NewObjectWithBuffer r7, 3, 3, 23857, 42748
+0a5f  PutOwnByIndex r6, r7, 2
+0a63  NewObjectWithBuffer r7, 3, 3, 23883, 42757
+0a6d  PutOwnByIndex r6, r7, 3
+0a71  PutNewOwnByIdShort r5, r6, "params"
+0a75  NewArray r6, 1
+0a79  NewObjectWithBuffer r7, 6, 6, 23956, 42768
+0a83  PutOwnByIndex r6, r7, 0
+0a87  PutNewOwnById r5, r6, "paramsEcoPlug"
+0a8c  PutOwnByIndex r4, r5, 7
+0a90  NewObjectWithBuffer r5, 4, 4, 24122, 41994
+0a9a  PutOwnByIndex r4, r5, 8
+0a9e  NewObjectWithBuffer r5, 2, 2, 24127, 42779
+0aa8  PutOwnByIndex r4, r5, 9
+0aac  PutNewOwnById r3, r4, "characteristics"
+0ab1  PutNewOwnByIdShort r1, r3, "settings"
+0ab5  PutById r2, r1, 2, "services"
+0abb  Ret r0
+

@@ -1,0 +1,24 @@
+{
+  "title": "Taelek BLE",
+  "config": {
+    "step": {
+      "user": {"title": "Valitse Taelek-laite", "data": {"address": "Laite"}},
+      "confirm": {"title": "Lisää {name}", "description": "Lisää laite Bluetooth-mainostietojen avulla. Etherma E-2001:n yhteensopivuus odottaa laitevarmennusta. Voit ottaa erilliset GATT-lukemat käyttöön myöhemmin integraation asetuksissa."}
+    },
+    "abort": {
+      "already_configured": "Tämä laite on jo lisätty.",
+      "not_supported": "Tuettua Taelek-mainossanomaa ei löytynyt.",
+      "no_devices_found": "Home Assistantin Bluetooth ei tällä hetkellä näe uusia Taelek-laitteita.",
+      "device_not_found": "Valittu laite ei enää näy. Yritä uudelleen."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Taelek BLE -asetukset",
+        "description": "GATT lukee termostaatin tilan viiden minuutin välein, kun GATT-entiteettejä on käytössä. Se tarvitsee yhteyksiä tukevan sovittimen tai välityslaitteen. Laitteen asetuksia ei muuteta. Epäselvät protokollatulkinnat ja epäillyt puuttuvan lämpötilan arvot jäävät tuntemattomiksi, kunnes laitteen ominaisuudet on varmennettu.",
+        "data": {"enable_gatt": "Ota kokeelliset GATT-lukemat käyttöön"}
+      }
+    }
+  }
+}

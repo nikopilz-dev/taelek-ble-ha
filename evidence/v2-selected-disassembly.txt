@@ -1,0 +1,2919 @@
+; fn#7951 "parse8bitTemp" params=2 frame=13 env=0 size=90 offset=0x1bb3e1 exc_handlers=1
+0000  LoadParam r0, 1
+0003  Mov r1, r0
+0006  LoadConstDouble r0, 0.5
+0010  Mul r1, r1, r0
+0014  LoadConstInt r0, -50
+001a  AddN r3, r1, r0
+001e  GetGlobalObject r0
+0020  TryGetById r2, r0, 1, "Number"
+0026  GetById r1, r3, 2, "toFixed"
+002c  LoadConstUInt8 r0, 1
+002f  Call2 r1, r1, r3, r0
+0034  LoadConstUndefined r0
+0036  Call2 r0, r2, r0, r1
+003b  Ret r0
+L61:
+003d  Catch r3
+003f  GetGlobalObject r0
+0041  TryGetById r2, r0, 3, "console"
+0047  GetByIdShort r1, r2, 4, "dlog"
+004c  LoadConstString r0, "parse 8bit temp failed"
+0050  Call3 r0, r1, r2, r0, r3
+0056  LoadConstNull r0
+0058  Ret r0
+
+
+; fn#7952 "unparse8bitTemp" params=2 frame=16 env=0 size=112 offset=0x1bb43b exc_handlers=1
+0000  LoadParam r0, 1
+0003  Mov r5, r0
+0006  LoadConstInt r0, -50
+000c  Sub r1, r5, r0
+0010  LoadConstDouble r0, 0.5
+001a  DivN r3, r1, r0
+001e  GetGlobalObject r0
+0020  TryGetById r4, r0, 1, "console"
+0026  GetByIdShort r2, r4, 2, "dlog"
+002b  LoadConstString r1, "unparse8bitTemp "
+002f  Call4 r1, r2, r4, r1, r5, r3
+0036  TryGetById r2, r0, 3, "Number"
+003c  GetById r1, r3, 4, "toFixed"
+0042  LoadConstUInt8 r0, 1
+0045  Call2 r1, r1, r3, r0
+004a  LoadConstUndefined r0
+004c  Call2 r0, r2, r0, r1
+0051  Ret r0
+L83:
+0053  Catch r3
+0055  GetGlobalObject r0
+0057  TryGetById r2, r0, 1, "console"
+005d  GetByIdShort r1, r2, 2, "dlog"
+0062  LoadConstString r0, "unparse 8bit temp failed"
+0066  Call3 r0, r1, r2, r0, r3
+006c  LoadConstNull r0
+006e  Ret r0
+
+
+; fn#7964 "parseType" params=2 frame=5 env=0 size=309 offset=0x1bba4e
+0000  LoadParam r2, 1
+0003  LoadThisNS r0
+0005  LoadConstUInt8 r1, 17
+0008  JStrictEqualLong L301, r2, r1
+000f  LoadConstUInt8 r1, 34
+0012  JStrictEqualLong L293, r2, r1
+0019  LoadConstUInt8 r1, 43
+001c  JStrictEqualLong L285, r2, r1
+0023  LoadConstUInt8 r1, 44
+0026  JStrictEqualLong L277, r2, r1
+002d  LoadConstUInt8 r1, 45
+0030  JStrictEqualLong L269, r2, r1
+0037  LoadConstUInt8 r1, 46
+003a  JStrictEqualLong L261, r2, r1
+0041  LoadConstUInt8 r1, 240
+0044  BitAnd r4, r2, r1
+0048  LoadConstUInt8 r3, 32
+004b  JStrictEqualLong L253, r4, r3
+0052  LoadConstUInt8 r3, 51
+0055  JStrictEqualLong L245, r2, r3
+005c  LoadConstUInt8 r3, 59
+005f  JStrictEqualLong L237, r2, r3
+0066  LoadConstUInt8 r3, 60
+0069  JStrictEqual L229, r2, r3
+006d  LoadConstUInt8 r3, 77
+0070  JStrictEqual L221, r2, r3
+0074  LoadConstUInt8 r3, 78
+0077  JStrictEqual L213, r2, r3
+007b  BitAnd r4, r2, r1
+007f  LoadConstUInt8 r3, 64
+0082  JStrictEqual L205, r4, r3
+0086  LoadConstUInt8 r3, 238
+0089  JStrictEqual L197, r2, r3
+008d  LoadConstUInt8 r3, 85
+0090  JStrictEqual L189, r2, r3
+0094  LoadConstUInt8 r3, 106
+0097  JStrictEqual L181, r2, r3
+009b  BitAnd r2, r2, r1
+009f  LoadConstUInt8 r1, 144
+00a2  JStrictEqual L174, r2, r1
+00a6  GetById r1, r0, 1, "BASE"
+00ac  Ret r1
+L174:
+00ae  GetByIdShort r1, r0, 2, "MSC"
+00b3  Ret r1
+L181:
+00b5  GetById r1, r0, 3, "TSENSE_3PHASE"
+00bb  Ret r1
+L189:
+00bd  GetById r1, r0, 4, "ECO_PLUG"
+00c3  Ret r1
+L197:
+00c5  GetById r1, r0, 5, "RADIATOR_EE"
+00cb  Ret r1
+L205:
+00cd  GetById r1, r0, 6, "OLED"
+00d3  Ret r1
+L213:
+00d5  GetById r1, r0, 7, "OLED_4E"
+00db  Ret r1
+L221:
+00dd  GetById r1, r0, 8, "OLED_4D"
+00e3  Ret r1
+L229:
+00e5  GetById r1, r0, 9, "RADIATOR_3C"
+00eb  Ret r1
+L237:
+00ed  GetById r1, r0, 10, "RADIATOR_3B"
+00f3  Ret r1
+L245:
+00f5  GetById r1, r0, 11, "RADIATOR3"
+00fb  Ret r1
+L253:
+00fd  GetById r1, r0, 12, "RADIATOR2"
+0103  Ret r1
+L261:
+0105  GetById r1, r0, 13, "FLAT_ABB"
+010b  Ret r1
+L269:
+010d  GetById r1, r0, 14, "RADIATOR_2D"
+0113  Ret r1
+L277:
+0115  GetById r1, r0, 15, "RADIATOR_2C"
+011b  Ret r1
+L285:
+011d  GetById r1, r0, 16, "RADIATOR_2B"
+0123  Ret r1
+L293:
+0125  GetById r1, r0, 17, "RADIATOR22"
+012b  Ret r1
+L301:
+012d  GetById r0, r0, 18, "RADIATOR"
+0133  Ret r0
+
+
+; fn#8385 "<anonymous>" params=8 frame=21 env=29 size=658 offset=0x1ccbae
+0000  CreateEnvironment r1
+0002  LoadParam r7, 2
+0005  LoadParam r2, 6
+0008  LoadParam r8, 7
+000b  StoreToEnvironment r1, 0, r7
+000f  StoreToEnvironment r1, 1, r8
+0013  CreateClosure r0, r1, 8386
+0018  StoreToEnvironment r1, 28, r0
+001c  CreateClosure r6, r1, 8388
+0021  LoadConstZero r0
+0023  GetByVal r3, r8, r0
+0027  LoadConstUndefined r0
+0029  Call2 r9, r7, r0, r3
+002e  GetGlobalObject r3
+0030  TryGetById r10, r3, 1, "Object"
+0036  GetByIdShort r5, r10, 2, "defineProperty"
+003b  NewObject r4
+003d  LoadConstTrue r3
+003f  PutNewOwnByIdShort r4, r3, "value"
+0043  LoadConstString r3, "__esModule"
+0047  Call4 r3, r5, r10, r2, r3, r4
+004e  PutById r2, r0, 1, "COMMAND_CLOSE"
+0054  PutById r2, r0, 2, "COMMAND_COUNTER_RESET"
+005a  PutById r2, r0, 3, "COMMAND_FACTORY_RESET"
+0060  PutById r2, r0, 4, "COMMAND_NORMAL"
+0066  PutById r2, r0, 5, "COMMAND_OPEN"
+006c  PutById r2, r0, 6, "COMMAND_WINK"
+0072  PutById r2, r0, 7, "CONFIRMATION_CODE"
+0078  PutById r2, r0, 8, "default"
+007e  LoadConstUInt8 r3, 1
+0081  GetByVal r3, r8, r3
+0085  Call2 r3, r7, r0, r3
+008a  Call2 r3, r9, r0, r3
+008f  StoreToEnvironment r1, 2, r3
+0093  LoadConstUInt8 r3, 2
+0096  GetByVal r3, r8, r3
+009a  Call2 r3, r7, r0, r3
+009f  Call2 r3, r9, r0, r3
+00a4  StoreToEnvironment r1, 3, r3
+00a8  LoadConstUInt8 r3, 3
+00ab  GetByVal r3, r8, r3
+00af  Call2 r3, r7, r0, r3
+00b4  Call2 r3, r9, r0, r3
+00b9  StoreToEnvironment r1, 4, r3
+00bd  LoadConstUInt8 r3, 4
+00c0  GetByVal r3, r8, r3
+00c4  Call2 r3, r7, r0, r3
+00c9  Call2 r3, r6, r0, r3
+00ce  StoreToEnvironment r1, 5, r3
+00d2  LoadConstUInt8 r3, 5
+00d5  GetByVal r3, r8, r3
+00d9  Call2 r3, r7, r0, r3
+00de  Call2 r4, r9, r0, r3
+00e3  StoreToEnvironment r1, 6, r4
+00e7  LoadConstUInt8 r3, 6
+00ea  GetByVal r3, r8, r3
+00ee  Call2 r3, r7, r0, r3
+00f3  Call2 r3, r9, r0, r3
+00f8  StoreToEnvironment r1, 7, r3
+00fc  LoadConstUInt8 r3, 7
+00ff  GetByVal r3, r8, r3
+0103  Call2 r3, r7, r0, r3
+0108  Call2 r3, r9, r0, r3
+010d  StoreToEnvironment r1, 8, r3
+0111  LoadConstUInt8 r3, 8
+0114  GetByVal r3, r8, r3
+0118  Call2 r3, r7, r0, r3
+011d  Call2 r3, r9, r0, r3
+0122  StoreToEnvironment r1, 9, r3
+0126  LoadConstUInt8 r3, 9
+0129  GetByVal r3, r8, r3
+012d  Call2 r3, r7, r0, r3
+0132  Call2 r3, r9, r0, r3
+0137  StoreToEnvironment r1, 10, r3
+013b  LoadConstUInt8 r3, 10
+013e  GetByVal r3, r8, r3
+0142  Call2 r3, r7, r0, r3
+0147  Call2 r3, r6, r0, r3
+014c  StoreToEnvironment r1, 11, r3
+0150  LoadConstUInt8 r3, 11
+0153  GetByVal r3, r8, r3
+0157  Call2 r3, r7, r0, r3
+015c  StoreToEnvironment r1, 12, r3
+0160  LoadConstUInt8 r5, 12
+0163  GetByVal r5, r8, r5
+0167  Call2 r5, r7, r0, r5
+016c  Call2 r5, r9, r0, r5
+0171  StoreToEnvironment r1, 13, r5
+0175  LoadConstUInt8 r5, 13
+0178  GetByVal r5, r8, r5
+017c  Call2 r5, r7, r0, r5
+0181  Call2 r5, r9, r0, r5
+0186  StoreToEnvironment r1, 14, r5
+018a  LoadConstUInt8 r5, 14
+018d  GetByVal r5, r8, r5
+0191  Call2 r5, r7, r0, r5
+0196  Call2 r5, r9, r0, r5
+019b  StoreToEnvironment r1, 15, r5
+019f  LoadConstUInt8 r5, 15
+01a2  GetByVal r5, r8, r5
+01a6  Call2 r5, r7, r0, r5
+01ab  Call2 r5, r6, r0, r5
+01b0  StoreToEnvironment r1, 16, r5
+01b4  GetByIdShort r5, r3, 3, "Platform"
+01b9  GetByIdShort r7, r5, 4, "OS"
+01be  LoadConstInt r5, 25000
+01c4  LoadConstString r6, "android"
+01c8  JStrictNotEqual L466, r7, r6
+01cc  LoadConstInt r5, 30000
+L466:
+01d2  StoreNPToEnvironment r1, 17, r5
+01d6  LoadConstString r5, "scanning"
+01da  StoreToEnvironment r1, 18, r5
+01de  LoadConstString r5, "idle"
+01e2  StoreToEnvironment r1, 19, r5
+01e6  LoadConstString r5, "connected"
+01ea  StoreToEnvironment r1, 20, r5
+01ee  GetByIdShort r4, r4, 5, "default"
+01f3  GetById r4, r4, 6, "RADIATOR_2C"
+01f9  StoreToEnvironment r1, 21, r4
+01fd  LoadConstUInt8 r4, 71
+0200  StoreNPToEnvironment r1, 22, r4
+0204  LoadConstString r4, "Tael"
+0208  StoreToEnvironment r1, 23, r4
+020c  LoadConstUInt8 r4, 81
+020f  PutById r2, r4, 6, "COMMAND_WINK"
+0215  StoreNPToEnvironment r1, 24, r4
+0219  LoadConstUInt8 r4, 98
+021c  PutById r2, r4, 5, "COMMAND_OPEN"
+0222  LoadConstUInt8 r4, 115
+0225  PutById r2, r4, 1, "COMMAND_CLOSE"
+022b  LoadConstUInt8 r4, 132
+022e  PutById r2, r4, 4, "COMMAND_NORMAL"
+0234  LoadConstUInt8 r4, 149
+0237  PutById r2, r4, 3, "COMMAND_FACTORY_RESET"
+023d  StoreNPToEnvironment r1, 25, r4
+0241  LoadConstUInt8 r4, 166
+0244  PutById r2, r4, 2, "COMMAND_COUNTER_RESET"
+024a  LoadConstUInt8 r4, 131
+024d  PutById r2, r4, 7, "CONFIRMATION_CODE"
+0253  StoreNPToEnvironment r1, 26, r4
+0257  GetById r4, r3, 7, "NativeModules"
+025d  GetById r13, r4, 8, "BleManager"
+0263  GetById r3, r3, 9, "NativeEventEmitter"
+0269  GetByIdShort r4, r3, 10, "prototype"
+026e  CreateThis r4, r4, r3
+0272  Mov r14, r4
+0275  Construct r3, r3, 2
+0279  SelectObject r3, r4, r3
+027d  StoreToEnvironment r1, 27, r3
+0281  CreateClosure r1, r1, 8389
+0286  Call1 r1, r1, r0
+028a  PutById r2, r1, 8, "default"
+0290  Ret r0
+
+
+; fn#8408 "<anonymous>" params=3 frame=4 env=0 size=57 offset=0x1cd78d
+0000  LoadParam r1, 1
+0003  LoadParam r3, 2
+0006  LoadConstNull r2
+0008  JEqual L53, r1, r2
+000c  JEqual L53, r3, r2
+0010  GetEnvironment r0, 2
+0013  LoadFromEnvironment r0, r0, 6
+0017  GetByIdShort r0, r0, 1, "default"
+001c  GetById r0, r0, 2, "ECO_PLUG"
+0022  StrictEq r0, r3, r0
+0026  JmpFalse L51, r0
+0029  GetById r1, r1, 3, "paramsEcoPlug"
+002f  Neq r0, r1, r2
+L51:
+0033  Ret r0
+L53:
+0035  LoadConstFalse r0
+0037  Ret r0
+
+
+; fn#8409 "<anonymous>" params=3 frame=4 env=0 size=57 offset=0x1cd7c6
+0000  LoadParam r1, 1
+0003  LoadParam r3, 2
+0006  LoadConstNull r2
+0008  JEqual L53, r1, r2
+000c  JEqual L53, r3, r2
+0010  GetEnvironment r0, 2
+0013  LoadFromEnvironment r0, r0, 6
+0017  GetByIdShort r0, r0, 1, "default"
+001c  GetById r0, r0, 2, "TSENSE_3PHASE"
+0022  StrictEq r0, r3, r0
+0026  JmpFalse L51, r0
+0029  GetById r1, r1, 3, "params3Phase"
+002f  Neq r0, r1, r2
+L51:
+0033  Ret r0
+L53:
+0035  LoadConstFalse r0
+0037  Ret r0
+
+
+; fn#8410 "<anonymous>" params=3 frame=2 env=2 size=23 offset=0x1cd7ff
+0000  CreateEnvironment r0
+0002  LoadParam r1, 1
+0005  StoreToEnvironment r0, 0, r1
+0009  LoadParam r1, 2
+000c  StoreToEnvironment r0, 1, r1
+0010  CreateClosure r0, r0, 8411
+0015  Ret r0
+
+
+; fn#8411 "<anonymous>" params=2 frame=41 env=0 size=1082 offset=0x1cd816 exc_handlers=2
+0000  LoadParam r4, 1
+0003  LoadConstUndefined r16
+0005  LoadConstUndefined r17
+0007  LoadConstUndefined r0
+0009  LoadConstUndefined r18
+000b  LoadConstUndefined r19
+000d  LoadConstUndefined r20
+000f  LoadConstUndefined r21
+0011  LoadConstUndefined r22
+0013  LoadConstUndefined r23
+0015  Mov r1, r4
+0018  JmpFalse L66, r1
+001b  GetEnvironment r2, 3
+001e  LoadFromEnvironment r3, r2, 0
+0022  LoadFromEnvironment r5, r2, 1
+0026  LoadConstUInt8 r2, 17
+0029  GetByVal r2, r5, r2
+002d  Call2 r2, r3, r16, r2
+0032  GetById r3, r2, 1, "Buffer"
+0038  GetByIdShort r2, r3, 2, "from"
+003d  Call2 r1, r2, r3, r4
+L66:
+0042  Mov r17, r1
+0045  NewArray r0, 0
+0049  LoadConstZero r18
+004b  NewArrayWithBuffer r19, 2, 2, 24656
+0053  NewArrayWithBuffer r20, 4, 4, 24661
+005b  GetEnvironment r1, 1
+005e  LoadFromEnvironment r5, r1, 0
+0062  GetById r4, r5, 3, "_hasEcoPlugParams"
+0068  GetEnvironment r14, 0
+006b  LoadFromEnvironment r3, r14, 0
+006f  LoadFromEnvironment r2, r14, 1
+0073  GetByIdShort r2, r2, 4, "deviceType"
+0078  Call3 r2, r4, r5, r3, r2
+007e  JmpTrue L180, r2
+0081  LoadFromEnvironment r4, r1, 0
+0085  GetById r3, r4, 5, "_has3PhaseParams"
+008b  LoadFromEnvironment r2, r14, 0
+008f  LoadFromEnvironment r1, r14, 1
+0093  GetByIdShort r1, r1, 4, "deviceType"
+0098  Call3 r1, r3, r4, r2, r1
+009e  LoadFromEnvironment r2, r14, 0
+00a2  JmpTrue L172, r1
+00a5  GetByIdShort r1, r2, 6, "params"
+00aa  Jmp L190
+L172:
+00ac  GetById r1, r2, 7, "params3Phase"
+00b2  Jmp L190
+L180:
+00b4  LoadFromEnvironment r2, r14, 0
+00b8  GetById r1, r2, 8, "paramsEcoPlug"
+L190:
+00be  Mov r13, r1
+00c1  IteratorBegin r2, r13
+00c4  LoadConstUInt8 r12, 60
+00c7  LoadConstInt r11, -60
+00cd  LoadConstString r10, "measuredFloor"
+00d1  LoadConstUInt8 r9, 2
+00d4  GetGlobalObject r8
+00d6  LoadConstString r7, "+++++++++++++++++++++++++++ ignoring string and factor members of model when parseValueFromRawData is present"
+00da  GetEnvironment r6, 3
+00dd  LoadConstString r5, "setPoint"
+00e1  LoadConstInt r4, -1
+00e7  LoadConstString r3, "_getParseFunction rawData.copy: "
+00eb  LoadConstUInt8 r1, 17
+L238:
+00ee  IteratorNext r26, r2, r13
+00f2  Mov r24, r2
+00f5  JStrictEqualLong L1080, r24, r16
+00fc  Mov r21, r26
+00ff  LoadFromEnvironment r24, r6, 7
+0103  GetByIdShort r25, r24, 9, "default"
+0108  GetByIdShort r24, r25, 10, "clone"
+010d  Call2 r22, r24, r25, r26
+0112  Mov r25, r22
+0115  LoadFromEnvironment r26, r6, 0
+0119  LoadFromEnvironment r24, r6, 1
+011d  GetByVal r24, r24, r1
+0121  Call2 r24, r26, r16, r24
+0126  GetById r28, r24, 1, "Buffer"
+012c  GetById r27, r28, 11, "alloc"
+0132  Mov r24, r21
+0135  GetByIdShort r26, r24, 12, "length"
+013a  Call2 r26, r27, r28, r26
+013f  PutById r25, r26, 1, "rawData"
+0145  Mov r28, r17
+0148  GetById r27, r28, 13, "copy"
+014e  GetById r33, r25, 14, "rawData"
+0154  Mov r25, r18
+0157  GetByIdShort r24, r24, 12, "length"
+015c  Add r30, r25, r24
+0160  Mov r34, r28
+0163  LoadConstZero r32
+0165  Mov r31, r25
+0168  Call r24, r27, 5
+016c  Jmp L389
+L366:
+016e  Catch r27
+0170  TryGetById r26, r8, 15, "console"
+0176  GetByIdShort r25, r26, 16, "log"
+017b  Mov r24, r21
+017e  Call4 r24, r25, r26, r3, r27, r24
+L389:
+0185  Mov r24, r22
+0188  GetById r24, r24, 17, "getComputedFields"
+018e  JmpFalseLong L548, r24
+0194  Mov r24, r22
+0197  GetById r26, r24, 17, "getComputedFields"
+019d  LoadFromEnvironment r25, r14, 1
+01a1  Call2 r25, r26, r24, r25
+01a6  PutById r24, r25, 2, "computedFields"
+01ac  GetById r24, r24, 18, "computedFields"
+01b2  JmpFalse L494, r24
+01b5  Mov r24, r22
+01b8  GetById r24, r24, 18, "computedFields"
+01be  GetById r24, r24, 19, "factor"
+01c4  JmpFalse L494, r24
+01c7  Mov r25, r22
+01ca  GetById r24, r25, 18, "computedFields"
+01d0  GetById r24, r24, 19, "factor"
+01d6  PutById r25, r24, 3, "factor"
+01dc  GetById r24, r25, 18, "computedFields"
+01e2  GetById r24, r24, 20, "rightSideDigits"
+01e8  PutById r25, r24, 4, "rightSideDigits"
+L494:
+01ee  Mov r24, r22
+01f1  GetById r24, r24, 18, "computedFields"
+01f7  JmpFalse L548, r24
+01fa  Mov r24, r22
+01fd  GetById r24, r24, 18, "computedFields"
+0203  GetById r24, r24, 21, "parseValue"
+0209  JmpFalse L548, r24
+020c  Mov r25, r21
+020f  Mov r24, r22
+0212  GetById r24, r24, 18, "computedFields"
+0218  GetById r24, r24, 21, "parseValue"
+021e  PutById r25, r24, 5, "parseValue"
+L548:
+0224  LoadConstUndefined r23
+0226  Mov r24, r21
+0229  GetById r25, r24, 22, "parseValueFromRawData"
+022f  Mov r24, r21
+0232  JmpTrueLong L807, r25
+0238  GetById r25, r24, 23, "string"
+023e  JmpTrueLong L774, r25
+0244  Mov r25, r21
+0247  GetById r25, r25, 24, "byteArray"
+024d  JmpFalse L645, r25
+0250  Mov r27, r19
+0253  GetByIdShort r26, r27, 25, "indexOf"
+0258  Mov r25, r21
+025b  GetByIdShort r25, r25, 26, "key"
+0260  Call2 r25, r26, r27, r25
+0265  JGreaterLong L741, r25, r4
+026c  Mov r27, r20
+026f  GetByIdShort r26, r27, 25, "indexOf"
+0274  Mov r25, r21
+0277  GetByIdShort r25, r25, 26, "key"
+027c  Call2 r25, r26, r27, r25
+0281  JGreater L741, r25, r4
+L645:
+0285  Mov r25, r21
+0288  GetByIdShort r25, r25, 26, "key"
+028d  JStrictEqual L705, r25, r5
+0291  Mov r25, r21
+0294  GetByIdShort r25, r25, 26, "key"
+0299  JStrictEqual L705, r25, r10
+029d  LoadFromEnvironment r29, r6, 11
+02a1  GetById r28, r29, 27, "readRawDataUint"
+02a7  Mov r27, r18
+02aa  Mov r25, r21
+02ad  GetByIdShort r26, r25, 12, "length"
+02b2  Mov r25, r17
+02b5  Call4 r23, r28, r29, r27, r26, r25
+02bc  JmpLong L871
+L705:
+02c1  LoadFromEnvironment r29, r6, 11
+02c5  GetById r28, r29, 28, "readRawDataInt"
+02cb  Mov r27, r18
+02ce  Mov r25, r21
+02d1  GetByIdShort r26, r25, 12, "length"
+02d6  Mov r25, r17
+02d9  Call4 r23, r28, r29, r27, r26, r25
+02e0  JmpLong L871
+L741:
+02e5  LoadFromEnvironment r29, r6, 11
+02e9  GetById r28, r29, 29, "readRawDataStringPart"
+02ef  Mov r27, r18
+02f2  Mov r25, r21
+02f5  GetByIdShort r26, r25, 12, "length"
+02fa  Mov r25, r17
+02fd  Call4 r23, r28, r29, r27, r26, r25
+0304  Jmp L871
+L774:
+0306  LoadFromEnvironment r29, r6, 11
+030a  GetById r28, r29, 30, "readRawDataString"
+0310  Mov r27, r18
+0313  Mov r25, r21
+0316  GetByIdShort r26, r25, 12, "length"
+031b  Mov r25, r17
+031e  Call4 r23, r28, r29, r27, r26, r25
+0325  Jmp L871
+L807:
+0327  GetById r24, r24, 19, "factor"
+032d  JmpTrue L828, r24
+0330  Mov r24, r21
+0333  GetById r24, r24, 23, "string"
+0339  JmpFalse L848, r24
+L828:
+033c  TryGetById r26, r8, 15, "console"
+0342  GetByIdShort r25, r26, 16, "log"
+0347  Mov r24, r21
+034a  Call3 r24, r25, r26, r7, r24
+L848:
+0350  Mov r26, r21
+0353  GetById r25, r26, 22, "parseValueFromRawData"
+0359  Mov r24, r22
+035c  GetById r24, r24, 14, "rawData"
+0362  Call2 r23, r25, r26, r24
+L871:
+0367  Mov r24, r22
+036a  GetById r24, r24, 19, "factor"
+0370  JmpFalse L954, r24
+0373  Mov r26, r23
+0376  Mov r24, r22
+0379  GetById r25, r24, 19, "factor"
+037f  Mul r23, r26, r25
+0383  GetById r24, r24, 20, "rightSideDigits"
+0389  TryGetById r25, r8, 31, "Number"
+038f  Mov r27, r23
+0392  GetById r26, r27, 32, "toFixed"
+0398  JmpTrue L935, r24
+039b  Call2 r24, r26, r27, r9
+03a0  Call2 r23, r25, r16, r24
+03a5  Jmp L954
+L935:
+03a7  Mov r24, r22
+03aa  GetById r24, r24, 20, "rightSideDigits"
+03b0  Call2 r24, r26, r27, r24
+03b5  Call2 r23, r25, r16, r24
+L954:
+03ba  Mov r24, r21
+03bd  GetByIdShort r24, r24, 26, "key"
+03c2  JStrictNotEqual L982, r24, r10
+03c6  Mov r24, r23
+03c9  JLess L980, r24, r11
+03cd  Mov r24, r23
+03d0  JNotGreater L982, r24, r12
+L980:
+03d4  LoadConstZero r23
+L982:
+03d6  Mov r24, r21
+03d9  GetById r24, r24, 21, "parseValue"
+03df  Mov r26, r22
+03e2  LoadFromEnvironment r25, r14, 0
+03e6  GetById r25, r25, 33, "field"
+03ec  JmpTrue L1016, r24
+03ef  Mov r24, r23
+03f2  PutByVal r26, r25, r24
+03f6  Jmp L1037
+L1016:
+03f8  Mov r28, r21
+03fb  GetById r27, r28, 21, "parseValue"
+0401  Mov r24, r23
+0404  Call2 r24, r27, r28, r24
+0409  PutByVal r26, r25, r24
+L1037:
+040d  Mov r26, r0
+0410  GetByIdShort r25, r26, 34, "push"
+0415  Mov r24, r22
+0418  Call2 r24, r25, r26, r24
+041d  Mov r25, r18
+0420  Mov r24, r21
+0423  GetByIdShort r24, r24, 12, "length"
+0428  Add r18, r25, r24
+042c  JmpLong L238
+L1073:
+0431  Catch r1
+0433  IteratorClose r2, 1
+0436  Throw r1
+L1080:
+0438  Ret r0
+
+
+; fn#8418 "_loop" params=2 frame=16 env=1 size=159 offset=0x1ce311
+0000  CreateEnvironment r3
+0002  LoadParam r2, 1
+0005  StoreToEnvironment r3, 0, r2
+0009  GetByIdShort r1, r2, 1, "key"
+000e  LoadConstString r0, "productLocation"
+0012  JStrictEqualLong L154, r1, r0
+0019  GetByIdShort r1, r2, 1, "key"
+001e  LoadConstString r0, "noncePassword"
+0022  JStrictEqual L154, r1, r0
+0026  GetByIdShort r1, r2, 1, "key"
+002b  LoadConstString r0, "nonceReserved"
+002f  JStrictEqual L154, r1, r0
+0033  GetEnvironment r1, 5
+0036  LoadFromEnvironment r0, r1, 7
+003a  GetByIdShort r6, r0, 2, "default"
+003f  GetById r5, r6, 3, "findIndex"
+0045  GetEnvironment r0, 1
+0048  LoadFromEnvironment r4, r0, 3
+004c  CreateClosure r3, r3, 8419
+0051  Call3 r4, r5, r6, r3, r4
+0057  LoadConstInt r3, -1
+005d  JStrictEqual L136, r4, r3
+0061  LoadFromEnvironment r3, r0, 3
+0065  LoadFromEnvironment r1, r1, 7
+0069  GetByIdShort r6, r1, 2, "default"
+006e  GetById r5, r6, 4, "mergeRight"
+0074  LoadFromEnvironment r1, r0, 3
+0078  GetByVal r1, r1, r4
+007c  Call3 r1, r5, r6, r1, r2
+0082  PutByVal r3, r4, r1
+0086  Jmp L150
+L136:
+0088  LoadFromEnvironment r1, r0, 3
+008c  GetByIdShort r0, r1, 5, "push"
+0091  Call2 r0, r0, r1, r2
+L150:
+0096  LoadConstUndefined r0
+0098  Ret r0
+L154:
+009a  LoadConstUInt8 r0, 1
+009d  Ret r0
+
+
+; fn#8442 "<anonymous>" params=2 frame=91 env=1 size=4906 offset=0x1cf1bb exc_handlers=30
+0000  LoadParam r0, 1
+0003  CreateEnvironment r40
+0005  Mov r1, r0
+0008  StoreToEnvironment r40, 0, r0
+000c  LoadConstUndefined r0
+000e  LoadConstUndefined r2
+0010  LoadConstUndefined r5
+0012  LoadConstUndefined r22
+0014  LoadConstUndefined r4
+0016  LoadConstUndefined r49
+0018  LoadConstUndefined r47
+001a  LoadConstUndefined r65
+001c  LoadConstUndefined r66
+001e  LoadConstUndefined r67
+0020  LoadConstUndefined r68
+0022  LoadConstUndefined r69
+0024  LoadConstUndefined r70
+0026  LoadConstUndefined r10
+0028  LoadConstUndefined r11
+002a  LoadConstUndefined r41
+002c  LoadConstUndefined r42
+002e  LoadConstUndefined r43
+0030  LoadConstUndefined r44
+0032  LoadConstUndefined r45
+0034  LoadConstUndefined r46
+0036  LoadConstUndefined r63
+0038  LoadConstUndefined r64
+003a  LoadConstUndefined r14
+003c  LoadConstUndefined r31
+003e  LoadConstUndefined r32
+0040  LoadConstUndefined r33
+0042  LoadConstUndefined r34
+0044  LoadConstUndefined r35
+0046  LoadConstUndefined r36
+0048  LoadConstUndefined r23
+004a  LoadConstUndefined r24
+004c  LoadConstUndefined r25
+004e  LoadConstUndefined r26
+0050  LoadConstUndefined r50
+0052  LoadConstUndefined r51
+0054  LoadConstUndefined r52
+0056  LoadConstUndefined r53
+0058  LoadConstUndefined r54
+005a  LoadConstUndefined r55
+005c  LoadConstUndefined r56
+005e  LoadConstUndefined r57
+0060  LoadConstUndefined r58
+0062  LoadConstUndefined r59
+0064  LoadConstUndefined r60
+0066  LoadConstUndefined r61
+0068  LoadConstUndefined r62
+006a  LoadConstUndefined r27
+006c  LoadConstUndefined r28
+006e  LoadConstUndefined r29
+0070  LoadConstUndefined r30
+0072  GetGlobalObject r3
+0074  TryGetById r8, r3, 1, "setTimeout"
+007a  CreateClosure r7, r40, 8443
+007f  LoadConstInt r6, 25000
+0085  Call3 r2, r8, r0, r7, r6
+008b  GetEnvironment r21, 3
+008e  LoadFromEnvironment r6, r21, 7
+0092  GetByIdShort r9, r6, 2, "default"
+0097  GetByIdShort r8, r9, 3, "clone"
+009c  GetEnvironment r6, 0
+009f  LoadFromEnvironment r7, r6, 0
+00a3  Call2 r12, r8, r9, r7
+00a8  Mov r5, r12
+00ab  TryGetById r9, r3, 4, "console"
+00b1  GetByIdShort r8, r9, 5, "log"
+00b6  LoadConstString r7, "Modified settings: "
+00ba  Call3 r7, r8, r9, r7, r12
+00c0  NewObject r8
+00c2  NewArray r22, 0
+00c6  GetEnvironment r20, 1
+00c9  LoadFromEnvironment r7, r20, 0
+00cd  GetById r7, r7, 6, "settingsService"
+00d3  JmpTrue L246, r7
+00d6  LoadConstFalse r7
+00d8  PutById r8, r7, 1, "ok"
+00de  Mov r7, r1
+00e1  Call2 r7, r7, r0, r8
+00e6  TryGetById r8, r3, 7, "clearTimeout"
+00ec  Mov r7, r2
+00ef  Call2 r7, r8, r0, r7
+00f4  Ret r0
+L246:
+00f6  LoadFromEnvironment r7, r20, 0
+00fa  GetById r8, r7, 8, "bleSpec"
+0100  GetById r8, r8, 9, "services"
+0106  GetByIdShort r8, r8, 10, "settings"
+010b  GetById r4, r8, 11, "characteristics"
+0111  GetById r7, r7, 8, "bleSpec"
+0117  GetById r7, r7, 9, "services"
+011d  GetById r7, r7, 12, "info"
+0123  GetById r49, r7, 11, "characteristics"
+0129  TryGetById r9, r3, 4, "console"
+012f  GetByIdShort r8, r9, 5, "log"
+0134  LoadConstString r7, "******************************************** modifiedSettings: ******************************************** IN"
+0138  Call2 r7, r8, r9, r7
+013d  Mov r7, r5
+0140  Mov r38, r7
+0143  IteratorBegin r8, r38
+0146  LoadConstString r37, "---- use value "
+014a  LoadConstString r15, "saveSettings error 1"
+014e  LoadConstString r39, "no param buffer for key: "
+0152  LoadConstUInt8 r19, 4
+0155  LoadConstUInt8 r13, 2
+0158  LoadConstUInt8 r12, 1
+015b  LoadConstUInt8 r17, 17
+015e  LoadConstString r16, "productButtons2"
+0162  LoadConstString r48, "productButtons"
+0166  LoadConstString r9, "value"
+016a  LoadConstString r7, "---- factor, value in "
+L366:
+016e  IteratorNext r72, r8, r38
+0172  Mov r71, r8
+0175  JStrictEqualLong L1153, r71, r0
+017c  Mov r47, r72
+017f  GetById r72, r72, 13, "originalKey"
+0185  Mov r71, r72
+0188  JmpTrue L403, r72
+018b  Mov r72, r47
+018e  GetByIdShort r71, r72, 14, "key"
+L403:
+0193  Mov r65, r71
+0196  Mov r71, r47
+0199  GetById r71, r71, 15, "factor"
+019f  JmpFalse L487, r71
+01a2  TryGetById r75, r3, 4, "console"
+01a8  GetByIdShort r74, r75, 5, "log"
+01ad  Mov r72, r47
+01b0  GetById r73, r72, 15, "factor"
+01b6  GetByIdShort r71, r72, 16, "value"
+01bb  Call4 r71, r74, r75, r7, r73, r71
+01c2  TryGetById r74, r3, 17, "Math"
+01c8  GetByIdShort r73, r74, 18, "round"
+01cd  GetByIdShort r75, r72, 16, "value"
+01d2  GetById r71, r72, 15, "factor"
+01d8  Div r71, r75, r71
+01dc  Call2 r71, r73, r74, r71
+01e1  PutById r72, r71, 2, "value"
+L487:
+01e7  TryGetById r73, r3, 4, "console"
+01ed  GetByIdShort r72, r73, 5, "log"
+01f2  Mov r71, r47
+01f5  GetByIdShort r71, r71, 16, "value"
+01fa  Call3 r71, r72, r73, r37, r71
+0200  Mov r73, r4
+0203  Mov r71, r73
+0206  IteratorBegin r72, r71
+L521:
+0209  IteratorNext r73, r72, r71
+020d  Mov r74, r72
+0210  JStrictEqualLong L1141, r74, r0
+0217  Mov r66, r73
+021a  GetById r73, r73, 19, "field"
+0220  JStrictNotEqualLong L1124, r73, r9
+0227  Mov r73, r66
+022a  GetByIdShort r73, r73, 20, "params"
+022f  JmpTrue L617, r73
+0232  LoadFromEnvironment r76, r20, 0
+0236  GetById r75, r76, 21, "_hasEcoPlugParams"
+023c  Mov r74, r66
+023f  LoadFromEnvironment r73, r6, 1
+0243  Call3 r73, r75, r76, r74, r73
+0249  JmpTrue L617, r73
+024c  LoadFromEnvironment r76, r20, 0
+0250  GetById r75, r76, 22, "_has3PhaseParams"
+0256  Mov r74, r66
+0259  LoadFromEnvironment r73, r6, 1
+025d  Call3 r73, r75, r76, r74, r73
+0263  JmpFalseLong L1124, r73
+L617:
+0269  Mov r73, r66
+026c  GetByIdShort r73, r73, 23, "name"
+0271  JStrictEqualLong L1129, r73, r48
+0278  Mov r73, r66
+027b  GetByIdShort r73, r73, 23, "name"
+0280  JStrictEqualLong L1129, r73, r16
+0287  Mov r74, r66
+028a  GetByIdShort r73, r74, 24, "data"
+028f  JmpTrue L668, r73
+0292  Mov r73, r66
+0295  GetByIdShort r73, r73, 24, "data"
+029a  Jmp L709
+L668:
+029c  LoadFromEnvironment r76, r21, 0
+02a0  LoadFromEnvironment r75, r21, 1
+02a4  GetByVal r75, r75, r17
+02a8  Call2 r75, r76, r0, r75
+02ad  GetById r77, r75, 25, "Buffer"
+02b3  GetByIdShort r76, r77, 26, "from"
+02b8  Mov r75, r66
+02bb  GetByIdShort r75, r75, 24, "data"
+02c0  Call2 r73, r76, r77, r75
+L709:
+02c5  PutById r74, r73, 3, "data"
+02cb  LoadConstZero r67
+02cd  LoadConstUndefined r68
+02cf  LoadFromEnvironment r76, r20, 0
+02d3  GetById r75, r76, 21, "_hasEcoPlugParams"
+02d9  Mov r74, r66
+02dc  LoadFromEnvironment r73, r6, 1
+02e0  Call3 r73, r75, r76, r74, r73
+02e6  JmpTrue L789, r73
+02e9  LoadFromEnvironment r76, r20, 0
+02ed  GetById r75, r76, 22, "_has3PhaseParams"
+02f3  Mov r74, r66
+02f6  LoadFromEnvironment r73, r6, 1
+02fa  Call3 r74, r75, r76, r74, r73
+0300  Mov r73, r66
+0303  JmpTrue L781, r74
+0306  GetByIdShort r68, r73, 20, "params"
+030b  Jmp L798
+L781:
+030d  GetById r68, r73, 27, "params3Phase"
+0313  Jmp L798
+L789:
+0315  Mov r73, r66
+0318  GetById r68, r73, 28, "paramsEcoPlug"
+L798:
+031e  Mov r75, r68
+0321  Mov r73, r75
+0324  IteratorBegin r74, r73
+L807:
+0327  IteratorNext r75, r74, r73
+032b  Mov r76, r74
+032e  JStrictEqualLong L1124, r76, r0
+0335  Mov r69, r75
+0338  GetByIdShort r76, r75, 14, "key"
+033d  Mov r75, r65
+0340  JStrictNotEqualLong L1097, r76, r75
+0347  Mov r75, r69
+034a  GetById r75, r75, 29, "writeValue"
+0350  Mov r77, r69
+0353  JmpTrueLong L995, r75
+0359  GetByIdShort r75, r77, 30, "length"
+035e  JStrictEqual L962, r75, r12
+0362  Mov r75, r69
+0365  GetByIdShort r75, r75, 30, "length"
+036a  JStrictEqual L929, r75, r13
+036e  Mov r75, r69
+0371  GetByIdShort r75, r75, 30, "length"
+0376  JStrictNotEqualLong L1076, r75, r19
+037d  Mov r75, r66
+0380  GetByIdShort r79, r75, 24, "data"
+0385  GetById r78, r79, 31, "writeUInt32LE"
+038b  Mov r75, r47
+038e  GetByIdShort r76, r75, 16, "value"
+0393  Mov r75, r67
+0396  Call3 r75, r78, r79, r76, r75
+039c  JmpLong L1076
+L929:
+03a1  Mov r75, r66
+03a4  GetByIdShort r79, r75, 24, "data"
+03a9  GetById r78, r79, 32, "writeUInt16LE"
+03af  Mov r75, r47
+03b2  GetByIdShort r76, r75, 16, "value"
+03b7  Mov r75, r67
+03ba  Call3 r75, r78, r79, r76, r75
+03c0  Jmp L1076
+L962:
+03c2  Mov r75, r66
+03c5  GetByIdShort r79, r75, 24, "data"
+03ca  GetById r78, r79, 33, "writeUInt8"
+03d0  Mov r75, r47
+03d3  GetByIdShort r76, r75, 16, "value"
+03d8  Mov r75, r67
+03db  Call3 r75, r78, r79, r76, r75
+03e1  Jmp L1076
+L995:
+03e3  GetById r76, r77, 29, "writeValue"
+03e9  Mov r75, r47
+03ec  GetByIdShort r75, r75, 16, "value"
+03f1  Call2 r75, r76, r77, r75
+03f6  Mov r70, r75
+03f9  JmpTrue L1050, r75
+03fc  TryGetById r77, r3, 4, "console"
+0402  GetByIdShort r76, r77, 5, "log"
+0407  Mov r75, r69
+040a  GetByIdShort r75, r75, 14, "key"
+040f  Call3 r75, r76, r77, r39, r75
+0415  JmpLong L807
+L1050:
+041a  Mov r78, r70
+041d  GetById r77, r78, 34, "copy"
+0423  Mov r75, r66
+0426  GetByIdShort r76, r75, 24, "data"
+042b  Mov r75, r67
+042e  Call3 r75, r77, r78, r76, r75
+L1076:
+0434  Jmp L1097
+L1078:
+0436  Catch r77
+0438  TryGetById r76, r3, 4, "console"
+043e  GetByIdShort r75, r76, 35, "error"
+0443  Call3 r75, r75, r76, r15, r77
+L1097:
+0449  Mov r76, r67
+044c  Mov r75, r69
+044f  GetByIdShort r75, r75, 30, "length"
+0454  Add r67, r76, r75
+0458  JmpLong L807
+L1117:
+045d  Catch r73
+045f  IteratorClose r74, 1
+0462  Throw r73
+L1124:
+0464  JmpLong L521
+L1129:
+0469  JmpLong L521
+L1134:
+046e  Catch r71
+0470  IteratorClose r72, 1
+0473  Throw r71
+L1141:
+0475  JmpLong L366
+L1146:
+047a  Catch r7
+047c  IteratorClose r8, 1
+047f  Throw r7
+L1153:
+0481  TryGetById r15, r3, 4, "console"
+0487  GetByIdShort r8, r15, 5, "log"
+048c  LoadConstString r7, "******************************************** modifiedSettings: ******************************************** OUT"
+0490  Call2 r7, r8, r15, r7
+0495  Mov r15, r4
+0498  Mov r7, r15
+049b  IteratorBegin r8, r7
+049e  LoadConstNull r15
+04a0  LoadConstString r47, "productParamC"
+L1188:
+04a4  IteratorNext r37, r8, r7
+04a8  Mov r38, r8
+04ab  JStrictEqualLong L1408, r38, r0
+04b2  Mov r10, r37
+04b5  GetById r37, r37, 19, "field"
+04bb  JStrictNotEqualLong L1391, r37, r9
+04c2  Mov r37, r10
+04c5  GetByIdShort r37, r37, 20, "params"
+04ca  JmpTrue L1281, r37
+04cd  LoadFromEnvironment r66, r20, 0
+04d1  GetById r65, r66, 21, "_hasEcoPlugParams"
+04d7  Mov r38, r10
+04da  LoadFromEnvironment r37, r6, 1
+04de  Call3 r37, r65, r66, r38, r37
+04e4  JmpTrue L1281, r37
+04e7  LoadFromEnvironment r66, r20, 0
+04eb  GetById r65, r66, 22, "_has3PhaseParams"
+04f1  Mov r38, r10
+04f4  LoadFromEnvironment r37, r6, 1
+04f8  Call3 r37, r65, r66, r38, r37
+04fe  JmpFalse L1391, r37
+L1281:
+0501  Mov r37, r10
+0504  GetByIdShort r37, r37, 23, "name"
+0509  JStrictEqual L1396, r37, r48
+050d  Mov r37, r10
+0510  GetByIdShort r37, r37, 23, "name"
+0515  JStrictEqual L1396, r37, r16
+0519  Mov r37, r10
+051c  GetByIdShort r37, r37, 23, "name"
+0521  JStrictEqual L1396, r37, r47
+0525  Mov r65, r22
+0528  GetByIdShort r38, r65, 36, "push"
+052d  LoadFromEnvironment r69, r21, 11
+0531  GetById r68, r69, 37, "writeCharacteristicAsync"
+0537  LoadFromEnvironment r37, r20, 0
+053b  GetById r37, r37, 38, "currentPeripheral"
+0541  Mov r11, r37
+0544  Eq r37, r37, r15
+0548  LoadConstUndefined r67
+054a  JmpTrue L1365, r37
+054d  Mov r37, r11
+0550  GetByIdShort r67, r37, 39, "id"
+L1365:
+0555  Mov r37, r10
+0558  GetByIdShort r66, r37, 24, "data"
+055d  GetById r37, r37, 40, "handle"
+0563  Call4 r37, r68, r69, r67, r66, r37
+056a  Call2 r37, r38, r65, r37
+L1391:
+056f  JmpLong L1188
+L1396:
+0574  JmpLong L1188
+L1401:
+0579  Catch r7
+057b  IteratorClose r8, 1
+057e  Throw r7
+L1408:
+0580  Mov r7, r49
+0583  Mov r38, r7
+0586  IteratorBegin r8, r38
+0589  LoadConstString r37, " "
+058d  LoadConstUInt8 r11, 15
+0590  LoadConstString r10, "locationString error "
+0594  LoadConstString r9, "-- p2 in"
+0598  LoadConstString r7, "productLocation"
+L1436:
+059c  IteratorNext r65, r8, r38
+05a0  Mov r66, r8
+05a3  JStrictEqualLong L2211, r66, r0
+05aa  Mov r42, r65
+05ad  GetByIdShort r65, r65, 23, "name"
+05b2  JStrictNotEqualLong L2199, r65, r7
+05b9  Mov r66, r42
+05bc  Mov r41, r66
+05bf  GetByIdShort r65, r66, 24, "data"
+05c4  JmpTrue L1489, r65
+05c7  Mov r65, r42
+05ca  GetByIdShort r65, r65, 24, "data"
+05cf  Jmp L1530
+L1489:
+05d1  LoadFromEnvironment r68, r21, 0
+05d5  LoadFromEnvironment r67, r21, 1
+05d9  GetByVal r67, r67, r17
+05dd  Call2 r67, r68, r0, r67
+05e2  GetById r69, r67, 25, "Buffer"
+05e8  GetByIdShort r68, r69, 26, "from"
+05ed  Mov r67, r42
+05f0  GetByIdShort r67, r67, 24, "data"
+05f5  Call2 r65, r68, r69, r67
+L1530:
+05fa  PutById r66, r65, 3, "data"
+0600  Mov r65, r41
+0603  GetByIdShort r65, r65, 20, "params"
+0608  JmpFalseLong L2121, r65
+060e  Mov r67, r5
+0611  Mov r65, r67
+0614  IteratorBegin r66, r65
+L1559:
+0617  IteratorNext r67, r66, r65
+061b  Mov r68, r66
+061e  JStrictEqualLong L2121, r68, r0
+0625  Mov r44, r67
+0628  Mov r68, r42
+062b  GetByIdShort r67, r68, 24, "data"
+0630  JmpTrue L1597, r67
+0633  Mov r67, r42
+0636  GetByIdShort r67, r67, 24, "data"
+063b  Jmp L1638
+L1597:
+063d  LoadFromEnvironment r70, r21, 0
+0641  LoadFromEnvironment r69, r21, 1
+0645  GetByVal r69, r69, r17
+0649  Call2 r69, r70, r0, r69
+064e  GetById r71, r69, 25, "Buffer"
+0654  GetByIdShort r70, r71, 26, "from"
+0659  Mov r69, r42
+065c  GetByIdShort r69, r69, 24, "data"
+0661  Call2 r67, r70, r71, r69
+L1638:
+0666  PutById r68, r67, 3, "data"
+066c  LoadConstZero r45
+066e  Mov r67, r41
+0671  GetByIdShort r69, r67, 20, "params"
+0676  Mov r67, r69
+0679  IteratorBegin r68, r67
+L1660:
+067c  IteratorNext r69, r68, r67
+0680  Mov r70, r68
+0683  JStrictEqualLong L2109, r70, r0
+068a  Mov r46, r69
+068d  Mov r69, r44
+0690  GetByIdShort r69, r69, 14, "key"
+0695  JStrictNotEqual L1704, r69, r7
+0699  Mov r69, r46
+069c  GetByIdShort r69, r69, 14, "key"
+06a1  JStrictEqualLong L1959, r69, r7
+L1704:
+06a8  Mov r69, r44
+06ab  GetByIdShort r70, r69, 14, "key"
+06b0  Mov r69, r46
+06b3  GetByIdShort r69, r69, 14, "key"
+06b8  JStrictNotEqualLong L2082, r70, r69
+06bf  TryGetById r71, r3, 4, "console"
+06c5  GetByIdShort r70, r71, 5, "log"
+06ca  Mov r69, r46
+06cd  Call3 r70, r70, r71, r9, r69
+06d3  GetById r69, r69, 29, "writeValue"
+06d9  Mov r71, r46
+06dc  JmpTrue L1849, r69
+06df  GetByIdShort r69, r71, 30, "length"
+06e4  JStrictEqual L1816, r69, r12
+06e8  Mov r69, r46
+06eb  GetByIdShort r69, r69, 30, "length"
+06f0  JStrictNotEqualLong L1930, r69, r13
+06f7  Mov r69, r42
+06fa  GetByIdShort r73, r69, 24, "data"
+06ff  GetById r72, r73, 32, "writeUInt16LE"
+0705  Mov r69, r44
+0708  GetByIdShort r70, r69, 16, "value"
+070d  Mov r69, r45
+0710  Call3 r69, r72, r73, r70, r69
+0716  Jmp L1930
+L1816:
+0718  Mov r69, r42
+071b  GetByIdShort r73, r69, 24, "data"
+0720  GetById r72, r73, 33, "writeUInt8"
+0726  Mov r69, r44
+0729  GetByIdShort r70, r69, 16, "value"
+072e  Mov r69, r45
+0731  Call3 r69, r72, r73, r70, r69
+0737  Jmp L1930
+L1849:
+0739  GetById r70, r71, 29, "writeValue"
+073f  Mov r69, r44
+0742  GetByIdShort r69, r69, 16, "value"
+0747  Call2 r69, r70, r71, r69
+074c  Mov r64, r69
+074f  JmpTrue L1904, r69
+0752  TryGetById r71, r3, 4, "console"
+0758  GetByIdShort r70, r71, 5, "log"
+075d  Mov r69, r46
+0760  GetByIdShort r69, r69, 14, "key"
+0765  Call3 r69, r70, r71, r39, r69
+076b  JmpLong L1660
+L1904:
+0770  Mov r72, r64
+0773  GetById r71, r72, 34, "copy"
+0779  Mov r69, r42
+077c  GetByIdShort r70, r69, 24, "data"
+0781  Mov r69, r45
+0784  Call3 r69, r71, r72, r70, r69
+L1930:
+078a  JmpLong L2082
+L1935:
+078f  Catch r71
+0791  TryGetById r70, r3, 4, "console"
+0797  GetByIdShort r69, r70, 35, "error"
+079c  Call3 r69, r69, r70, r10, r71
+07a2  JmpLong L2082
+L1959:
+07a7  LoadFromEnvironment r69, r21, 7
+07ab  GetByIdShort r72, r69, 2, "default"
+07b0  GetByIdShort r71, r72, 41, "find"
+07b5  Mov r70, r5
+07b8  CreateClosure r69, r40, 8444
+07bd  Call3 r69, r71, r72, r69, r70
+07c3  GetByIdShort r69, r69, 16, "value"
+07c8  Mov r63, r69
+07cb  GetByIdShort r69, r69, 30, "length"
+07d0  JNotLess L2023, r69, r11
+L2004:
+07d4  Mov r69, r63
+07d7  Add r69, r69, r37
+07db  Mov r63, r69
+07de  GetByIdShort r69, r69, 30, "length"
+07e3  JLess L2004, r69, r11
+L2023:
+07e7  LoadFromEnvironment r70, r21, 0
+07eb  LoadFromEnvironment r69, r21, 1
+07ef  GetByVal r69, r69, r17
+07f3  Call2 r69, r70, r0, r69
+07f8  GetById r71, r69, 25, "Buffer"
+07fe  GetByIdShort r70, r71, 26, "from"
+0803  Mov r69, r63
+0806  Call2 r72, r70, r71, r69
+080b  GetById r71, r72, 34, "copy"
+0811  Mov r69, r42
+0814  GetByIdShort r70, r69, 24, "data"
+0819  Mov r69, r45
+081c  Call3 r69, r71, r72, r70, r69
+L2082:
+0822  Mov r70, r45
+0825  Mov r69, r46
+0828  GetByIdShort r69, r69, 30, "length"
+082d  Add r45, r70, r69
+0831  JmpLong L1660
+L2102:
+0836  Catch r67
+0838  IteratorClose r68, 1
+083b  Throw r67
+L2109:
+083d  JmpLong L1559
+L2114:
+0842  Catch r65
+0844  IteratorClose r66, 1
+0847  Throw r65
+L2121:
+0849  Mov r67, r22
+084c  GetByIdShort r66, r67, 36, "push"
+0851  LoadFromEnvironment r71, r21, 11
+0855  GetById r70, r71, 37, "writeCharacteristicAsync"
+085b  LoadFromEnvironment r65, r20, 0
+085f  GetById r65, r65, 38, "currentPeripheral"
+0865  Mov r43, r65
+0868  Eq r65, r65, r15
+086c  LoadConstUndefined r69
+086e  JmpTrue L2169, r65
+0871  Mov r65, r43
+0874  GetByIdShort r69, r65, 39, "id"
+L2169:
+0879  Mov r65, r42
+087c  GetByIdShort r68, r65, 24, "data"
+0881  LoadFromEnvironment r65, r20, 0
+0885  GetById r65, r65, 42, "productLocationCharacteristic"
+088b  Call4 r65, r70, r71, r69, r68, r65
+0892  Call2 r65, r66, r67, r65
+L2199:
+0897  JmpLong L1436
+L2204:
+089c  Catch r7
+089e  IteratorClose r8, 1
+08a1  Throw r7
+L2211:
+08a3  Jmp L2236
+L2213:
+08a5  Catch r10
+08a7  TryGetById r9, r3, 4, "console"
+08ad  GetByIdShort r8, r9, 35, "error"
+08b2  LoadConstString r7, "saveSettings 3 "
+08b6  Call3 r7, r8, r9, r7, r10
+L2236:
+08bc  LoadFromEnvironment r8, r6, 1
+08c0  LoadFromEnvironment r7, r21, 21
+08c4  JStrictNotEqualLong L2777, r8, r7
+08cb  LoadFromEnvironment r8, r6, 2
+08cf  LoadFromEnvironment r7, r21, 22
+08d3  JNotGreaterEqualLong L2777, r8, r7
+08da  Mov r7, r49
+08dd  Mov r11, r7
+08e0  IteratorBegin r8, r11
+08e3  LoadConstString r10, "saveSettings 4 "
+08e7  LoadConstString r9, "wattageCharacteristic modified "
+08eb  LoadConstString r7, "productStateB"
+L2287:
+08ef  IteratorNext r37, r8, r11
+08f3  Mov r38, r8
+08f6  JStrictEqualLong L2752, r38, r0
+08fd  Mov r31, r37
+0900  GetByIdShort r37, r37, 23, "name"
+0905  JStrictNotEqualLong L2740, r37, r7
+090c  Mov r38, r31
+090f  GetByIdShort r37, r38, 24, "data"
+0914  JmpTrue L2337, r37
+0917  Mov r37, r31
+091a  GetByIdShort r37, r37, 24, "data"
+091f  Jmp L2378
+L2337:
+0921  LoadFromEnvironment r40, r21, 0
+0925  LoadFromEnvironment r39, r21, 1
+0929  GetByVal r39, r39, r17
+092d  Call2 r39, r40, r0, r39
+0932  GetById r41, r39, 25, "Buffer"
+0938  GetByIdShort r40, r41, 26, "from"
+093d  Mov r39, r31
+0940  GetByIdShort r39, r39, 24, "data"
+0945  Call2 r37, r40, r41, r39
+L2378:
+094a  PutById r38, r37, 3, "data"
+0950  Mov r37, r31
+0953  Mov r14, r37
+0956  GetByIdShort r37, r37, 20, "params"
+095b  JmpFalseLong L2666, r37
+0961  Mov r39, r5
+0964  Mov r37, r39
+0967  IteratorBegin r38, r37
+L2410:
+096a  IteratorNext r40, r38, r37
+096e  Mov r39, r38
+0971  JStrictEqualLong L2666, r39, r0
+0978  Mov r33, r40
+097b  LoadConstZero r34
+097d  GetById r40, r40, 13, "originalKey"
+0983  Mov r39, r40
+0986  JmpTrue L2449, r40
+0989  Mov r40, r33
+098c  GetByIdShort r39, r40, 14, "key"
+L2449:
+0991  Mov r35, r39
+0994  Mov r39, r14
+0997  GetByIdShort r41, r39, 20, "params"
+099c  Mov r39, r41
+099f  IteratorBegin r40, r39
+L2466:
+09a2  IteratorNext r41, r40, r39
+09a6  Mov r42, r40
+09a9  JStrictEqualLong L2654, r42, r0
+09b0  Mov r36, r41
+09b3  GetByIdShort r42, r41, 14, "key"
+09b8  Mov r41, r35
+09bb  JStrictNotEqualLong L2627, r42, r41
+09c2  TryGetById r43, r3, 4, "console"
+09c8  GetByIdShort r42, r43, 5, "log"
+09cd  Mov r41, r33
+09d0  Call3 r41, r42, r43, r9, r41
+09d6  Mov r41, r36
+09d9  GetByIdShort r41, r41, 30, "length"
+09de  JStrictEqual L2575, r41, r12
+09e2  Mov r41, r36
+09e5  GetByIdShort r41, r41, 30, "length"
+09ea  JStrictNotEqual L2606, r41, r13
+09ee  Mov r41, r31
+09f1  GetByIdShort r44, r41, 24, "data"
+09f6  GetById r43, r44, 32, "writeUInt16LE"
+09fc  Mov r41, r33
+09ff  GetByIdShort r42, r41, 16, "value"
+0a04  Mov r41, r34
+0a07  Call3 r41, r43, r44, r42, r41
+0a0d  Jmp L2606
+L2575:
+0a0f  Mov r41, r31
+0a12  GetByIdShort r44, r41, 24, "data"
+0a17  GetById r43, r44, 33, "writeUInt8"
+0a1d  Mov r41, r33
+0a20  GetByIdShort r42, r41, 16, "value"
+0a25  Mov r41, r34
+0a28  Call3 r41, r43, r44, r42, r41
+L2606:
+0a2e  Jmp L2627
+L2608:
+0a30  Catch r43
+0a32  TryGetById r42, r3, 4, "console"
+0a38  GetByIdShort r41, r42, 35, "error"
+0a3d  Call3 r41, r41, r42, r10, r43
+L2627:
+0a43  Mov r42, r34
+0a46  Mov r41, r36
+0a49  GetByIdShort r41, r41, 30, "length"
+0a4e  Add r34, r42, r41
+0a52  JmpLong L2466
+L2647:
+0a57  Catch r39
+0a59  IteratorClose r40, 1
+0a5c  Throw r39
+L2654:
+0a5e  JmpLong L2410
+L2659:
+0a63  Catch r37
+0a65  IteratorClose r38, 1
+0a68  Throw r37
+L2666:
+0a6a  Mov r39, r22
+0a6d  GetByIdShort r38, r39, 36, "push"
+0a72  LoadFromEnvironment r43, r21, 11
+0a76  GetById r42, r43, 37, "writeCharacteristicAsync"
+0a7c  LoadFromEnvironment r37, r20, 0
+0a80  GetById r37, r37, 38, "currentPeripheral"
+0a86  Mov r32, r37
+0a89  Eq r37, r37, r15
+0a8d  LoadConstUndefined r41
+0a8f  JmpTrue L2714, r37
+0a92  Mov r37, r32
+0a95  GetByIdShort r41, r37, 39, "id"
+L2714:
+0a9a  Mov r37, r31
+0a9d  GetByIdShort r40, r37, 24, "data"
+0aa2  GetById r37, r37, 40, "handle"
+0aa8  Call4 r37, r42, r43, r41, r40, r37
+0aaf  Call2 r37, r38, r39, r37
+L2740:
+0ab4  JmpLong L2287
+L2745:
+0ab9  Catch r7
+0abb  IteratorClose r8, 1
+0abe  Throw r7
+L2752:
+0ac0  Jmp L2777
+L2754:
+0ac2  Catch r10
+0ac4  TryGetById r9, r3, 4, "console"
+0aca  GetByIdShort r8, r9, 35, "error"
+0acf  LoadConstString r7, "saveSettings 5 "
+0ad3  Call3 r7, r8, r9, r7, r10
+L2777:
+0ad9  LoadFromEnvironment r7, r6, 1
+0add  LoadFromEnvironment r6, r21, 6
+0ae1  GetByIdShort r6, r6, 2, "default"
+0ae6  GetById r6, r6, 43, "ECO_PLUG"
+0aec  JStrictNotEqualLong L4877, r7, r6
+0af3  LoadConstFalse r25
+0af5  LoadConstFalse r26
+0af7  Mov r46, r5
+0afa  IteratorBegin r6, r46
+0afd  LoadConstString r45, "saveSettings 6 "
+0b01  LoadConstString r14, "WifiSSIDPart2"
+0b05  LoadConstString r43, "wifiSSID"
+0b09  LoadConstString r13, "WifiPasswordPart4"
+0b0d  LoadConstString r42, "wifiPassword"
+0b11  LoadConstString r41, "Modified settings wifiPassword - part 1: "
+0b15  LoadConstUInt8 r40, 20
+0b18  LoadConstString r39, "WifiPasswordPart1"
+0b1c  LoadConstString r38, "Modified settings wifiPassword - part 2: "
+0b20  LoadConstUInt8 r37, 40
+0b23  LoadConstString r36, "WifiPasswordPart2"
+0b27  LoadConstString r35, "Modified settings wifiPassword - part 3: "
+0b2b  LoadConstUInt8 r12, 60
+0b2e  LoadConstString r34, "WifiPasswordPart3"
+0b32  LoadConstString r33, "nonce"
+0b36  LoadConstUInt8 r11, 16
+0b39  LoadConstString r32, "WifiSSIDPart1"
+0b3d  LoadConstString r31, "productCounterC"
+0b41  LoadConstUInt8 r10, 32
+0b44  LoadConstString r8, "\0"
+0b48  LoadConstString r7, "Modified settings wifiSSID buffer "
+0b4c  LoadConstUInt8 r9, 64
+0b4f  LoadConstString r5, "Modified settings wifiPassword buffer "
+L2899:
+0b53  IteratorNext r63, r6, r46
+0b57  Mov r64, r6
+0b5a  JStrictEqualLong L4415, r64, r0
+0b61  Mov r50, r63
+0b64  GetByIdShort r63, r63, 14, "key"
+0b69  JStrictEqual L2940, r63, r43
+0b6d  Mov r63, r50
+0b70  GetByIdShort r63, r63, 14, "key"
+0b75  JStrictNotEqualLong L4403, r63, r42
+L2940:
+0b7c  Mov r63, r50
+0b7f  GetByIdShort r63, r63, 14, "key"
+0b84  JStrictEqual L3062, r63, r43
+0b88  Mov r63, r50
+0b8b  GetByIdShort r67, r63, 16, "value"
+0b90  LoadFromEnvironment r66, r21, 0
+0b94  LoadFromEnvironment r63, r21, 1
+0b98  GetByVal r64, r63, r17
+0b9c  Call2 r64, r66, r0, r64
+0ba1  GetById r65, r64, 25, "Buffer"
+0ba7  GetById r64, r65, 44, "alloc"
+0bad  Call2 r65, r64, r65, r9
+0bb2  Mov r24, r65
+0bb5  GetById r64, r65, 45, "fill"
+0bbb  Call2 r64, r64, r65, r8
+0bc0  GetByIdShort r64, r65, 46, "set"
+0bc5  GetByVal r63, r63, r17
+0bc9  Call2 r63, r66, r0, r63
+0bce  GetById r66, r63, 25, "Buffer"
+0bd4  GetByIdShort r63, r66, 26, "from"
+0bd9  Call2 r63, r63, r66, r67
+0bde  Call2 r63, r64, r65, r63
+0be3  TryGetById r64, r3, 4, "console"
+0be9  GetByIdShort r63, r64, 5, "log"
+0bee  Call3 r63, r63, r64, r5, r65
+0bf4  Jmp L3170
+L3062:
+0bf6  Mov r63, r50
+0bf9  GetByIdShort r67, r63, 16, "value"
+0bfe  LoadFromEnvironment r66, r21, 0
+0c02  LoadFromEnvironment r63, r21, 1
+0c06  GetByVal r64, r63, r17
+0c0a  Call2 r64, r66, r0, r64
+0c0f  GetById r65, r64, 25, "Buffer"
+0c15  GetById r64, r65, 44, "alloc"
+0c1b  Call2 r65, r64, r65, r10
+0c20  Mov r23, r65
+0c23  GetById r64, r65, 45, "fill"
+0c29  Call2 r64, r64, r65, r8
+0c2e  GetByIdShort r64, r65, 46, "set"
+0c33  GetByVal r63, r63, r17
+0c37  Call2 r63, r66, r0, r63
+0c3c  GetById r66, r63, 25, "Buffer"
+0c42  GetByIdShort r63, r66, 26, "from"
+0c47  Call2 r63, r63, r66, r67
+0c4c  Call2 r63, r64, r65, r63
+0c51  TryGetById r64, r3, 4, "console"
+0c57  GetByIdShort r63, r64, 5, "log"
+0c5c  Call3 r63, r63, r64, r7, r65
+L3170:
+0c62  LoadConstUndefined r51
+0c64  LoadConstUndefined r52
+0c66  LoadConstUndefined r53
+0c68  LoadConstUndefined r54
+0c6a  LoadConstUndefined r55
+0c6c  Mov r63, r50
+0c6f  GetByIdShort r63, r63, 14, "key"
+0c74  JStrictNotEqualLong L3483, r63, r43
+0c7b  Mov r65, r49
+0c7e  Mov r63, r65
+0c81  IteratorBegin r64, r63
+L3204:
+0c84  IteratorNext r65, r64, r63
+0c88  Mov r66, r64
+0c8b  JStrictEqualLong L3483, r66, r0
+0c92  Mov r56, r65
+0c95  GetByIdShort r65, r65, 23, "name"
+0c9a  JStrictNotEqualLong L3471, r65, r31
+0ca1  Mov r66, r56
+0ca4  GetByIdShort r65, r66, 24, "data"
+0ca9  JmpTrue L3254, r65
+0cac  Mov r65, r56
+0caf  GetByIdShort r65, r65, 24, "data"
+0cb4  Jmp L3295
+L3254:
+0cb6  LoadFromEnvironment r68, r21, 0
+0cba  LoadFromEnvironment r67, r21, 1
+0cbe  GetByVal r67, r67, r17
+0cc2  Call2 r67, r68, r0, r67
+0cc7  GetById r69, r67, 25, "Buffer"
+0ccd  GetByIdShort r68, r69, 26, "from"
+0cd2  Mov r67, r56
+0cd5  GetByIdShort r67, r67, 24, "data"
+0cda  Call2 r65, r68, r69, r67
+L3295:
+0cdf  PutById r66, r65, 3, "data"
+0ce5  Mov r65, r56
+0ce8  Mov r51, r65
+0ceb  GetById r65, r65, 28, "paramsEcoPlug"
+0cf1  JmpFalseLong L3471, r65
+0cf7  Mov r65, r51
+0cfa  GetById r67, r65, 28, "paramsEcoPlug"
+0d00  Mov r65, r67
+0d03  IteratorBegin r66, r65
+L3334:
+0d06  IteratorNext r67, r66, r65
+0d0a  Mov r68, r66
+0d0d  JStrictEqualLong L3471, r68, r0
+0d14  GetByIdShort r67, r67, 14, "key"
+0d19  JStrictNotEqual L3462, r67, r32
+0d1d  Mov r69, r23
+0d20  GetById r68, r69, 34, "copy"
+0d26  Mov r67, r56
+0d29  GetByIdShort r83, r67, 24, "data"
+0d2e  Mov r84, r69
+0d31  LoadConstZero r82
+0d33  LoadConstZero r81
+0d35  Mov r80, r11
+0d38  Call r67, r68, 5
+0d3c  Mov r69, r22
+0d3f  GetByIdShort r68, r69, 36, "push"
+0d44  LoadFromEnvironment r73, r21, 11
+0d48  GetById r72, r73, 37, "writeCharacteristicAsync"
+0d4e  LoadFromEnvironment r67, r20, 0
+0d52  GetById r67, r67, 38, "currentPeripheral"
+0d58  Mov r57, r67
+0d5b  Eq r67, r67, r15
+0d5f  LoadConstUndefined r71
+0d61  JmpTrue L3436, r67
+0d64  Mov r67, r57
+0d67  GetByIdShort r71, r67, 39, "id"
+L3436:
+0d6c  Mov r67, r56
+0d6f  GetByIdShort r70, r67, 24, "data"
+0d74  GetById r67, r67, 40, "handle"
+0d7a  Call4 r67, r72, r73, r71, r70, r67
+0d81  Call2 r67, r68, r69, r67
+L3462:
+0d86  Jmp L3334
+L3464:
+0d88  Catch r65
+0d8a  IteratorClose r66, 1
+0d8d  Throw r65
+L3471:
+0d8f  JmpLong L3204
+L3476:
+0d94  Catch r63
+0d96  IteratorClose r64, 1
+0d99  Throw r63
+L3483:
+0d9b  Mov r65, r4
+0d9e  Mov r63, r65
+0da1  IteratorBegin r64, r63
+L3492:
+0da4  IteratorNext r66, r64, r63
+0da8  Mov r65, r64
+0dab  JStrictEqualLong L4382, r65, r0
+0db2  Mov r58, r66
+0db5  GetByIdShort r65, r66, 24, "data"
+0dba  JmpTrue L3527, r65
+0dbd  Mov r65, r58
+0dc0  GetByIdShort r65, r65, 24, "data"
+0dc5  Jmp L3568
+L3527:
+0dc7  LoadFromEnvironment r68, r21, 0
+0dcb  LoadFromEnvironment r67, r21, 1
+0dcf  GetByVal r67, r67, r17
+0dd3  Call2 r67, r68, r0, r67
+0dd8  GetById r69, r67, 25, "Buffer"
+0dde  GetByIdShort r68, r69, 26, "from"
+0de3  Mov r67, r58
+0de6  GetByIdShort r67, r67, 24, "data"
+0deb  Call2 r65, r68, r69, r67
+L3568:
+0df0  PutById r66, r65, 3, "data"
+0df6  Mov r65, r50
+0df9  GetByIdShort r65, r65, 14, "key"
+0dfe  JStrictNotEqualLong L4251, r65, r42
+0e05  Mov r65, r58
+0e08  GetByIdShort r65, r65, 23, "name"
+0e0d  JStrictEqualLong L4046, r65, r47
+0e14  Mov r65, r58
+0e17  GetByIdShort r65, r65, 23, "name"
+0e1c  JStrictEqualLong L3840, r65, r33
+0e23  Mov r65, r58
+0e26  GetByIdShort r65, r65, 23, "name"
+0e2b  JStrictNotEqualLong L4251, r65, r48
+0e32  Mov r65, r58
+0e35  Mov r54, r65
+0e38  GetById r65, r65, 28, "paramsEcoPlug"
+0e3e  JmpFalseLong L4251, r65
+0e44  Mov r65, r54
+0e47  GetById r67, r65, 28, "paramsEcoPlug"
+0e4d  Mov r65, r67
+0e50  IteratorBegin r66, r65
+L3667:
+0e53  IteratorNext r67, r66, r65
+0e57  Mov r68, r66
+0e5a  JStrictEqualLong L4251, r68, r0
+0e61  GetByIdShort r67, r67, 14, "key"
+0e66  JStrictNotEqualLong L3828, r67, r34
+0e6d  Mov r69, r24
+0e70  GetById r68, r69, 34, "copy"
+0e76  Mov r67, r58
+0e79  GetByIdShort r83, r67, 24, "data"
+0e7e  Mov r84, r69
+0e81  LoadConstZero r82
+0e83  Mov r81, r37
+0e86  Mov r80, r12
+0e89  Call r67, r68, 5
+0e8d  Mov r70, r22
+0e90  GetByIdShort r69, r70, 36, "push"
+0e95  LoadFromEnvironment r74, r21, 11
+0e99  GetById r73, r74, 37, "writeCharacteristicAsync"
+0e9f  LoadFromEnvironment r67, r20, 0
+0ea3  GetById r67, r67, 38, "currentPeripheral"
+0ea9  Mov r61, r67
+0eac  Eq r67, r67, r15
+0eb0  LoadConstUndefined r72
+0eb2  JmpTrue L3773, r67
+0eb5  Mov r67, r61
+0eb8  GetByIdShort r72, r67, 39, "id"
+L3773:
+0ebd  Mov r67, r58
+0ec0  GetByIdShort r71, r67, 24, "data"
+0ec5  GetById r68, r67, 40, "handle"
+0ecb  Call4 r68, r73, r74, r72, r71, r68
+0ed2  Call2 r68, r69, r70, r68
+0ed7  TryGetById r70, r3, 4, "console"
+0edd  GetByIdShort r69, r70, 5, "log"
+0ee2  GetByIdShort r68, r67, 24, "data"
+0ee7  GetById r67, r67, 40, "handle"
+0eed  Call4 r67, r69, r70, r35, r68, r67
+L3828:
+0ef4  JmpLong L3667
+L3833:
+0ef9  Catch r65
+0efb  IteratorClose r66, 1
+0efe  Throw r65
+L3840:
+0f00  Mov r65, r58
+0f03  Mov r53, r65
+0f06  GetById r65, r65, 28, "paramsEcoPlug"
+0f0c  JmpFalseLong L4251, r65
+0f12  Mov r65, r53
+0f15  GetById r67, r65, 28, "paramsEcoPlug"
+0f1b  Mov r65, r67
+0f1e  IteratorBegin r66, r65
+L3873:
+0f21  IteratorNext r67, r66, r65
+0f25  Mov r68, r66
+0f28  JStrictEqualLong L4251, r68, r0
+0f2f  GetByIdShort r67, r67, 14, "key"
+0f34  JStrictNotEqualLong L4034, r67, r36
+0f3b  Mov r69, r24
+0f3e  GetById r68, r69, 34, "copy"
+0f44  Mov r67, r58
+0f47  GetByIdShort r83, r67, 24, "data"
+0f4c  Mov r84, r69
+0f4f  LoadConstZero r82
+0f51  Mov r81, r40
+0f54  Mov r80, r37
+0f57  Call r67, r68, 5
+0f5b  Mov r70, r22
+0f5e  GetByIdShort r69, r70, 36, "push"
+0f63  LoadFromEnvironment r74, r21, 11
+0f67  GetById r73, r74, 37, "writeCharacteristicAsync"
+0f6d  LoadFromEnvironment r67, r20, 0
+0f71  GetById r67, r67, 38, "currentPeripheral"
+0f77  Mov r60, r67
+0f7a  Eq r67, r67, r15
+0f7e  LoadConstUndefined r72
+0f80  JmpTrue L3979, r67
+0f83  Mov r67, r60
+0f86  GetByIdShort r72, r67, 39, "id"
+L3979:
+0f8b  Mov r67, r58
+0f8e  GetByIdShort r71, r67, 24, "data"
+0f93  GetById r68, r67, 40, "handle"
+0f99  Call4 r68, r73, r74, r72, r71, r68
+0fa0  Call2 r68, r69, r70, r68
+0fa5  TryGetById r70, r3, 4, "console"
+0fab  GetByIdShort r69, r70, 5, "log"
+0fb0  GetByIdShort r68, r67, 24, "data"
+0fb5  GetById r67, r67, 40, "handle"
+0fbb  Call4 r67, r69, r70, r38, r68, r67
+L4034:
+0fc2  JmpLong L3873
+L4039:
+0fc7  Catch r65
+0fc9  IteratorClose r66, 1
+0fcc  Throw r65
+L4046:
+0fce  Mov r65, r58
+0fd1  Mov r52, r65
+0fd4  GetById r65, r65, 28, "paramsEcoPlug"
+0fda  JmpFalseLong L4251, r65
+0fe0  Mov r65, r52
+0fe3  GetById r67, r65, 28, "paramsEcoPlug"
+0fe9  Mov r65, r67
+0fec  IteratorBegin r66, r65
+L4079:
+0fef  IteratorNext r67, r66, r65
+0ff3  Mov r68, r66
+0ff6  JStrictEqualLong L4251, r68, r0
+0ffd  GetByIdShort r67, r67, 14, "key"
+1002  JStrictNotEqualLong L4239, r67, r39
+1009  Mov r69, r24
+100c  GetById r68, r69, 34, "copy"
+1012  Mov r67, r58
+1015  GetByIdShort r83, r67, 24, "data"
+101a  Mov r84, r69
+101d  LoadConstZero r82
+101f  LoadConstZero r81
+1021  Mov r80, r40
+1024  Call r67, r68, 5
+1028  Mov r70, r22
+102b  GetByIdShort r69, r70, 36, "push"
+1030  LoadFromEnvironment r74, r21, 11
+1034  GetById r73, r74, 37, "writeCharacteristicAsync"
+103a  LoadFromEnvironment r67, r20, 0
+103e  GetById r67, r67, 38, "currentPeripheral"
+1044  Mov r59, r67
+1047  Eq r67, r67, r15
+104b  LoadConstUndefined r72
+104d  JmpTrue L4184, r67
+1050  Mov r67, r59
+1053  GetByIdShort r72, r67, 39, "id"
+L4184:
+1058  Mov r67, r58
+105b  GetByIdShort r71, r67, 24, "data"
+1060  GetById r68, r67, 40, "handle"
+1066  Call4 r68, r73, r74, r72, r71, r68
+106d  Call2 r68, r69, r70, r68
+1072  TryGetById r70, r3, 4, "console"
+1078  GetByIdShort r69, r70, 5, "log"
+107d  GetByIdShort r68, r67, 24, "data"
+1082  GetById r67, r67, 40, "handle"
+1088  Call4 r67, r69, r70, r41, r68, r67
+L4239:
+108f  JmpLong L4079
+L4244:
+1094  Catch r65
+1096  IteratorClose r66, 1
+1099  Throw r65
+L4251:
+109b  Mov r65, r58
+109e  GetByIdShort r65, r65, 23, "name"
+10a3  JStrictNotEqual L4370, r65, r16
+10a7  Mov r65, r58
+10aa  Mov r55, r65
+10ad  GetById r65, r65, 28, "paramsEcoPlug"
+10b3  JmpFalse L4370, r65
+10b6  Mov r65, r55
+10b9  GetById r67, r65, 28, "paramsEcoPlug"
+10bf  Mov r65, r67
+10c2  IteratorBegin r66, r65
+L4293:
+10c5  IteratorNext r67, r66, r65
+10c9  Mov r68, r66
+10cc  JStrictEqual L4370, r68, r0
+10d0  Mov r62, r67
+10d3  Mov r67, r50
+10d6  GetByIdShort r67, r67, 14, "key"
+10db  JStrictNotEqual L4331, r67, r42
+10df  Mov r67, r62
+10e2  GetByIdShort r67, r67, 14, "key"
+10e7  JStrictEqual L4359, r67, r13
+L4331:
+10eb  Mov r67, r50
+10ee  GetByIdShort r67, r67, 14, "key"
+10f3  JStrictNotEqual L4361, r67, r43
+10f7  Mov r67, r62
+10fa  GetByIdShort r67, r67, 14, "key"
+10ff  JStrictNotEqual L4361, r67, r14
+1103  LoadConstTrue r25
+1105  Jmp L4361
+L4359:
+1107  LoadConstTrue r26
+L4361:
+1109  Jmp L4293
+L4363:
+110b  Catch r65
+110d  IteratorClose r66, 1
+1110  Throw r65
+L4370:
+1112  JmpLong L3492
+L4375:
+1117  Catch r63
+1119  IteratorClose r64, 1
+111c  Throw r63
+L4382:
+111e  Jmp L4403
+L4384:
+1120  Catch r65
+1122  TryGetById r64, r3, 4, "console"
+1128  GetByIdShort r63, r64, 5, "log"
+112d  Call3 r63, r63, r64, r45, r65
+L4403:
+1133  JmpLong L2899
+L4408:
+1138  Catch r5
+113a  IteratorClose r6, 1
+113d  Throw r5
+L4415:
+113f  Mov r8, r4
+1142  IteratorBegin r5, r8
+1145  LoadConstString r7, "Modified settings productButtons2 "
+1149  LoadConstString r6, "Modified settings wifiPassword - part 4: "
+114d  LoadConstString r4, "Modified settings wifiSSID - part 2: "
+L4433:
+1151  IteratorNext r32, r5, r8
+1155  Mov r31, r5
+1158  JStrictEqualLong L4877, r31, r0
+115f  Mov r28, r32
+1162  GetByIdShort r31, r32, 24, "data"
+1167  JmpTrue L4468, r31
+116a  Mov r31, r28
+116d  GetByIdShort r31, r31, 24, "data"
+1172  Jmp L4509
+L4468:
+1174  LoadFromEnvironment r34, r21, 0
+1178  LoadFromEnvironment r33, r21, 1
+117c  GetByVal r33, r33, r17
+1180  Call2 r33, r34, r0, r33
+1185  GetById r35, r33, 25, "Buffer"
+118b  GetByIdShort r34, r35, 26, "from"
+1190  Mov r33, r28
+1193  GetByIdShort r33, r33, 24, "data"
+1198  Call2 r31, r34, r35, r33
+L4509:
+119d  PutById r32, r31, 3, "data"
+11a3  Mov r31, r28
+11a6  GetByIdShort r31, r31, 23, "name"
+11ab  JStrictNotEqualLong L4865, r31, r16
+11b2  Mov r31, r25
+11b5  JmpFalseLong L4865, r31
+11bb  Mov r31, r26
+11be  JmpFalseLong L4865, r31
+11c4  Mov r31, r28
+11c7  Mov r27, r31
+11ca  GetById r31, r31, 28, "paramsEcoPlug"
+11d0  JmpFalseLong L4865, r31
+11d6  Mov r31, r27
+11d9  GetById r33, r31, 28, "paramsEcoPlug"
+11df  Mov r31, r33
+11e2  IteratorBegin r32, r31
+L4581:
+11e5  IteratorNext r33, r32, r31
+11e9  Mov r34, r32
+11ec  JStrictEqualLong L4759, r34, r0
+11f3  Mov r30, r33
+11f6  GetByIdShort r33, r33, 14, "key"
+11fb  JStrictEqual L4686, r33, r13
+11ff  Mov r33, r30
+1202  GetByIdShort r33, r33, 14, "key"
+1207  JStrictNotEqualLong L4747, r33, r14
+120e  Mov r36, r23
+1211  GetById r35, r36, 34, "copy"
+1217  Mov r33, r28
+121a  GetByIdShort r83, r33, 24, "data"
+121f  Mov r84, r36
+1222  Mov r82, r19
+1225  Mov r81, r11
+1228  Mov r80, r10
+122b  Call r34, r35, 5
+122f  TryGetById r36, r3, 4, "console"
+1235  GetByIdShort r35, r36, 5, "log"
+123a  GetByIdShort r34, r33, 24, "data"
+123f  GetById r33, r33, 40, "handle"
+1245  Call4 r33, r35, r36, r4, r34, r33
+124c  Jmp L4747
+L4686:
+124e  Mov r36, r24
+1251  GetById r35, r36, 34, "copy"
+1257  Mov r33, r28
+125a  GetByIdShort r83, r33, 24, "data"
+125f  Mov r84, r36
+1262  LoadConstZero r82
+1264  Mov r81, r12
+1267  Mov r80, r9
+126a  Call r34, r35, 5
+126e  TryGetById r36, r3, 4, "console"
+1274  GetByIdShort r35, r36, 5, "log"
+1279  GetByIdShort r34, r33, 24, "data"
+127e  GetById r33, r33, 40, "handle"
+1284  Call4 r33, r35, r36, r6, r34, r33
+L4747:
+128b  JmpLong L4581
+L4752:
+1290  Catch r31
+1292  IteratorClose r32, 1
+1295  Throw r31
+L4759:
+1297  TryGetById r34, r3, 4, "console"
+129d  GetByIdShort r33, r34, 5, "log"
+12a2  Mov r31, r28
+12a5  GetByIdShort r32, r31, 24, "data"
+12aa  GetById r31, r31, 40, "handle"
+12b0  Call4 r31, r33, r34, r7, r32, r31
+12b7  Mov r33, r22
+12ba  GetByIdShort r32, r33, 36, "push"
+12bf  LoadFromEnvironment r37, r21, 11
+12c3  GetById r36, r37, 37, "writeCharacteristicAsync"
+12c9  LoadFromEnvironment r31, r20, 0
+12cd  GetById r31, r31, 38, "currentPeripheral"
+12d3  Mov r29, r31
+12d6  Eq r31, r31, r15
+12da  LoadConstUndefined r35
+12dc  JmpTrue L4839, r31
+12df  Mov r31, r29
+12e2  GetByIdShort r35, r31, 39, "id"
+L4839:
+12e7  Mov r31, r28
+12ea  GetByIdShort r34, r31, 24, "data"
+12ef  GetById r31, r31, 40, "handle"
+12f5  Call4 r31, r36, r37, r35, r34, r31
+12fc  Call2 r31, r32, r33, r31
+L4865:
+1301  JmpLong L4433
+L4870:
+1306  Catch r4
+1308  IteratorClose r5, 1
+130b  Throw r4
+L4877:
+130d  TryGetById r3, r3, 7, "clearTimeout"
+1313  Call2 r2, r3, r0, r2
+1318  Mov r2, r1
+131b  NewObject r1
+131d  LoadConstTrue r3
+131f  PutNewOwnByIdShort r1, r3, "ok"
+1323  Call2 r1, r2, r0, r1
+1328  Ret r0
+
+
+; fn#8565 "<anonymous>" params=2 frame=35 env=0 size=978 offset=0x1d2dfd
+0000  LoadParam r0, 1
+0003  GetById r1, r0, 1, "advertising"
+0009  GetByIdShort r5, r0, 2, "id"
+000e  NewObject r0
+0010  GetById r9, r1, 3, "manufacturerData"
+0016  GetGlobalObject r2
+0018  TryGetById r3, r2, 4, "Object"
+001e  GetByIdShort r1, r3, 5, "keys"
+0023  Call2 r6, r1, r3, r9
+0028  GetByIdShort r1, r6, 6, "length"
+002d  LoadConstZero r3
+002f  JGreater L65, r1, r3
+0033  NewObject r1
+0035  LoadConstUndefined r4
+0037  PutNewOwnByIdShort r1, r4, "uuid"
+003b  PutNewOwnByIdShort r1, r4, "data"
+003f  Jmp L137
+L65:
+0041  NewObject r4
+0043  GetByVal r7, r6, r3
+0047  PutNewOwnByIdShort r4, r7, "uuid"
+004b  GetEnvironment r7, 2
+004e  LoadFromEnvironment r10, r7, 0
+0052  LoadFromEnvironment r8, r7, 1
+0056  LoadConstUInt8 r7, 17
+0059  GetByVal r8, r8, r7
+005d  LoadConstUndefined r7
+005f  Call2 r7, r10, r7, r8
+0064  GetById r8, r7, 7, "Buffer"
+006a  GetByIdShort r7, r8, 8, "from"
+006f  GetByVal r6, r6, r3
+0073  GetByVal r6, r9, r6
+0077  GetById r6, r6, 9, "bytes"
+007d  Call2 r6, r7, r8, r6
+0082  PutNewOwnByIdShort r4, r6, "data"
+0086  Mov r1, r4
+L137:
+0089  GetByIdShort r7, r1, 10, "uuid"
+008e  GetByIdShort r4, r1, 11, "data"
+0093  GetByIdShort r8, r4, 12, "slice"
+0098  LoadConstUInt8 r6, 8
+009b  LoadConstUInt8 r1, 18
+009e  Call3 r13, r8, r4, r6, r1
+00a4  GetByIdShort r1, r13, 6, "length"
+00a9  Less r10, r3, r1
+00ad  LoadConstString r14, ""
+00b1  GetEnvironment r1, 2
+00b4  LoadConstUInt8 r19, 17
+00b7  LoadConstUndefined r18
+00b9  LoadConstUInt8 r9, 1
+00bc  LoadConstUInt8 r17, 191
+00bf  LoadConstUInt8 r8, 128
+00c2  LoadConstUInt8 r16, 195
+00c5  LoadConstUInt8 r15, 126
+00c8  LoadConstUInt8 r6, 32
+00cb  LoadConstZero r12
+00cd  Mov r11, r14
+00d0  JmpFalseLong L427, r10
+L214:
+00d6  GetByVal r21, r13, r12
+00da  JNotGreaterEqual L229, r21, r6
+00de  JLessEqualLong L378, r21, r15
+L229:
+00e5  Mov r20, r14
+00e8  Mov r10, r12
+00eb  JStrictNotEqualLong L406, r21, r16
+00f2  GetByIdShort r21, r13, 6, "length"
+00f7  Sub r21, r21, r9
+00fb  Mov r20, r14
+00fe  Mov r10, r12
+0101  JNotLessLong L406, r10, r21
+0108  Add r21, r12, r9
+010c  GetByVal r21, r13, r21
+0110  Mov r20, r14
+0113  Mov r10, r12
+0116  JNotGreaterEqualLong L406, r21, r8
+011d  Add r21, r12, r9
+0121  GetByVal r21, r13, r21
+0125  Mov r20, r14
+0128  Mov r10, r12
+012b  JNotLess L406, r21, r17
+012f  LoadFromEnvironment r22, r1, 0
+0133  LoadFromEnvironment r21, r1, 1
+0137  GetByVal r21, r21, r19
+013b  Call2 r21, r22, r18, r21
+0140  GetById r23, r21, 7, "Buffer"
+0146  GetByIdShort r22, r23, 8, "from"
+014b  GetByVal r24, r13, r12
+014f  NewArray r21, 2
+0153  PutOwnByIndex r21, r24, 0
+0157  Add r24, r12, r9
+015b  GetByVal r24, r13, r24
+015f  PutOwnByIndex r21, r24, 1
+0163  Call2 r22, r22, r23, r21
+0168  GetByIdShort r21, r22, 13, "toString"
+016d  Call1 r21, r21, r22
+0171  Add r20, r14, r21
+0175  Inc r10, r12
+0178  Jmp L406
+L378:
+017a  TryGetById r23, r2, 14, "String"
+0180  GetById r22, r23, 15, "fromCharCode"
+0186  GetByVal r21, r13, r12
+018a  Call2 r21, r22, r23, r21
+018f  Add r20, r14, r21
+0193  Mov r10, r12
+L406:
+0196  Inc r12, r10
+0199  GetByIdShort r10, r13, 6, "length"
+019e  Mov r14, r20
+01a1  Mov r11, r14
+01a4  JLessLong L214, r12, r10
+L427:
+01ab  GetById r10, r11, 16, "trim"
+01b1  Call1 r10, r10, r11
+01b5  PutById r0, r10, 1, "name"
+01bb  GetByIdShort r10, r0, 17, "name"
+01c0  GetByIdShort r10, r10, 6, "length"
+01c5  JStrictNotEqual L507, r10, r3
+01c9  TryGetById r12, r2, 18, "console"
+01cf  GetByIdShort r11, r12, 19, "log"
+01d4  LoadConstString r10, "nameBuffer: "
+01d8  Call3 r10, r11, r12, r10, r13
+01de  LoadFromEnvironment r10, r1, 8
+01e2  GetByIdShort r12, r10, 20, "default"
+01e7  GetByIdShort r11, r12, 21, "t"
+01ec  LoadConstString r10, "invalidName"
+01f0  Call2 r10, r11, r12, r10
+01f5  PutById r0, r10, 1, "name"
+L507:
+01fb  PutById r0, r4, 2, "rawData"
+0201  PutById r0, r7, 3, "uuid"
+0207  PutById r0, r5, 4, "id"
+020d  LoadConstUInt8 r5, 3
+0210  GetByVal r10, r4, r5
+0214  GetEnvironment r5, 0
+0217  LoadFromEnvironment r7, r5, 0
+021b  GetById r5, r7, 22, "_parseType"
+0221  Call2 r5, r5, r7, r10
+0226  PutById r0, r5, 5, "type"
+022c  GetByIdShort r7, r0, 23, "type"
+0231  LoadFromEnvironment r5, r1, 6
+0235  GetByIdShort r5, r5, 20, "default"
+023a  GetById r5, r5, 24, "ECO_PLUG"
+0240  JStrictEqualLong L759, r7, r5
+0247  GetByIdShort r7, r0, 23, "type"
+024c  LoadFromEnvironment r5, r1, 6
+0250  GetByIdShort r5, r5, 20, "default"
+0255  GetById r5, r5, 25, "TSENSE_3PHASE"
+025b  JStrictEqualLong L759, r7, r5
+0262  LoadConstUInt8 r5, 2
+0265  GetByVal r10, r4, r5
+0269  LoadConstUInt8 r7, 112
+026c  BitAnd r11, r10, r7
+0270  LoadConstUInt8 r10, 4
+0273  RShift r10, r11, r10
+0277  PutById r0, r10, 6, "state"
+027d  GetByVal r11, r4, r5
+0281  LoadConstUInt8 r10, 12
+0284  BitAnd r10, r11, r10
+0288  RShift r10, r10, r5
+028c  PutById r0, r10, 7, "error"
+0292  GetByVal r10, r4, r5
+0296  BitAnd r10, r10, r8
+029a  StrictNeq r10, r10, r3
+029e  PutById r0, r10, 8, "relay"
+02a4  GetByVal r5, r4, r5
+02a8  BitAnd r5, r5, r7
+02ac  StrictEq r5, r5, r3
+02b0  PutById r0, r5, 9, "boost"
+02b6  GetById r5, r4, 26, "readInt16LE"
+02bc  Call2 r7, r5, r4, r3
+02c1  LoadConstInt r5, 65535
+02c7  JStrictEqual L744, r7, r5
+02cb  LoadConstUInt8 r5, 10
+02ce  Div r7, r7, r5
+02d2  GetById r5, r7, 27, "toFixed"
+02d8  Call2 r5, r5, r7, r9
+02dd  PutById r0, r5, 10, "temperature"
+02e3  JmpLong L950
+L744:
+02e8  LoadConstString r5, "-.-"
+02ec  PutById r0, r5, 10, "temperature"
+02f2  JmpLong L950
+L759:
+02f7  LoadConstUInt8 r5, 2
+02fa  GetByVal r9, r4, r5
+02fe  LoadConstUInt8 r7, 15
+0301  BitAnd r7, r9, r7
+0305  PutById r0, r7, 7, "error"
+030b  GetByVal r7, r4, r5
+030f  BitAnd r7, r7, r8
+0313  StrictNeq r7, r7, r3
+0317  PutById r0, r7, 8, "relay"
+031d  GetByVal r8, r4, r5
+0321  LoadConstUInt8 r7, 64
+0324  BitAnd r7, r8, r7
+0328  StrictNeq r7, r7, r3
+032c  PutById r0, r7, 11, "green_plug"
+0332  GetByVal r5, r4, r5
+0336  BitAnd r5, r5, r6
+033a  StrictNeq r5, r5, r3
+033e  PutById r0, r5, 12, "red_plug"
+0344  GetByIdShort r6, r0, 23, "type"
+0349  LoadFromEnvironment r5, r1, 6
+034d  GetByIdShort r5, r5, 20, "default"
+0352  GetById r5, r5, 24, "ECO_PLUG"
+0358  JStrictEqual L923, r6, r5
+035c  GetById r5, r4, 28, "readUInt16LE"
+0362  Call2 r6, r5, r4, r3
+0367  LoadConstInt r5, 1440
+036d  Div r7, r6, r5
+0371  TryGetById r6, r2, 29, "Math"
+0377  GetByIdShort r5, r6, 30, "round"
+037c  LoadConstUInt8 r2, 100
+037f  MulN r2, r7, r2
+0383  Call2 r5, r5, r6, r2
+0388  GetById r2, r5, 27, "toFixed"
+038e  Call2 r2, r2, r5, r3
+0393  PutById r0, r2, 13, "onTime"
+0399  Jmp L950
+L923:
+039b  GetById r2, r4, 26, "readInt16LE"
+03a1  Call2 r3, r2, r4, r3
+03a6  GetById r2, r3, 27, "toFixed"
+03ac  Call1 r2, r2, r3
+03b0  PutById r0, r2, 13, "onTime"
+L950:
+03b6  LoadFromEnvironment r3, r1, 11
+03ba  GetById r2, r3, 31, "readRawDataUint"
+03c0  LoadConstUInt8 r1, 4
+03c3  Call4 r1, r2, r3, r1, r1, r4
+03ca  PutById r0, r1, 14, "serial"
+03d0  Ret r0
+
+
+; fn#8566 "_parseType" params=2 frame=11 env=0 size=28 offset=0x1d31cf
+0000  GetEnvironment r0, 1
+0003  LoadFromEnvironment r0, r0, 6
+0007  GetByIdShort r2, r0, 1, "default"
+000c  GetById r1, r2, 2, "parseType"
+0012  LoadParam r0, 1
+0015  Call2 r0, r1, r2, r0
+001a  Ret r0
+
+
+; fn#8569 "parseCalibTemp" params=2 frame=11 env=0 size=32 offset=0x1d33f0
+0000  LoadParam r2, 1
+0003  GetById r1, r2, 1, "readUInt8"
+0009  LoadConstZero r0
+000b  Call2 r1, r1, r2, r0
+0010  LoadConstUInt8 r0, 14
+0013  Sub r1, r1, r0
+0017  LoadConstUInt8 r0, 2
+001a  DivN r0, r1, r0
+001e  Ret r0
+
+
+; fn#8570 "writeCalibTemp" params=2 frame=12 env=0 size=75 offset=0x1d3410
+0000  GetEnvironment r0, 0
+0003  LoadFromEnvironment r2, r0, 0
+0007  LoadFromEnvironment r1, r0, 1
+000b  LoadConstUInt8 r0, 7
+000e  GetByVal r1, r1, r0
+0012  LoadConstUndefined r0
+0014  Call2 r0, r2, r0, r1
+0019  GetById r2, r0, 1, "Buffer"
+001f  GetById r1, r2, 2, "alloc"
+0025  LoadConstUInt8 r0, 1
+0028  Call2 r0, r1, r2, r0
+002d  LoadParam r2, 1
+0030  LoadConstUInt8 r1, 2
+0033  Mul r3, r2, r1
+0037  GetById r2, r0, 3, "writeUInt8"
+003d  LoadConstUInt8 r1, 14
+0040  AddN r1, r3, r1
+0044  Call2 r1, r2, r0, r1
+0049  Ret r0
+
+
+; fn#8588 "BleSpec" params=1 frame=24 env=0 size=2749 offset=0x1d39a4
+0000  CreateEnvironment r6
+0002  LoadThisNS r2
+0004  GetEnvironment r8, 1
+0007  LoadFromEnvironment r0, r8, 2
+000b  GetByIdShort r3, r0, 1, "default"
+0010  GetEnvironment r0, 0
+0013  LoadFromEnvironment r1, r0, 0
+0017  LoadConstUndefined r0
+0019  Call3 r1, r3, r0, r2, r1
+001f  NewObject r1
+0021  NewObject r3
+0023  LoadConstString r4, "2be32db1-5f6b-4cbd-8803-38d6dfb16490"
+0027  PutNewOwnByIdShort r3, r4, "uuid"
+002b  NewObjectWithBuffer r5, 5, 4, 23838, 41985
+0035  NewArray r4, 5
+0039  NewObjectWithBuffer r7, 4, 4, 23845, 40
+0043  PutOwnByIndex r4, r7, 0
+0047  NewObjectWithBuffer r7, 4, 4, 23845, 42001
+0051  PutOwnByIndex r4, r7, 1
+0055  NewObjectWithBuffer r7, 3, 3, 23853, 29350
+005f  PutOwnByIndex r4, r7, 2
+0063  NewObjectWithBuffer r7, 3, 3, 23853, 41883
+006d  PutOwnByIndex r4, r7, 3
+0071  NewObjectWithBuffer r7, 3, 3, 23853, 41898
+007b  PutOwnByIndex r4, r7, 4
+007f  PutNewOwnByIdShort r5, r4, "params"
+0083  NewArray r4, 8
+0087  PutOwnByIndex r4, r5, 0
+008b  NewObjectWithBuffer r5, 5, 4, 23838, 42010
+0095  NewArray r7, 2
+0099  NewObjectWithBuffer r9, 3, 3, 23857, 29380
+00a3  PutOwnByIndex r7, r9, 0
+00a7  NewObjectWithBuffer r9, 4, 4, 23845, 30143
+00b1  PutOwnByIndex r7, r9, 1
+00b5  PutNewOwnByIdShort r5, r7, "params"
+00b9  PutOwnByIndex r4, r5, 1
+00bd  NewObjectWithBuffer r5, 5, 4, 23838, 42019
+00c7  NewArray r7, 4
+00cb  NewObjectWithBuffer r9, 4, 4, 23864, 42028
+00d5  PutOwnByIndex r7, r9, 0
+00d9  NewObjectWithBuffer r9, 10, 7, 23872, 42037
+00e3  CreateClosure r10, r6, 8589
+00e8  PutNewOwnById r9, r10, "getComputedFields"
+00ed  LoadFromEnvironment r10, r8, 12
+00f1  PutNewOwnById r9, r10, "parseValueFromRawData"
+00f6  LoadFromEnvironment r10, r8, 13
+00fa  PutNewOwnById r9, r10, "writeValue"
+00ff  PutOwnByIndex r7, r9, 1
+0103  NewObjectWithBuffer r9, 11, 9, 23883, 29911
+010d  LoadFromEnvironment r10, r8, 16
+0111  PutNewOwnById r9, r10, "parseValueFromRawData"
+0116  LoadFromEnvironment r10, r8, 17
+011a  PutNewOwnById r9, r10, "writeValue"
+011f  PutOwnByIndex r7, r9, 2
+0123  NewObjectWithBuffer r9, 12, 9, 23883, 42063
+012d  CreateClosure r10, r6, 8590
+0132  PutNewOwnById r9, r10, "getComputedFields"
+0137  LoadFromEnvironment r11, r8, 10
+013b  PutNewOwnById r9, r11, "parseValueFromRawData"
+0140  LoadFromEnvironment r10, r8, 11
+0144  PutNewOwnById r9, r10, "writeValue"
+0149  PutOwnByIndex r7, r9, 3
+014d  PutNewOwnByIdShort r5, r7, "params"
+0151  PutOwnByIndex r4, r5, 2
+0155  NewObjectWithBuffer r5, 5, 4, 23838, 42097
+015f  NewArray r7, 8
+0163  NewObjectWithBuffer r9, 4, 4, 23900, 29750
+016d  PutOwnByIndex r7, r9, 0
+0171  NewObjectWithBuffer r9, 3, 2, 23864, 39993
+017b  CreateClosure r12, r6, 8591
+0180  PutNewOwnById r9, r12, "parseValue"
+0185  PutOwnByIndex r7, r9, 1
+0189  NewObjectWithBuffer r9, 3, 3, 23857, 41909
+0193  PutOwnByIndex r7, r9, 2
+0197  NewObjectWithBuffer r9, 4, 3, 23853, 41926
+01a1  CreateClosure r12, r6, 8592
+01a6  PutNewOwnById r9, r12, "parseValue"
+01ab  PutOwnByIndex r7, r9, 3
+01af  NewObjectWithBuffer r12, 6, 4, 23905, 39500
+01b9  LoadFromEnvironment r9, r8, 5
+01bd  GetByIdShort r13, r9, 1, "default"
+01c2  GetById r14, r13, 2, "ECO_PLUG"
+01c8  NewArray r13, 2
+01cc  PutOwnByIndex r13, r14, 0
+01d0  GetByIdShort r14, r9, 1, "default"
+01d5  GetById r14, r14, 3, "TSENSE_3PHASE"
+01db  PutOwnByIndex r13, r14, 1
+01df  PutNewOwnById r12, r13, "excludeTypes"
+01e4  CreateClosure r13, r6, 8593
+01e9  PutNewOwnById r12, r13, "getComputedFields"
+01ee  PutOwnByIndex r7, r12, 4
+01f2  NewObjectWithBuffer r12, 6, 5, 23913, 39535
+01fc  GetByIdShort r13, r9, 1, "default"
+0201  GetById r14, r13, 2, "ECO_PLUG"
+0207  NewArray r13, 3
+020b  PutOwnByIndex r13, r14, 0
+020f  GetByIdShort r14, r9, 1, "default"
+0214  GetById r14, r14, 3, "TSENSE_3PHASE"
+021a  PutOwnByIndex r13, r14, 1
+021e  GetByIdShort r14, r9, 1, "default"
+0223  GetByIdShort r14, r14, 4, "MSC"
+0228  PutOwnByIndex r13, r14, 2
+022c  PutNewOwnById r12, r13, "excludeTypes"
+0231  PutOwnByIndex r7, r12, 5
+0235  NewObjectWithBuffer r12, 7, 5, 23913, 39578
+023f  GetByIdShort r13, r9, 1, "default"
+0244  GetById r14, r13, 2, "ECO_PLUG"
+024a  NewArray r13, 3
+024e  PutOwnByIndex r13, r14, 0
+0252  GetByIdShort r14, r9, 1, "default"
+0257  GetById r14, r14, 3, "TSENSE_3PHASE"
+025d  PutOwnByIndex r13, r14, 1
+0261  GetByIdShort r14, r9, 1, "default"
+0266  GetByIdShort r14, r14, 4, "MSC"
+026b  PutOwnByIndex r13, r14, 2
+026f  PutNewOwnById r12, r13, "excludeTypes"
+0274  CreateClosure r13, r6, 8594
+0279  PutNewOwnById r12, r13, "getComputedFields"
+027e  PutOwnByIndex r7, r12, 6
+0282  NewObjectWithBuffer r12, 7, 6, 23924, 27615
+028c  CreateClosure r13, r6, 8595
+0291  PutNewOwnById r12, r13, "getComputedFields"
+0296  PutOwnByIndex r7, r12, 7
+029a  PutNewOwnByIdShort r5, r7, "params"
+029e  PutOwnByIndex r4, r5, 3
+02a2  NewObjectWithBuffer r5, 5, 4, 23838, 42106
+02ac  NewObjectWithBuffer r12, 8, 7, 23655, 27689
+02b6  CreateClosure r7, r6, 8596
+02bb  PutNewOwnById r12, r7, "getComputedFields"
+02c0  NewArray r7, 2
+02c4  PutOwnByIndex r7, r12, 0
+02c8  NewObjectWithBuffer r12, 8, 7, 23655, 29409
+02d2  CreateClosure r13, r6, 8597
+02d7  PutNewOwnById r12, r13, "getComputedFields"
+02dc  PutOwnByIndex r7, r12, 1
+02e0  PutNewOwnByIdShort r5, r7, "params"
+02e4  PutOwnByIndex r4, r5, 4
+02e8  NewObjectWithBuffer r5, 5, 4, 23838, 42115
+02f2  NewObjectWithBuffer r12, 4, 3, 23857, 41938
+02fc  CreateClosure r7, r6, 8598
+0301  PutNewOwnById r12, r7, "getComputedFields"
+0306  NewArray r7, 3
+030a  PutOwnByIndex r7, r12, 0
+030e  NewObjectWithBuffer r12, 4, 3, 23857, 41950
+0318  CreateClosure r13, r6, 8599
+031d  PutNewOwnById r12, r13, "getComputedFields"
+0322  PutOwnByIndex r7, r12, 1
+0326  NewObjectWithBuffer r12, 6, 5, 23936, 41962
+0330  CreateClosure r13, r6, 8600
+0335  PutNewOwnById r12, r13, "getComputedFields"
+033a  PutOwnByIndex r7, r12, 2
+033e  PutNewOwnByIdShort r5, r7, "params"
+0342  PutOwnByIndex r4, r5, 5
+0346  NewObjectWithBuffer r5, 5, 4, 23945, 42124
+0350  NewArray r7, 7
+0354  NewObjectWithBuffer r12, 3, 3, 23857, 42133
+035e  PutOwnByIndex r7, r12, 0
+0362  NewObjectWithBuffer r12, 3, 3, 23857, 42157
+036c  PutOwnByIndex r7, r12, 1
+0370  NewObjectWithBuffer r12, 3, 3, 23857, 42169
+037a  PutOwnByIndex r7, r12, 2
+037e  NewObjectWithBuffer r12, 3, 3, 23857, 42181
+0388  PutOwnByIndex r7, r12, 3
+038c  NewObjectWithBuffer r12, 3, 3, 23857, 39847
+0396  PutOwnByIndex r7, r12, 4
+039a  NewObjectWithBuffer r12, 3, 3, 23857, 42193
+03a4  PutOwnByIndex r7, r12, 5
+03a8  NewObjectWithBuffer r12, 3, 3, 23857, 42204
+03b2  PutOwnByIndex r7, r12, 6
+03b6  PutNewOwnByIdShort r5, r7, "params"
+03ba  PutOwnByIndex r4, r5, 6
+03be  NewObjectWithBuffer r5, 6, 4, 23945, 42213
+03c8  NewObjectWithBuffer r12, 4, 3, 23952, 40317
+03d2  CreateClosure r7, r6, 8601
+03d7  PutNewOwnById r12, r7, "getComputedFields"
+03dc  NewArray r7, 16
+03e0  PutOwnByIndex r7, r12, 0
+03e4  NewObjectWithBuffer r12, 4, 3, 23952, 40335
+03ee  CreateClosure r13, r6, 8602
+03f3  PutNewOwnById r12, r13, "getComputedFields"
+03f8  PutOwnByIndex r7, r12, 1
+03fc  NewObjectWithBuffer r12, 4, 3, 23952, 40408
+0406  CreateClosure r13, r6, 8603
+040b  PutNewOwnById r12, r13, "getComputedFields"
+0410  PutOwnByIndex r7, r12, 2
+0414  NewObjectWithBuffer r12, 4, 3, 23952, 40488
+041e  CreateClosure r13, r6, 8604
+0423  PutNewOwnById r12, r13, "getComputedFields"
+0428  PutOwnByIndex r7, r12, 3
+042c  NewObjectWithBuffer r12, 4, 3, 23952, 36290
+0436  CreateClosure r13, r6, 8605
+043b  PutNewOwnById r12, r13, "getComputedFields"
+0440  PutOwnByIndex r7, r12, 4
+0444  NewObjectWithBuffer r12, 4, 3, 23952, 40680
+044e  CreateClosure r13, r6, 8606
+0453  PutNewOwnById r12, r13, "getComputedFields"
+0458  PutOwnByIndex r7, r12, 5
+045c  NewObjectWithBuffer r12, 4, 3, 23952, 40756
+0466  CreateClosure r13, r6, 8607
+046b  PutNewOwnById r12, r13, "getComputedFields"
+0470  PutOwnByIndex r7, r12, 6
+0474  NewObjectWithBuffer r12, 4, 3, 23952, 40836
+047e  CreateClosure r13, r6, 8608
+0483  PutNewOwnById r12, r13, "getComputedFields"
+0488  PutOwnByIndex r7, r12, 7
+048c  NewObjectWithBuffer r12, 4, 3, 23952, 40907
+0496  CreateClosure r13, r6, 8609
+049b  PutNewOwnById r12, r13, "getComputedFields"
+04a0  PutOwnByIndex r7, r12, 8
+04a4  NewObjectWithBuffer r12, 4, 3, 23952, 41374
+04ae  CreateClosure r13, r6, 8610
+04b3  PutNewOwnById r12, r13, "getComputedFields"
+04b8  PutOwnByIndex r7, r12, 9
+04bc  NewObjectWithBuffer r12, 4, 3, 23952, 41441
+04c6  CreateClosure r13, r6, 8611
+04cb  PutNewOwnById r12, r13, "getComputedFields"
+04d0  PutOwnByIndex r7, r12, 10
+04d4  NewObjectWithBuffer r12, 4, 3, 23952, 41478
+04de  CreateClosure r13, r6, 8612
+04e3  PutNewOwnById r12, r13, "getComputedFields"
+04e8  PutOwnByIndex r7, r12, 11
+04ec  NewObjectWithBuffer r12, 4, 3, 23952, 860
+04f6  CreateClosure r13, r6, 8613
+04fb  PutNewOwnById r12, r13, "getComputedFields"
+0500  PutOwnByIndex r7, r12, 12
+0504  NewObjectWithBuffer r12, 4, 3, 23952, 40070
+050e  CreateClosure r13, r6, 8614
+0513  PutNewOwnById r12, r13, "getComputedFields"
+0518  PutOwnByIndex r7, r12, 13
+051c  NewObjectWithBuffer r12, 4, 3, 23952, 41807
+0526  CreateClosure r13, r6, 8615
+052b  PutNewOwnById r12, r13, "getComputedFields"
+0530  PutOwnByIndex r7, r12, 14
+0534  NewObjectWithBuffer r12, 4, 3, 23952, 29346
+053e  CreateClosure r13, r6, 8616
+0543  PutNewOwnById r12, r13, "getComputedFields"
+0548  PutOwnByIndex r7, r12, 15
+054c  PutNewOwnByIdShort r5, r7, "params"
+0550  NewArray r7, 1
+0554  NewObjectWithBuffer r12, 6, 6, 23956, 42222
+055e  PutOwnByIndex r7, r12, 0
+0562  PutNewOwnById r5, r7, "paramsEcoPlug"
+0567  PutOwnByIndex r4, r5, 7
+056b  PutNewOwnById r3, r4, "characteristics"
+0570  PutNewOwnById r1, r3, "info"
+0575  NewObject r3
+0577  LoadConstString r4, "2be32db1-5f6b-5bd8-8033-8d6dfb164900"
+057b  PutNewOwnByIdShort r3, r4, "uuid"
+057f  NewObjectWithBuffer r5, 7, 4, 8160, 42233
+0589  NewObjectWithBuffer r7, 11, 8, 23970, 42243
+0593  PutNewOwnById r7, r11, "parseValueFromRawData"
+0598  PutNewOwnById r7, r10, "writeValue"
+059d  GetByIdShort r4, r9, 1, "default"
+05a2  GetByIdShort r12, r4, 4, "MSC"
+05a7  NewArray r4, 1
+05ab  PutOwnByIndex r4, r12, 0
+05af  PutNewOwnById r7, r4, "excludeTypes"
+05b4  NewArray r4, 7
+05b8  PutOwnByIndex r4, r7, 0
+05bc  NewObjectWithBuffer r7, 12, 9, 23985, 42272
+05c6  PutNewOwnById r7, r11, "parseValueFromRawData"
+05cb  PutNewOwnById r7, r10, "writeValue"
+05d0  GetByIdShort r10, r9, 1, "default"
+05d5  GetById r11, r10, 5, "RADIATOR"
+05db  NewArray r10, 2
+05df  PutOwnByIndex r10, r11, 0
+05e3  GetByIdShort r11, r9, 1, "default"
+05e8  GetByIdShort r11, r11, 4, "MSC"
+05ed  PutOwnByIndex r10, r11, 1
+05f1  PutNewOwnById r7, r10, "excludeTypes"
+05f6  PutOwnByIndex r4, r7, 1
+05fa  NewObjectWithBuffer r7, 12, 9, 24001, 39678
+0604  LoadFromEnvironment r10, r8, 14
+0608  PutNewOwnById r7, r10, "parseValueFromRawData"
+060d  LoadFromEnvironment r10, r8, 15
+0611  PutNewOwnById r7, r10, "writeValue"
+0616  GetByIdShort r10, r9, 1, "default"
+061b  GetById r11, r10, 6, "FLAT_ABB"
+0621  NewArray r10, 1
+0625  PutOwnByIndex r10, r11, 0
+0629  PutNewOwnById r7, r10, "excludeTypes"
+062e  PutOwnByIndex r4, r7, 2
+0632  NewObjectWithBuffer r7, 11, 8, 24018, 29457
+063c  LoadFromEnvironment r10, r8, 8
+0640  PutNewOwnById r7, r10, "parseValueFromRawData"
+0645  LoadFromEnvironment r8, r8, 9
+0649  PutNewOwnById r7, r8, "writeValue"
+064e  GetByIdShort r11, r9, 1, "default"
+0653  GetById r12, r11, 5, "RADIATOR"
+0659  NewArray r11, 2
+065d  PutOwnByIndex r11, r12, 0
+0661  GetByIdShort r12, r9, 1, "default"
+0666  GetByIdShort r12, r12, 4, "MSC"
+066b  PutOwnByIndex r11, r12, 1
+066f  PutNewOwnById r7, r11, "excludeTypes"
+0674  PutOwnByIndex r4, r7, 3
+0678  NewObjectWithBuffer r7, 11, 8, 24032, 29503
+0682  PutNewOwnById r7, r10, "parseValueFromRawData"
+0687  PutNewOwnById r7, r8, "writeValue"
+068c  GetByIdShort r8, r9, 1, "default"
+0691  GetByIdShort r10, r8, 4, "MSC"
+0696  NewArray r8, 1
+069a  PutOwnByIndex r8, r10, 0
+069e  PutNewOwnById r7, r8, "excludeTypes"
+06a3  PutOwnByIndex r4, r7, 4
+06a7  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+06b1  PutOwnByIndex r4, r7, 5
+06b5  NewObjectWithBuffer r7, 4, 3, 24053, 41878
+06bf  CreateClosure r8, r6, 8617
+06c4  PutNewOwnById r7, r8, "getComputedFields"
+06c9  PutOwnByIndex r4, r7, 6
+06cd  PutNewOwnByIdShort r5, r4, "params"
+06d1  NewArray r4, 7
+06d5  NewObjectWithBuffer r7, 5, 5, 23872, 42305
+06df  PutOwnByIndex r4, r7, 0
+06e3  NewObjectWithBuffer r7, 3, 3, 23857, 42325
+06ed  PutOwnByIndex r4, r7, 1
+06f1  NewObjectWithBuffer r7, 2, 2, 23864, 41895
+06fb  PutOwnByIndex r4, r7, 2
+06ff  NewObjectWithBuffer r7, 3, 3, 23857, 42334
+0709  PutOwnByIndex r4, r7, 3
+070d  NewObjectWithBuffer r7, 7, 7, 24032, 39752
+0717  PutOwnByIndex r4, r7, 4
+071b  NewObjectWithBuffer r7, 3, 3, 23857, 42343
+0725  PutOwnByIndex r4, r7, 5
+0729  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+0733  PutOwnByIndex r4, r7, 6
+0737  PutNewOwnById r5, r4, "paramsEcoPlug"
+073c  NewArray r4, 7
+0740  NewObjectWithBuffer r7, 3, 3, 23857, 42352
+074a  PutOwnByIndex r4, r7, 0
+074e  NewObjectWithBuffer r7, 2, 2, 23864, 41895
+0758  PutOwnByIndex r4, r7, 1
+075c  NewObjectWithBuffer r7, 3, 3, 23857, 42361
+0766  PutOwnByIndex r4, r7, 2
+076a  NewObjectWithBuffer r7, 8, 8, 24057, 29554
+0774  PutOwnByIndex r4, r7, 3
+0778  NewObjectWithBuffer r7, 3, 3, 23857, 42370
+0782  PutOwnByIndex r4, r7, 4
+0786  NewObjectWithBuffer r7, 6, 6, 24046, 39718
+0790  PutOwnByIndex r4, r7, 5
+0794  NewObjectWithBuffer r7, 4, 3, 24053, 41921
+079e  NewArrayWithBuffer r8, 2, 2, 1836
+07a6  PutNewOwnById r7, r8, "pickerData"
+07ab  PutOwnByIndex r4, r7, 6
+07af  PutNewOwnById r5, r4, "params3Phase"
+07b4  NewArray r4, 10
+07b8  PutOwnByIndex r4, r5, 0
+07bc  NewObjectWithBuffer r5, 6, 4, 23945, 42379
+07c6  NewObjectWithBuffer r8, 11, 9, 24069, 42388
+07d0  GetByIdShort r7, r9, 1, "default"
+07d5  GetById r10, r7, 3, "TSENSE_3PHASE"
+07db  NewArray r7, 1
+07df  PutOwnByIndex r7, r10, 0
+07e3  PutNewOwnById r8, r7, "excludeTypes"
+07e8  CreateClosure r7, r6, 8618
+07ed  PutNewOwnById r8, r7, "getComputedFields"
+07f2  NewArray r7, 7
+07f6  PutOwnByIndex r7, r8, 0
+07fa  NewObjectWithBuffer r8, 11, 9, 24085, 42442
+0804  GetByIdShort r10, r9, 1, "default"
+0809  GetById r11, r10, 3, "TSENSE_3PHASE"
+080f  NewArray r10, 1
+0813  PutOwnByIndex r10, r11, 0
+0817  PutNewOwnById r8, r10, "excludeTypes"
+081c  CreateClosure r10, r6, 8619
+0821  PutNewOwnById r8, r10, "getComputedFields"
+0826  PutOwnByIndex r7, r8, 1
+082a  NewObjectWithBuffer r8, 4, 3, 24053, 25
+0834  GetByIdShort r10, r9, 1, "default"
+0839  GetById r11, r10, 5, "RADIATOR"
+083f  NewArray r10, 3
+0843  PutOwnByIndex r10, r11, 0
+0847  GetByIdShort r11, r9, 1, "default"
+084c  GetById r11, r11, 3, "TSENSE_3PHASE"
+0852  PutOwnByIndex r10, r11, 1
+0856  GetByIdShort r11, r9, 1, "default"
+085b  GetByIdShort r11, r11, 4, "MSC"
+0860  PutOwnByIndex r10, r11, 2
+0864  PutNewOwnById r8, r10, "excludeTypes"
+0869  PutOwnByIndex r7, r8, 2
+086d  NewObjectWithBuffer r8, 6, 4, 24101, 42486
+0877  NewArrayWithBuffer r10, 2, 2, 1836
+087f  PutById r8, r10, 1, "pickerData"
+0885  GetByIdShort r10, r9, 1, "default"
+088a  GetById r11, r10, 5, "RADIATOR"
+0890  NewArray r10, 2
+0894  PutOwnByIndex r10, r11, 0
+0898  GetByIdShort r11, r9, 1, "default"
+089d  GetById r11, r11, 3, "TSENSE_3PHASE"
+08a3  PutOwnByIndex r10, r11, 1
+08a7  PutNewOwnById r8, r10, "excludeTypes"
+08ac  CreateClosure r10, r6, 8620
+08b1  PutNewOwnById r8, r10, "getComputedFields"
+08b6  PutOwnByIndex r7, r8, 3
+08ba  NewObjectWithBuffer r8, 4, 3, 24053, 42512
+08c4  GetByIdShort r10, r9, 1, "default"
+08c9  GetById r11, r10, 5, "RADIATOR"
+08cf  NewArray r10, 3
+08d3  PutOwnByIndex r10, r11, 0
+08d7  GetByIdShort r11, r9, 1, "default"
+08dc  GetById r11, r11, 3, "TSENSE_3PHASE"
+08e2  PutOwnByIndex r10, r11, 1
+08e6  GetByIdShort r11, r9, 1, "default"
+08eb  GetByIdShort r11, r11, 4, "MSC"
+08f0  PutOwnByIndex r10, r11, 2
+08f4  PutNewOwnById r8, r10, "excludeTypes"
+08f9  PutOwnByIndex r7, r8, 4
+08fd  NewObjectWithBuffer r8, 5, 3, 23883, 42525
+0907  CreateClosure r10, r6, 8621
+090c  PutNewOwnById r8, r10, "parseValue"
+0911  CreateClosure r10, r6, 8622
+0916  PutNewOwnById r8, r10, "writeValue"
+091b  PutOwnByIndex r7, r8, 5
+091f  NewObjectWithBuffer r8, 5, 4, 24101, 42536
+0929  NewArrayWithBuffer r10, 2, 2, 24722
+0931  PutById r8, r10, 1, "pickerData"
+0937  GetByIdShort r9, r9, 1, "default"
+093c  GetById r10, r9, 3, "TSENSE_3PHASE"
+0942  NewArray r9, 1
+0946  PutOwnByIndex r9, r10, 0
+094a  PutNewOwnById r8, r9, "excludeTypes"
+094f  PutOwnByIndex r7, r8, 6
+0953  PutNewOwnByIdShort r5, r7, "params"
+0957  NewArray r7, 2
+095b  NewObjectWithBuffer r8, 8, 8, 24109, 42559
+0965  PutOwnByIndex r7, r8, 0
+0969  NewObjectWithBuffer r8, 8, 8, 24109, 42601
+0973  PutOwnByIndex r7, r8, 1
+0977  PutNewOwnById r5, r7, "paramsEcoPlug"
+097c  PutOwnByIndex r4, r5, 1
+0980  NewObjectWithBuffer r5, 6, 4, 23838, 42643
+098a  NewArray r7, 0
+098e  PutNewOwnByIdShort r5, r7, "params"
+0992  NewArray r7, 1
+0996  NewObjectWithBuffer r8, 6, 6, 23956, 42652
+09a0  PutOwnByIndex r7, r8, 0
+09a4  PutNewOwnById r5, r7, "paramsEcoPlug"
+09a9  PutOwnByIndex r4, r5, 2
+09ad  NewObjectWithBuffer r5, 5, 4, 23945, 42663
+09b7  NewArray r7, 1
+09bb  NewObjectWithBuffer r8, 6, 6, 23956, 42672
+09c5  PutOwnByIndex r7, r8, 0
+09c9  PutNewOwnById r5, r7, "paramsEcoPlug"
+09ce  PutOwnByIndex r4, r5, 3
+09d2  NewObjectWithBuffer r5, 5, 4, 23945, 42683
+09dc  NewArray r7, 2
+09e0  NewObjectWithBuffer r8, 6, 6, 23956, 42692
+09ea  PutOwnByIndex r7, r8, 0
+09ee  NewObjectWithBuffer r8, 6, 6, 23956, 42703
+09f8  PutOwnByIndex r7, r8, 1
+09fc  PutNewOwnById r5, r7, "paramsEcoPlug"
+0a01  PutOwnByIndex r4, r5, 4
+0a05  NewObjectWithBuffer r5, 3, 3, 23838, 42714
+0a0f  PutOwnByIndex r4, r5, 5
+0a13  NewObjectWithBuffer r5, 3, 3, 23945, 42721
+0a1d  PutOwnByIndex r4, r5, 6
+0a21  NewObjectWithBuffer r5, 6, 4, 23945, 42728
+0a2b  NewObjectWithBuffer r7, 5, 4, 23857, 29600
+0a35  CreateClosure r6, r6, 8623
+0a3a  PutNewOwnById r7, r6, "parseValue"
+0a3f  NewArray r6, 4
+0a43  PutOwnByIndex r6, r7, 0
+0a47  NewObjectWithBuffer r7, 3, 3, 23883, 42737
+0a51  PutOwnByIndex r6, r7, 1
+0a55  NewObjectWithBuffer r7, 3, 3, 23857, 42748
+0a5f  PutOwnByIndex r6, r7, 2
+0a63  NewObjectWithBuffer r7, 3, 3, 23883, 42757
+0a6d  PutOwnByIndex r6, r7, 3
+0a71  PutNewOwnByIdShort r5, r6, "params"
+0a75  NewArray r6, 1
+0a79  NewObjectWithBuffer r7, 6, 6, 23956, 42768
+0a83  PutOwnByIndex r6, r7, 0
+0a87  PutNewOwnById r5, r6, "paramsEcoPlug"
+0a8c  PutOwnByIndex r4, r5, 7
+0a90  NewObjectWithBuffer r5, 4, 4, 24122, 41994
+0a9a  PutOwnByIndex r4, r5, 8
+0a9e  NewObjectWithBuffer r5, 2, 2, 24127, 42779
+0aa8  PutOwnByIndex r4, r5, 9
+0aac  PutNewOwnById r3, r4, "characteristics"
+0ab1  PutNewOwnByIdShort r1, r3, "settings"
+0ab5  PutById r2, r1, 2, "services"
+0abb  Ret r0
+
+
+; fn#9130 "readRawDataUint" params=4 frame=20 env=0 size=204 offset=0x1e5ea6 exc_handlers=1
+0000  LoadParam r1, 1
+0003  LoadParam r3, 2
+0006  LoadParam r2, 3
+0009  LoadConstUndefined r0
+000b  Mov r5, r3
+000e  LoadConstUInt8 r4, 1
+0011  JStrictEqualLong L182, r5, r4
+0018  Mov r5, r3
+001b  LoadConstUInt8 r4, 2
+001e  JStrictEqual L130, r5, r4
+0022  Mov r5, r3
+0025  LoadConstUInt8 r4, 4
+0028  JStrictEqual L111, r5, r4
+002c  GetGlobalObject r4
+002e  TryGetById r6, r4, 1, "console"
+0034  GetByIdShort r5, r6, 2, "dlog"
+0039  LoadConstString r4, "readRawDataUint fallback to string"
+003d  Call2 r4, r5, r6, r4
+0042  Mov r7, r2
+0045  GetByIdShort r6, r7, 3, "slice"
+004a  Mov r5, r1
+004d  Mov r4, r3
+0050  Add r4, r5, r4
+0054  Call3 r5, r6, r7, r5, r4
+005a  GetByIdShort r4, r5, 4, "toString"
+005f  Call1 r5, r4, r5
+0063  GetById r4, r5, 5, "trim"
+0069  Call1 r0, r4, r5
+006d  Jmp L196
+L111:
+006f  Mov r6, r2
+0072  GetById r5, r6, 6, "readUInt32LE"
+0078  Mov r4, r1
+007b  Call2 r0, r5, r6, r4
+0080  Jmp L196
+L130:
+0082  GetGlobalObject r4
+0084  TryGetById r8, r4, 1, "console"
+008a  GetByIdShort r7, r8, 2, "dlog"
+008f  Mov r5, r1
+0092  Mov r10, r3
+0095  Mov r4, r2
+0098  LoadConstString r12, "readRawDataUint "
+009c  Mov r13, r8
+009f  Mov r11, r5
+00a2  Mov r9, r4
+00a5  Call r3, r7, 5
+00a9  GetById r3, r4, 7, "readUInt16LE"
+00af  Call2 r0, r3, r4, r5
+00b4  Jmp L196
+L182:
+00b6  Mov r3, r2
+00b9  GetById r2, r3, 8, "readUInt8"
+00bf  Call2 r0, r2, r3, r1
+L196:
+00c4  Ret r0
+L198:
+00c6  Catch r0
+00c8  LoadConstNull r0
+00ca  Ret r0
+
+
+; fn#9131 "readRawDataInt" params=4 frame=20 env=0 size=204 offset=0x1e5f72 exc_handlers=1
+0000  LoadParam r1, 1
+0003  LoadParam r3, 2
+0006  LoadParam r2, 3
+0009  LoadConstUndefined r0
+000b  Mov r5, r3
+000e  LoadConstUInt8 r4, 1
+0011  JStrictEqualLong L182, r5, r4
+0018  Mov r5, r3
+001b  LoadConstUInt8 r4, 2
+001e  JStrictEqual L130, r5, r4
+0022  Mov r5, r3
+0025  LoadConstUInt8 r4, 4
+0028  JStrictEqual L111, r5, r4
+002c  GetGlobalObject r4
+002e  TryGetById r6, r4, 1, "console"
+0034  GetByIdShort r5, r6, 2, "dlog"
+0039  LoadConstString r4, "readRawDataUint fallback to string"
+003d  Call2 r4, r5, r6, r4
+0042  Mov r7, r2
+0045  GetByIdShort r6, r7, 3, "slice"
+004a  Mov r5, r1
+004d  Mov r4, r3
+0050  Add r4, r5, r4
+0054  Call3 r5, r6, r7, r5, r4
+005a  GetByIdShort r4, r5, 4, "toString"
+005f  Call1 r5, r4, r5
+0063  GetById r4, r5, 5, "trim"
+0069  Call1 r0, r4, r5
+006d  Jmp L196
+L111:
+006f  Mov r6, r2
+0072  GetById r5, r6, 6, "readInt32LE"
+0078  Mov r4, r1
+007b  Call2 r0, r5, r6, r4
+0080  Jmp L196
+L130:
+0082  GetGlobalObject r4
+0084  TryGetById r8, r4, 1, "console"
+008a  GetByIdShort r7, r8, 2, "dlog"
+008f  Mov r5, r1
+0092  Mov r10, r3
+0095  Mov r4, r2
+0098  LoadConstString r12, "readRawDataUint "
+009c  Mov r13, r8
+009f  Mov r11, r5
+00a2  Mov r9, r4
+00a5  Call r3, r7, 5
+00a9  GetById r3, r4, 7, "readInt16LE"
+00af  Call2 r0, r3, r4, r5
+00b4  Jmp L196
+L182:
+00b6  Mov r3, r2
+00b9  GetById r2, r3, 8, "readInt8"
+00bf  Call2 r0, r2, r3, r1
+L196:
+00c4  Ret r0
+L198:
+00c6  Catch r0
+00c8  LoadConstNull r0
+00ca  Ret r0
+
