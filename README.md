@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.1, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.2, 2.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 Etherma E-2001 BLE:n yhteensopivuutta tai lämpötilalukemien merkitystä ei ole varmennettu.
@@ -43,7 +43,7 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 ## Manuaalinen asennus
 
-1. Pura `dist/taelek-ble-0.1.1.zip` Home Assistantin asetuskansioon.
+1. Pura `dist/taelek-ble-0.1.2.zip` Home Assistantin asetuskansioon.
    Tuloksena pitää olla `<config>/custom_components/taelek/manifest.json`.
    Voit myös kopioida tämän projektin `custom_components/taelek`-kansion samaan paikkaan.
 2. Käynnistä Home Assistant uudelleen. Bluetooth-integraation ja käytettävän sovittimen
@@ -64,6 +64,20 @@ Integraatio käyttää HA:n Bluetooth-integraation asentamia Bleak- ja
 jonka pakettirajoitus vaati versiota 4.7.0. Jos lisäys antoi virheen
 **Config flow could not be loaded: 500**, lataa uusin oletushaaran versio HACSista
 ja käynnistä Home Assistant uudelleen.
+
+### GATT-varmennus versiossa 0.1.2
+
+Mainostettu lämpötila ja GATT-asetuslämpötila ovat nyt tavallisia lämpötila-antureita.
+GATT-yhteys välityslaitteen kautta on testattu: lattialämpötilan ja asetuslämpötilan
+lukeminen onnistuu. Lattialämpötilan tarkkuutta ei ole vielä vertailtu erilliseen mittariin.
+Diagnostiikassa ovat operationMode-raakatila, ECO-ohjelmavalinta, laiteohjelmiston
+versiokoodi ja mahdolliset productButtons-tiedot. Refresh GATT -painike päivittää
+lukemat pyynnöstä. Valinnaisen lisätiedon lukuvika ei hylkää onnistunutta State A -lukua.
+
+`ecoMode` tarkoittaa ohjelmavalintaa (1 = manuaalinen, 2 = viikko-ohjelma), eikä sitä
+esitetä aktiivisen ECO-tilan kytkimenä. Taelekin [Homey-ohje](https://taelek.fi/Documents/easy_manual_homey.pdf)
+vahvistaa näyttöttömien mallien ECO-tilaan ja ECO-tavoitelämpötilaan perustuvan
+etäohjaustavan. Sen tarkkaa GATT-komentoa selvitetään; versio 0.1.2 ei vielä kirjoita.
 
 ## Laitteen ominaisuudet ja epäselvät tulkinnat
 

@@ -5,10 +5,19 @@ from __future__ import annotations
 import asyncio
 import logging
 from collections.abc import Awaitable, Callable
+from contextlib import asynccontextmanager
+from dataclasses import replace
 from typing import Protocol
 
 from .codec import decode_param_a, decode_param_b, decode_state_a
-from .const import PRODUCT_PARAM_A, PRODUCT_PARAM_B, PRODUCT_STATE_A
+from .const import (
+    PRODUCT_BUTTONS,
+    PRODUCT_BUTTONS_2,
+    PRODUCT_INFO,
+    PRODUCT_PARAM_A,
+    PRODUCT_PARAM_B,
+    PRODUCT_STATE_A,
+)
 from .models import ParamA, ParamB, StateA
 
 _LOGGER = logging.getLogger(__name__)
@@ -38,13 +47,14 @@ class TaelekClient:
         self._timeout = timeout
         self._lock = asyncio.Lock()
 
-    async def _read(self, *characteristics: str) -> list[bytes]:
+    @asynccontextmanager
+    async def _session(self):
         async with self._lock:
             client = None
             try:
                 async with asyncio.timeout(self._timeout):
                     client = await self._connector()
-                    return [bytes(await client.read_gatt_char(uuid)) for uuid in characteristics]
+                    yield client
             finally:
                 if client is not None:
                     try:
@@ -52,6 +62,41 @@ class TaelekClient:
                             await client.disconnect()
                     except Exception:
                         _LOGGER.debug("BLE disconnect failed", exc_info=True)
+
+    async def _read(self, *characteristics: str) -> list[bytes]:
+        async with self._session() as client:
+            return [bytes(await client.read_gatt_char(uuid)) for uuid in characteristics]
+
+    async def read_state_with_details(self, *, device_type: int | None = None) -> StateA:
+        """Read state and optional ECO/button evidence without writing any value.
+
+        Optional characteristic failures leave the successfully read state usable.
+        Network-key bytes from Param B are never returned in diagnostic fields.
+        """
+        async with self._session() as client:
+            state = decode_state_a(
+                bytes(await client.read_gatt_char(PRODUCT_STATE_A)), device_type=device_type
+            )
+            details = {}
+            for uuid, field in (
+                (PRODUCT_PARAM_B, "eco_program_mode"),
+                (PRODUCT_BUTTONS, "buttons_raw"),
+                (PRODUCT_BUTTONS_2, "buttons2_raw"),
+                (PRODUCT_INFO, "device_version"),
+            ):
+                try:
+                    data = bytes(await client.read_gatt_char(uuid))
+                    if uuid == PRODUCT_PARAM_B:
+                        details[field] = decode_param_b(data).eco_mode
+                    elif uuid == PRODUCT_INFO:
+                        if len(data) < 17:
+                            raise ValueError("productInfo too short")
+                        details[field] = data[14]
+                    else:
+                        details[field] = data.hex()
+                except Exception:
+                    _LOGGER.debug("Optional Taelek detail read failed: %s", uuid, exc_info=True)
+            return replace(state, **details)
 
     async def read_state(self, *, device_type: int | None = None) -> StateA:
         return decode_state_a((await self._read(PRODUCT_STATE_A))[0], device_type=device_type)

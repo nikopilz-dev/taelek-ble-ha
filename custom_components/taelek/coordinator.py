@@ -104,6 +104,6 @@ class ActiveCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         try:
             advertisement = self._get_advertisement()
-            return await self.client.read_state(device_type=advertisement.device_type)
+            return await self.client.read_state_with_details(device_type=advertisement.device_type)
         except (BleakError, OSError, TimeoutError, ValueError) as err:
             raise UpdateFailed(f"Taelek state read failed: {err}") from err

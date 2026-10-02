@@ -19,6 +19,11 @@ ACTIVE = {
     "measured_external_c": "External temperature",
     "setpoint_c": "Setpoint",
     "sensor_error": "Sensor error code",
+    "operation_mode": "Operation mode code",
+    "eco_program_mode": "ECO program mode code",
+    "buttons_raw": "Buttons raw",
+    "buttons2_raw": "Buttons 2 raw",
+    "device_version": "Firmware version code",
 }
 
 
@@ -42,10 +47,24 @@ class TaelekSensor(TaelekEntity, SensorEntity):
             self._attr_device_class = SensorDeviceClass.TEMPERATURE
             self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
             self._attr_state_class = SensorStateClass.MEASUREMENT
-        if not active or key in ("sensor_error", "setpoint_c"):
+        if key not in (
+            "temperature_c",
+            "measured_floor_c",
+            "measured_air_c",
+            "measured_external_c",
+            "setpoint_c",
+        ):
             self._attr_entity_category = EntityCategory.DIAGNOSTIC
         if key in ("measured_air_c", "measured_external_c"):
             self._attr_entity_registry_enabled_default = False
+
+    @property
+    def extra_state_attributes(self):
+        if self._key == "operation_mode" and self.coordinator.data is not None:
+            return {"raw_state_a": self.coordinator.data.raw_data.hex()}
+        if self._key == "eco_program_mode":
+            return {"meaning": "1 = manual program, 2 = weekly program; not active ECO state"}
+        return None
 
     @property
     def native_value(self):

@@ -57,6 +57,10 @@ class StateA:
     measured_floor_c: float | None
     measured_external_c: float | None
     raw_data: bytes = b""
+    eco_program_mode: int | None = None
+    buttons_raw: str | None = None
+    buttons2_raw: str | None = None
+    device_version: int | None = None
 
 
 @dataclass(frozen=True, slots=True)

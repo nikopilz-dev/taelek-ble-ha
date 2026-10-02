@@ -248,12 +248,12 @@ async def test_gatt_failure_recovery_and_passive_independence(ha):
     passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
     passive._receive(ha.info, None)
     active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
-    active.client.read_state = AsyncMock(side_effect=OSError("offline"))
+    active.client.read_state_with_details = AsyncMock(side_effect=OSError("offline"))
     await active.async_request_refresh()
     assert not active.last_update_success
     assert passive.present and passive.data.temperature_c == 21.5
     state = SimpleNamespace(measured_floor_c=24.5, valve_state=1)
-    active.client.read_state = AsyncMock(return_value=state)
+    active.client.read_state_with_details = AsyncMock(return_value=state)
     await active.async_request_refresh()
     assert active.last_update_success and active.data == state
     entity = ha.binary.TaelekHeating(active, ha.entry)

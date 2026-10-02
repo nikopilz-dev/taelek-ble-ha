@@ -4,7 +4,7 @@ Executed locally with Python 3.12.14 in the project's Windows virtual environmen
 
 | Check | Result |
 |---|---|
-| `python -m pytest tests -q` | 86 passed, including HACS layout and HA-managed Bluetooth dependencies |
+| `python -m pytest tests -q` | 88 passed, including optional GATT failure isolation and no network-key exposure |
 | Ruff checks and formatting | Passed |
 | Python compilation of library, integration, tools and HA test sources | Passed |
 | Bundled library equals standalone source | Passed in distribution test |
@@ -15,7 +15,7 @@ Executed locally with Python 3.12.14 in the project's Windows virtual environmen
 | `tests_ha` with the actual HA framework | Not executed |
 | HA component loading and entity registration | 0.1.1 installed through HACS, HA restarted, Bluetooth discovery and device creation succeeded; passive temperature shown |
 | HA scheduling and unloading | Not validated |
-| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Advertisement accepted through proxy and displayed in HA; GATT and heating remain unvalidated |
+| Physical E-2001 / Bluetooth proxy / GATT / heating validation | Passive and GATT floor/setpoint readings displayed in HA through proxy; writes and heating remain unvalidated |
 
 Twenty integration logic test cases run against explicit HA boundary doubles. They do not
 substitute for the real HA tests. Other tests exercise codecs, transport cleanup,
