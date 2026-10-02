@@ -17,6 +17,20 @@
 
 The older verification entries below describe previous versions.
 
+### GitHub review follow-up — 2026-10-03
+
+Fetched GitHub main `02b7bf5` and verified source/vendor Git blob identity, HA
+clock provider, service forwarding and manifest version in that published tree.
+Corrected the stale README ZIP name. Added actual coordinator/vendored-client
+service-chain tests for default sync, explicit false and clock failure, plus a
+fresh package byte comparison. See `protocol/CLOCK_INTEGRATION_VALIDATION.md`
+for exact object IDs, reproduction commands and test boundaries. Final checks
+are repeated after the complete follow-up edit set, before publication.
+
+Follow-up result: **137 passed** (`python -m pytest tests -q`), Ruff lint and
+format checks passed, and Git whitespace check passed. The distribution test
+builds the package and checks its actual archive contents against the checkout.
+
 Executed locally with Python 3.12.14 in the project's Windows virtual environment.
 
 | Check | Result |

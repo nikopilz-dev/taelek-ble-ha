@@ -74,7 +74,7 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 ## Manuaalinen asennus
 
-1. Pura `dist/taelek-ble-0.1.6.zip` Home Assistantin asetuskansioon.
+1. Pura `dist/taelek-ble-0.1.7.zip` Home Assistantin asetuskansioon.
    Tuloksena pitää olla `<config>/custom_components/taelek/manifest.json`.
    Voit myös kopioida tämän projektin `custom_components/taelek`-kansion samaan paikkaan.
 2. Käynnistä Home Assistant uudelleen. Bluetooth-integraation ja käytettävän sovittimen

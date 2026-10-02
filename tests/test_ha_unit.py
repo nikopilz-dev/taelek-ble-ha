@@ -7,7 +7,7 @@ The separate tests_ha suite must run on supported Linux/Python with real HA.
 import importlib
 import struct
 import sys
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta, timezone
 from types import ModuleType, SimpleNamespace
 from unittest.mock import AsyncMock, Mock
 
@@ -329,15 +329,21 @@ async def test_ha_sessions_sync_configured_clock_and_failure_preserves_passive(h
     from custom_components.taelek.taelek_ble.const import TIME
 
     ha.bluetooth.async_last_service_info.return_value = ha.info
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tael")
+    ha.coordinator.dt_util.now = lambda: datetime(
+        2026, 10, 3, 1, 2, 3, tzinfo=timezone(timedelta(hours=3))
+    )
     passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
     passive._receive(ha.info, None)
     active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
     client = AsyncMock()
     client.read_gatt_char.return_value = struct.pack("<BBBBhHHH", 0, 0, 0, 1, 230, 210, 245, 0)
-    active.client._connector = AsyncMock(return_value=client)
+    ha.coordinator.establish_connection.return_value = client
     await active.async_request_refresh()
     assert active.last_update_success
-    client.write_gatt_char.assert_awaited_once_with(TIME, bytes((0, 0, 0, 6)), response=True)
+    client.write_gatt_char.assert_awaited_once_with(TIME, bytes((1, 2, 3, 6)), response=True)
+    assert client.mock_calls[0].args == (TIME, bytes((1, 2, 3, 6)))
+    ha.coordinator.establish_connection.assert_awaited_once()
     client.write_gatt_char.reset_mock()
     client.read_gatt_char.reset_mock()
     client.write_gatt_char.side_effect = OSError("authorization denied")
@@ -347,6 +353,65 @@ async def test_ha_sessions_sync_configured_clock_and_failure_preserves_passive(h
     assert passive.present and passive.data.temperature_c == 21.5
     client.write_gatt_char.assert_awaited_once()
     client.read_gatt_char.assert_not_called()
+
+
+@pytest.mark.parametrize("sync_time,clock_failure", [(True, False), (False, False), (True, True)])
+async def test_debug_service_schema_through_coordinator_and_vendored_clock(
+    ha, sync_time, clock_failure
+):
+    from custom_components.taelek.taelek_ble.const import PRODUCT_COMMANDS, PRODUCT_STATE_A, TIME
+
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tael")
+    ha.coordinator.dt_util.now = lambda: datetime(
+        2026, 10, 3, 1, 2, 3, tzinfo=timezone(timedelta(hours=3))
+    )
+    client = AsyncMock()
+    client.read_gatt_char.return_value = b"observed"
+    if clock_failure:
+        client.write_gatt_char.side_effect = OSError("authorization denied")
+    ha.coordinator.establish_connection.return_value = client
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    ha.entry.domain = "taelek"
+    ha.entry.state = "loaded"
+    ha.entry.options["enable_debug_gatt"] = True
+    ha.entry.runtime_data = SimpleNamespace(active=active)
+    ha.hass.config_entries.async_get_entry = Mock(return_value=ha.entry)
+    ha.hass.services = SimpleNamespace(async_register=Mock())
+    await ha.integration.async_setup(ha.hass, {})
+    registration = ha.hass.services.async_register.call_args
+    handler = registration.args[2]
+    data = {
+        "config_entry_id": "test",
+        "steps": [
+            {"operation": "read", "uuid": PRODUCT_STATE_A},
+            {"operation": "write", "uuid": PRODUCT_COMMANDS, "hex": "84"},
+        ],
+    }
+    # Exercise both the public schema's default and its explicit false value.
+    if not sync_time:
+        data["sync_time"] = False
+    call = SimpleNamespace(data=registration.kwargs["schema"](data))
+    assert call.data["sync_time"] is sync_time
+    result = await handler(call)
+    time_writes = [c for c in client.write_gatt_char.await_args_list if c.args[0] == TIME]
+    assert len(time_writes) == int(sync_time)
+    if time_writes:
+        assert time_writes[0].args == (TIME, bytes((1, 2, 3, 6)))
+    if clock_failure:
+        assert not result["success"] and result["steps"] == []
+        assert "clock synchronization failed" in result["error"]
+        assert "authorization denied" in result["clock_sync"]["error"]
+        client.read_gatt_char.assert_not_called()
+        client.write_gatt_char.assert_awaited_once()
+    else:
+        assert result["success"] and len(result["steps"]) == 2
+        client.read_gatt_char.assert_awaited_once_with(PRODUCT_STATE_A)
+        assert client.write_gatt_char.await_args_list[-1].args == (PRODUCT_COMMANDS, b"\x84")
+        if not sync_time:
+            assert result["clock_sync"]["status"] == "skipped by request"
+            client.write_gatt_char.assert_awaited_once()
+    client.disconnect.assert_awaited_once()
 
 
 async def test_nonthermostat_blocks_gatt_and_temperature(ha):

@@ -1,4 +1,7 @@
 import json
+import subprocess
+import sys
+import zipfile
 from pathlib import Path
 
 
@@ -16,9 +19,35 @@ def test_hacs_repository_layout():
 
 def test_bundled_library_matches_source():
     root = Path(__file__).resolve().parents[1]
+    assert {p.name for p in (root / "src/taelek_ble").glob("*.py")} == {
+        p.name for p in (root / "custom_components/taelek/taelek_ble").glob("*.py")
+    }
     for source in (root / "src/taelek_ble").glob("*.py"):
         bundled = root / "custom_components/taelek/taelek_ble" / source.name
         assert bundled.read_bytes() == source.read_bytes(), f"Rebundle {source.name}"
+
+
+def test_installable_package_matches_source_and_service_schema():
+    root = Path(__file__).resolve().parents[1]
+    component = root / "custom_components/taelek"
+    version = json.loads((component / "manifest.json").read_text(encoding="utf-8"))["version"]
+    subprocess.run(
+        [sys.executable, str(root / "tools/package_integration.py")],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    )
+    archive_path = root / f"dist/taelek-ble-{version}.zip"
+    assert f"dist/{archive_path.name}" in (root / "README.md").read_text(encoding="utf-8")
+    with zipfile.ZipFile(archive_path) as archive:
+        for source in (root / "src/taelek_ble").glob("*.py"):
+            assert archive.read(f"custom_components/taelek/taelek_ble/{source.name}") == (
+                source.read_bytes()
+            )
+        for name in ("coordinator.py", "services.py", "services.yaml", "manifest.json"):
+            assert (
+                archive.read(f"custom_components/taelek/{name}") == (component / name).read_bytes()
+            )
 
 
 def test_bluetooth_dependencies_use_home_assistant_versions():
