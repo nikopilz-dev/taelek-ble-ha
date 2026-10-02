@@ -85,6 +85,11 @@ class ActiveCoordinator(DataUpdateCoordinator):
         self.last_command_test = None
         self._experiment_lock = asyncio.Lock()
 
+    async def async_debug_gatt(self, steps):
+        async with self._experiment_lock:
+            self._get_advertisement()
+            return await self.client.debug_gatt(steps)
+
     async def async_test_eco_temperature(self, target):
         async with self._experiment_lock:
             self.last_command_test = {"experiment": "manual ECO target", "result": "pending"}

@@ -6,7 +6,7 @@ from homeassistant.components import bluetooth
 from homeassistant.const import CONF_ADDRESS
 from homeassistant.core import callback
 
-from .const import CONF_GATT, DOMAIN
+from .const import CONF_DEBUG, CONF_GATT, DOMAIN
 from .taelek_ble.discovery import device_unique_id, parse_discovery
 
 
@@ -66,13 +66,22 @@ class TaelekConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class TaelekOptionsFlow(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
         if user_input is not None:
-            return self.async_create_entry(title="", data={CONF_GATT: user_input[CONF_GATT]})
+            return self.async_create_entry(
+                title="",
+                data={
+                    CONF_GATT: user_input[CONF_GATT],
+                    CONF_DEBUG: user_input.get(CONF_DEBUG, False),
+                },
+            )
         return self.async_show_form(
             step_id="init",
             data_schema=vol.Schema(
                 {
                     vol.Required(
                         CONF_GATT, default=self.config_entry.options.get(CONF_GATT, False)
+                    ): bool,
+                    vol.Required(
+                        CONF_DEBUG, default=self.config_entry.options.get(CONF_DEBUG, False)
                     ): bool,
                 }
             ),

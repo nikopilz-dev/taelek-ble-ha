@@ -1,4 +1,4 @@
-"""Experimental, read-only Taelek BLE integration."""
+"""Experimental Taelek BLE integration."""
 
 from dataclasses import dataclass
 
@@ -7,6 +7,12 @@ from homeassistant.core import HomeAssistant
 
 from .const import CONF_GATT, PLATFORMS
 from .coordinator import ActiveCoordinator, AdvertisementCoordinator
+from .services import register_debug_service
+
+
+async def async_setup(hass: HomeAssistant, config) -> bool:
+    register_debug_service(hass)
+    return True
 
 
 @dataclass

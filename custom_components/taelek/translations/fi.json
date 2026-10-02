@@ -17,7 +17,17 @@
       "init": {
         "title": "Taelek BLE -asetukset",
         "description": "GATT lukee termostaatin tilan viiden minuutin välein, kun GATT-entiteettejä on käytössä. Se tarvitsee yhteyksiä tukevan sovittimen tai välityslaitteen. Laitteen asetuksia ei muuteta. Epäselvät protokollatulkinnat ja epäillyt puuttuvan lämpötilan arvot jäävät tuntemattomiksi, kunnes laitteen ominaisuudet on varmennettu.",
-        "data": {"enable_gatt": "Ota kokeelliset GATT-lukemat käyttöön"}
+        "data": {"enable_gatt": "Ota kokeelliset GATT-lukemat käyttöön", "enable_debug_gatt": "Salli raaka GATT-debuggaus (myös erikseen pyydetyt kirjoitukset)"}
+      }
+    }
+  },
+  "services": {
+    "debug_gatt": {
+      "name": "Raaka GATT-debuggaus",
+      "description": "Suorita lukuja, kirjoituksia, osittaisia muutoksia ja odotuksia samalla yhteydellä. Ei automaattista kuittausta tai uusintaa. Raakatuloksissa voi olla yksityisiä laiteasetuksia; älä jaa niitä tarkistamatta.",
+      "fields": {
+        "config_entry_id": {"name": "Taelek-laite", "description": "Laitteen integraatiomääritys."},
+        "steps": {"name": "Vaiheet", "description": "Lista read/write/patch/delay-objekteja. Esimerkit integraation README-ohjeessa."}
       }
     }
   }

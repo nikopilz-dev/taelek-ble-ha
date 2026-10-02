@@ -21,6 +21,7 @@ from .const import (
     PRODUCT_PARAM_B,
     PRODUCT_STATE_A,
 )
+from .debug import validate_steps
 from .models import ParamA, ParamB, StateA
 
 _LOGGER = logging.getLogger(__name__)
@@ -53,6 +54,49 @@ class TaelekClient:
         self._timeout = timeout
         self._lock = asyncio.Lock()
         self.original_manual_eco_c = None
+
+    async def debug_gatt(self, steps):
+        """Execute user-provided steps once in one serialized connection.
+
+        Report partial results on failure. Never retry or infer a save command.
+        Raw reads are returned only to the caller, never logged or published.
+        """
+        steps = validate_steps(steps)
+        result = {"success": False, "steps": []}
+        try:
+            async with self._session() as client:
+                for index, step in enumerate(steps):
+                    op = step["operation"]
+                    observed = {"index": index, "operation": op, "status": "started"}
+                    result["steps"].append(observed)
+                    if op == "delay":
+                        await asyncio.sleep(step["seconds"])
+                    else:
+                        uuid = step["uuid"]
+                        observed["uuid"] = uuid
+                        if op == "read":
+                            observed["hex"] = bytes(await client.read_gatt_char(uuid)).hex()
+                        else:
+                            payload = step["data"]
+                            if op == "patch":
+                                original = bytes(await client.read_gatt_char(uuid))
+                                offset = step["offset"]
+                                if offset + len(payload) > len(original):
+                                    raise ValueError("Patch exceeds characteristic length")
+                                updated = bytearray(original)
+                                updated[offset : offset + len(payload)] = payload
+                                payload = bytes(updated)
+                            observed["status"] = "write attempted; effect may be unknown"
+                            await client.write_gatt_char(uuid, payload, response=step["response"])
+                            observed["bytes_written"] = len(payload)
+                            observed["response"] = step["response"]
+                    observed["status"] = "completed"
+            result["success"] = True
+        except Exception as err:  # noqa: BLE001 -- return partial raw-transport results
+            result["error_type"] = type(err).__name__
+            result["error"] = str(err)
+            result["retry"] = "none"
+        return result
 
     async def test_manual_eco_temperature(self, target, *, device_type=None):
         """Patch only manualEco; no mode switch, commit, retry or automatic restore.

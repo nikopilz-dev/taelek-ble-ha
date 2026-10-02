@@ -1,0 +1,11 @@
+debug_gatt:
+  fields:
+    config_entry_id:
+      required: true
+      selector:
+        config_entry:
+          integration: taelek
+    steps:
+      required: true
+      selector:
+        object:

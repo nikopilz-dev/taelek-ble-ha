@@ -84,8 +84,19 @@ def ha(monkeypatch):
         pass
 
     module("homeassistant")
-    module("homeassistant.config_entries", ConfigFlow=Flow, OptionsFlow=Flow, ConfigEntry=object)
-    module("homeassistant.core", callback=lambda fn: fn, HomeAssistant=object)
+    module(
+        "homeassistant.config_entries",
+        ConfigFlow=Flow,
+        OptionsFlow=Flow,
+        ConfigEntry=object,
+        ConfigEntryState=SimpleNamespace(LOADED="loaded"),
+    )
+    module(
+        "homeassistant.core",
+        callback=lambda fn: fn,
+        HomeAssistant=object,
+        SupportsResponse=SimpleNamespace(ONLY="only"),
+    )
     module(
         "homeassistant.exceptions", HomeAssistantError=type("HomeAssistantError", (Exception,), {})
     )
@@ -260,7 +271,7 @@ async def test_options_flow(ha):
     flow = ha.flow.TaelekOptionsFlow()
     flow.config_entry = ha.entry
     form = await flow.async_step_init()
-    assert form["data_schema"]({}) == {"enable_gatt": False}
+    assert form["data_schema"]({}) == {"enable_gatt": False, "enable_debug_gatt": False}
     result = await flow.async_step_init({"enable_gatt": True})
     assert result["data"]["enable_gatt"] is True
 
@@ -388,4 +399,48 @@ async def test_removed_profile_is_cleaned_from_existing_entry(ha):
 async def test_old_profile_is_not_saved_by_options_flow(ha):
     flow = ha.flow.TaelekOptionsFlow()
     result = await flow.async_step_init({"enable_gatt": True, "protocol_profile": "legacy"})
-    assert result["data"] == {"enable_gatt": True}
+    assert result["data"] == {"enable_gatt": True, "enable_debug_gatt": False}
+
+
+async def test_debug_service_is_registered_without_connecting_and_gated(ha):
+    ha.hass.services = SimpleNamespace(async_register=Mock())
+    await ha.integration.async_setup(ha.hass, {})
+    registration = ha.hass.services.async_register.call_args
+    assert registration.args[:2] == ("taelek", "debug_gatt")
+    assert registration.kwargs["supports_response"] == "only"
+    handler = registration.args[2]
+    ha.entry.domain = "taelek"
+    ha.entry.state = "loaded"
+    active = SimpleNamespace(async_debug_gatt=AsyncMock(return_value={"success": True}))
+    ha.entry.runtime_data = SimpleNamespace(active=active)
+    ha.hass.config_entries.async_get_entry = Mock(return_value=ha.entry)
+    call = SimpleNamespace(data={"config_entry_id": "test", "steps": []})
+    with pytest.raises(Exception, match="Enable raw GATT"):
+        await handler(call)
+    active.async_debug_gatt.assert_not_called()
+    ha.entry.options["enable_debug_gatt"] = True
+    assert await handler(call) == {"success": True}
+    active.async_debug_gatt.assert_awaited_once_with([])
+    ha.entry.state = "not_loaded"
+    with pytest.raises(Exception, match="must be loaded"):
+        await handler(call)
+
+
+async def test_debug_service_rejects_wrong_entry_and_disabled_gatt(ha):
+    ha.hass.services = SimpleNamespace(async_register=Mock())
+    await ha.integration.async_setup(ha.hass, {})
+    handler = ha.hass.services.async_register.call_args.args[2]
+    ha.hass.config_entries.async_get_entry = Mock(return_value=None)
+    call = SimpleNamespace(data={"config_entry_id": "missing", "steps": []})
+    with pytest.raises(Exception, match="Select a Taelek"):
+        await handler(call)
+    ha.entry.domain = "other"
+    ha.hass.config_entries.async_get_entry.return_value = ha.entry
+    with pytest.raises(Exception, match="Select a Taelek"):
+        await handler(call)
+    ha.entry.domain = "taelek"
+    ha.entry.state = "loaded"
+    ha.entry.options["enable_debug_gatt"] = True
+    ha.entry.runtime_data = SimpleNamespace(active=None)
+    with pytest.raises(Exception, match="GATT enabled"):
+        await handler(call)
