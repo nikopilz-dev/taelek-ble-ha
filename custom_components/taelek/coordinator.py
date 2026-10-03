@@ -2,8 +2,11 @@
 
 import asyncio
 import logging
+from contextlib import suppress
+from copy import deepcopy
 from dataclasses import replace
 from datetime import timedelta
+from uuid import UUID
 
 from bleak.exc import BleakError
 from bleak_retry_connector import BleakClientWithServiceCache, establish_connection
@@ -16,6 +19,7 @@ from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
 from .taelek_ble.client import TaelekClient
+from .taelek_ble.debug import validate_steps
 from .taelek_ble.discovery import device_unique_id, parse_discovery
 
 _LOGGER = logging.getLogger(__name__)
@@ -85,14 +89,105 @@ class ActiveCoordinator(DataUpdateCoordinator):
         self.client = TaelekClient(self._connect, clock=dt_util.now)
         self.last_command_test = None
         self._experiment_lock = asyncio.Lock()
+        self._debug_session = None
+        self._last_debug_session = None
+        self._debug_ids = set()
+        self._debug_gate = None
+        self._debug_task = None
 
-    async def async_debug_gatt(self, steps, *, sync_time=True):
+    def _check_debug_idle(self):
+        if self._debug_session is not None:
+            raise ValueError("A held debug session is active; use its control action")
+
+    async def async_debug_gatt(self, steps, *, sync_time=True, session_id=None):
+        # Validate all steps and identity before connecting or writing the clock.
+        validated = validate_steps(steps)
+        held = any(s["operation"] == "wait_for_continue" for s in validated)
+        if held:
+            try:
+                session_id = str(UUID(session_id))
+            except (ValueError, TypeError, AttributeError) as err:
+                raise ValueError("A UUID session_id is required for a confirmation wait") from err
+        elif session_id is not None:
+            raise ValueError("session_id is only used with wait_for_continue")
+        self._check_debug_idle()
         async with self._experiment_lock:
+            self._check_debug_idle()
             self._get_advertisement()
-            return await self.client.debug_gatt(steps, sync_time=sync_time)
+            if not held:
+                return await self.client.debug_gatt(steps, sync_time=sync_time)
+            if session_id in self._debug_ids:
+                raise ValueError("Use a fresh session_id; an old identity cannot be reused")
+            self._debug_ids.add(session_id)
+            session = {"session_id": session_id, "phase": "running", "result": None}
+            self._debug_session = session
+            self._debug_task = asyncio.current_task()
+            self._debug_gate = None
+
+            async def pause(result):
+                session.update(phase="waiting", result=result)
+                self._debug_gate = asyncio.get_running_loop().create_future()
+                try:
+                    await self._debug_gate
+                finally:
+                    self._debug_gate = None
+
+            try:
+                result = await self.client.debug_gatt(steps, sync_time=sync_time, pause=pause)
+                session.update(phase="finished", result=result)
+                return {**result, "session_id": session_id}
+            except asyncio.CancelledError:
+                result = session["result"] or {}
+                result.update(
+                    success=False,
+                    error_type="CancelledError",
+                    retry="none",
+                    error="Session cancelled; prior write effects may be unknown",
+                )
+                session.update(phase="cancelled", result=result)
+                raise
+            finally:
+                self._last_debug_session = session
+                self._debug_session = None
+                self._debug_task = None
+
+    async def async_debug_control(self, session_id, operation):
+        try:
+            session_id = str(UUID(session_id))
+        except (ValueError, TypeError, AttributeError) as err:
+            raise ValueError("session_id must be a UUID") from err
+        session = self._debug_session or self._last_debug_session
+        if session is None or session["session_id"] != session_id:
+            raise ValueError("No matching debug session")
+        if operation == "status":
+            return deepcopy(session)
+        if operation not in ("continue", "abort"):
+            raise ValueError("Control operation must be status, continue or abort")
+        gate = self._debug_gate
+        if session["phase"] != "waiting" or gate is None or gate.done():
+            raise ValueError("Session is not waiting; control was not applied")
+        session["phase"] = "resuming" if operation == "continue" else "aborting"
+        if operation == "continue":
+            gate.set_result(None)
+        else:
+            gate.set_exception(ValueError("Experiment aborted by operator; not retried"))
+        return {
+            "session_id": session_id,
+            "phase": session["phase"],
+            "note": "Control accepted; consult status for GATT completion",
+        }
+
+    async def async_shutdown_debug(self):
+        if self._debug_session is not None:
+            task = self._debug_task
+            task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
 
     async def async_test_eco_temperature(self, target):
+        self._check_debug_idle()
         async with self._experiment_lock:
+            self._check_debug_idle()
             self.last_command_test = {"experiment": "manual ECO target", "result": "pending"}
             try:
                 ad = self._get_advertisement()
@@ -119,7 +214,9 @@ class ActiveCoordinator(DataUpdateCoordinator):
             self.async_set_updated_data(after)
 
     async def async_test_runtime_command(self, command):
+        self._check_debug_idle()
         async with self._experiment_lock:
+            self._check_debug_idle()
             await self._test_runtime_command(command)
 
     async def _test_runtime_command(self, command):
@@ -171,6 +268,8 @@ class ActiveCoordinator(DataUpdateCoordinator):
         )
 
     async def _async_update_data(self):
+        if self._debug_session is not None:
+            raise UpdateFailed("Active polling paused during held debug session")
         try:
             advertisement = self._get_advertisement()
             return await self.client.read_state_with_details(device_type=advertisement.device_type)

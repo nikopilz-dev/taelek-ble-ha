@@ -7,7 +7,7 @@ import logging
 from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
 from dataclasses import replace
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import Protocol
 
 from .clock import encode_time
@@ -61,7 +61,7 @@ class TaelekClient:
         self._lock = asyncio.Lock()
         self.original_manual_eco_c = None
 
-    async def debug_gatt(self, steps, *, sync_time: bool = True):
+    async def debug_gatt(self, steps, *, sync_time: bool = True, pause=None):
         """Execute user-provided steps once in one serialized connection.
 
         Report partial results on failure. Never retry or infer a save command.
@@ -71,16 +71,30 @@ class TaelekClient:
         steps = validate_steps(steps)
         if not isinstance(sync_time, bool):
             raise TypeError("sync_time must be a boolean")
+        wait_budget = sum(s["timeout"] for s in steps if s["operation"] == "wait_for_continue")
+        if wait_budget and not callable(pause):
+            raise ValueError("A confirmation callback is required before connecting")
         result = {"success": False, "steps": [], "clock_sync": {"status": "not started"}}
         try:
             async with self._session(
-                sync_time=sync_time, clock_result=result["clock_sync"]
+                sync_time=sync_time,
+                clock_result=result["clock_sync"],
+                timeout=self._timeout + wait_budget,
             ) as client:
                 for index, step in enumerate(steps):
                     op = step["operation"]
-                    observed = {"index": index, "operation": op, "status": "started"}
+                    observed = {
+                        "index": index,
+                        "operation": op,
+                        "status": "started",
+                        "started_at": datetime.now(UTC).isoformat(),
+                    }
                     result["steps"].append(observed)
-                    if op == "delay":
+                    if op == "wait_for_continue":
+                        observed["status"] = "waiting for explicit continuation"
+                        async with asyncio.timeout(step["timeout"]):
+                            await pause(result)
+                    elif op == "delay":
                         await asyncio.sleep(step["seconds"])
                     else:
                         uuid = step["uuid"]
@@ -91,17 +105,20 @@ class TaelekClient:
                             payload = step["data"]
                             if op == "patch":
                                 original = bytes(await client.read_gatt_char(uuid))
+                                observed["original_hex"] = original.hex()
                                 offset = step["offset"]
                                 if offset + len(payload) > len(original):
                                     raise ValueError("Patch exceeds characteristic length")
                                 updated = bytearray(original)
                                 updated[offset : offset + len(payload)] = payload
                                 payload = bytes(updated)
+                            observed["written_hex"] = payload.hex()
                             observed["status"] = "write attempted; effect may be unknown"
                             await client.write_gatt_char(uuid, payload, response=step["response"])
                             observed["bytes_written"] = len(payload)
                             observed["response"] = step["response"]
                     observed["status"] = "completed"
+                    observed["completed_at"] = datetime.now(UTC).isoformat()
             result["success"] = True
         except Exception as err:  # noqa: BLE001 -- return partial raw-transport results
             result["error_type"] = type(err).__name__
@@ -138,11 +155,11 @@ class TaelekClient:
             return before.manual_eco_c, after.manual_eco_c, state_before, state_after
 
     @asynccontextmanager
-    async def _session(self, *, sync_time=True, clock_result=None):
+    async def _session(self, *, sync_time=True, clock_result=None, timeout=None):
         async with self._lock:
             client = None
             try:
-                async with asyncio.timeout(self._timeout):
+                async with asyncio.timeout(self._timeout if timeout is None else timeout):
                     client = await self._connector()
                     if clock_result is None:
                         clock_result = {}

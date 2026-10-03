@@ -9,6 +9,7 @@ def validate_steps(steps):
         raise ValueError("Provide 1–32 GATT steps")
     validated = []
     total_delay = 0.0
+    waits = 0
     for step in steps:
         if not isinstance(step, dict):
             raise ValueError("Each step must be an object")  # noqa: TRY004 -- uniform validation API
@@ -18,11 +19,24 @@ def validate_steps(steps):
             "write": {"operation", "uuid", "hex", "response"},
             "patch": {"operation", "uuid", "hex", "offset", "response"},
             "delay": {"operation", "seconds"},
+            "wait_for_continue": {"operation", "timeout"},
         }
         if not isinstance(op, str) or op not in allowed or set(step) - allowed[op]:
             raise ValueError("Invalid operation or unexpected step fields")
         out = {"operation": op}
-        if op == "delay":
+        if op == "wait_for_continue":
+            waits += 1
+            timeout = step.get("timeout", 120)
+            if (
+                isinstance(timeout, bool)
+                or not isinstance(timeout, (int, float))
+                or not (math.isfinite(timeout) and 1 <= timeout <= 180)
+            ):
+                raise ValueError("Confirmation wait must be 1–180 seconds")
+            if waits > 1:
+                raise ValueError("Only one confirmation wait per sequence")
+            out["timeout"] = timeout
+        elif op == "delay":
             seconds = step.get("seconds")
             if (
                 isinstance(seconds, bool)

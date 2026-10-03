@@ -1,5 +1,63 @@
 # GATT-kenttätestit ilman uusia integraatioversioita
 
+## 0.1.8: kuittauksen odotus samassa yhteydessä
+
+`wait_for_continue` pysäyttää vaihelistan samaan Bluetooth-yhteyteen. Se ei
+lähetä mitään kuittausta automaattisesti. Odotus kestää enintään1–180sekuntia
+(oletus120); listassa saa olla yksi odotus. Timeout, abort tai integraation purku
+sulkee yhteyden. Jo kirjoitettuja asetuksia ei palauteta automaattisesti.
+
+Anna kutsulle uusi UUID `session_id`. Käytä toista Toiminnot-välilehteä
+`taelek.debug_gatt_control`-kutsuille: `status`, `continue` tai `abort`. Ne eivät
+avaa uutta BLE-yhteyttä eivätkä synkronoi kelloa. `continue` suorittaa vain jo
+etukäteen määritellyt jäljellä olevat vaiheet, kerran. Se hyväksytään vain odotuksen
+aikana samalla session_id:llä. Väärä tunniste, ennenaikainen tai toistettu kuittaus
+hylätään. Käytettyä tunnistetta ei voi käyttää uudelleen saman integraatiolatauksen
+aikana. Pollaus ja muut aktiiviset kokeet estetään pidetyn session aikana;
+passiivisten mainosten vastaanotto jatkuu.
+
+Kirjoitukseton mekanismin esimerkki (vaihda tunniste uuteen UUID:hen joka kerta):
+
+```yaml
+action: taelek.debug_gatt
+data:
+  config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
+  session_id: "6d2e7a81-e7f9-4c9f-a1bd-81cd6201bf90"
+  sync_time: false
+  steps:
+    - operation: read
+      uuid: 2be32db1-5f6b-4cbd-8843-8d6dfb164900
+    - operation: wait_for_continue
+      timeout: 120
+    - operation: read
+      uuid: 2be32db1-5f6b-4cbd-8843-8d6dfb164900
+```
+
+Toisessa välilehdessä tarkista ensin `status`. Kun operaattori on nimenomaisesti
+kuitannut jatkamisen, muuta operationiksi `continue`; keskeytykseen `abort`:
+
+```yaml
+action: taelek.debug_gatt_control
+data:
+  config_entry_id: "YOUR_TAELEK_CONFIG_ENTRY_ID"
+  session_id: "6d2e7a81-e7f9-4c9f-a1bd-81cd6201bf90"
+  operation: status
+```
+
+Status palauttaa phase-arvon ja odotukseen mennessä kerätyn result-vastauksen.
+Continue/abort-vastaus kertoo vain ohjauspyynnön hyväksymisestä; varsinainen
+GATT-tulos tulee alkuperäiseen kutsuun ja lopuksi status-kutsuun. Jatko ei
+uudelleenyhdistä katkennutta BLE-linkkiä eikä retrytä kirjoituksia. Käyttöliittymän
+odotusvirhe ei itsessään todista session päättyneen: tarkista status ennen uusia
+operaatioita. Säilytetään vain viimeisimmän pidetyn session tulos, ei pysyvää lokia.
+
+Vaihevastaukset sisältävät UTC `started_at`/`completed_at`-ajat. Write sisältää
+`written_hex`; patch myös `original_hex`. Nämä voivat sisältää verkkoavaimia:
+ne palautetaan vain kutsujalle, eikä niitä kirjata integraation lokiin. Säilytä
+raakavastaukset yksityisesti ja poista tunnisteet/avaimet ennen julkaisemista.
+
+Tämä on testityökalu, ei varmennettu termostaatin tallennus-/ECO-ohjaus.
+
 Versio 0.1.6 lisää HA-toiminnon `taelek.debug_gatt`. Sen jälkeen kokeen
 UUID:t, tavut ja vaiheet annetaan toimintokutsussa. Uutta koodia tai painiketta
 ei tarvita kutakin koetta varten. Tämä ei ole aktiivisen ECO:n valmis ohjaus.

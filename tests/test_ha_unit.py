@@ -4,6 +4,7 @@ These test our callbacks/flows/entities, not the real HA event loop or loader.
 The separate tests_ha suite must run on supported Linux/Python with real HA.
 """
 
+import asyncio
 import importlib
 import struct
 import sys
@@ -12,6 +13,110 @@ from types import ModuleType, SimpleNamespace
 from unittest.mock import AsyncMock, Mock
 
 import pytest
+
+
+async def test_held_debug_service_preserves_connection_and_gates_all_following_writes(ha):
+    from uuid import uuid4
+
+    from custom_components.taelek.taelek_ble.const import PRODUCT_COMMANDS, PRODUCT_PARAM_B, TIME
+
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tael")
+    transport = AsyncMock()
+    transport.read_gatt_char.return_value = bytes(range(16))
+    ha.coordinator.establish_connection.return_value = transport
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    ha.entry.domain, ha.entry.state = "taelek", "loaded"
+    ha.entry.options["enable_debug_gatt"] = True
+    ha.entry.runtime_data = SimpleNamespace(active=active)
+    ha.hass.config_entries.async_get_entry = Mock(return_value=ha.entry)
+    ha.hass.services = SimpleNamespace(async_register=Mock())
+    await ha.integration.async_setup(ha.hass, {})
+    registrations = {c.args[1]: c for c in ha.hass.services.async_register.call_args_list}
+
+    async def call(name, data):
+        reg = registrations[name]
+        return await reg.args[2](SimpleNamespace(data=reg.kwargs["schema"](data)))
+
+    sid = str(uuid4())
+    data = {
+        "config_entry_id": "test",
+        "session_id": sid,
+        "steps": [
+            {"operation": "patch", "uuid": PRODUCT_PARAM_B, "offset": 2, "hex": "6400"},
+            {"operation": "wait_for_continue", "timeout": 1},
+            {"operation": "write", "uuid": PRODUCT_COMMANDS, "hex": "83"},
+        ],
+    }
+    task = asyncio.create_task(call("debug_gatt", data))
+    await asyncio.sleep(0)
+    control = {"config_entry_id": "test", "session_id": sid, "operation": "status"}
+    snapshot = await call("debug_gatt_control", control)
+    assert snapshot["phase"] == "waiting"
+    assert snapshot["result"]["steps"][0]["original_hex"] == bytes(range(16)).hex()
+    assert [c.args[0] for c in transport.write_gatt_char.await_args_list] == [TIME, PRODUCT_PARAM_B]
+    transport.disconnect.assert_not_called()
+    with pytest.raises(ValueError, match="held debug"):
+        await active.async_debug_gatt([{"operation": "read", "uuid": PRODUCT_PARAM_B}])
+    with pytest.raises(Exception, match="polling paused"):
+        await active._async_update_data()
+    with pytest.raises(Exception, match="No matching"):
+        await call(
+            "debug_gatt_control", {**control, "session_id": str(uuid4()), "operation": "continue"}
+        )
+    await call("debug_gatt_control", {**control, "operation": "continue"})
+    with pytest.raises(Exception, match="not waiting"):
+        await call("debug_gatt_control", {**control, "operation": "continue"})
+    result = await task
+    assert result["success"] and result["session_id"] == sid
+    assert snapshot["phase"] == "waiting"  # Response was a detached snapshot.
+    assert (await call("debug_gatt_control", control))["phase"] == "finished"
+    assert [c.args[0] for c in transport.write_gatt_char.await_args_list] == [
+        TIME,
+        PRODUCT_PARAM_B,
+        PRODUCT_COMMANDS,
+    ]
+    ha.coordinator.establish_connection.assert_awaited_once()
+    transport.disconnect.assert_awaited_once()
+    with pytest.raises(Exception, match="cannot be reused"):
+        await call("debug_gatt", data)
+
+
+@pytest.mark.parametrize("operation", ["abort", "unload"])
+async def test_held_debug_abort_or_unload_disconnects_without_confirmation(ha, operation):
+    from uuid import uuid4
+
+    from custom_components.taelek.taelek_ble.const import PRODUCT_COMMANDS
+
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tael")
+    transport = AsyncMock()
+    ha.coordinator.establish_connection.return_value = transport
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    sid = str(uuid4())
+    task = asyncio.create_task(
+        active.async_debug_gatt(
+            [
+                {"operation": "wait_for_continue", "timeout": 1},
+                {"operation": "write", "uuid": PRODUCT_COMMANDS, "hex": "83"},
+            ],
+            session_id=sid,
+            sync_time=False,
+        )
+    )
+    await asyncio.sleep(0)
+    assert (await active.async_debug_control(sid, "status"))["phase"] == "waiting"
+    if operation == "abort":
+        await active.async_debug_control(sid, "abort")
+        assert not (await task)["success"]
+    else:
+        ha.entry.runtime_data = SimpleNamespace(active=active)
+        assert await ha.integration.async_unload_entry(ha.hass, ha.entry)
+        with pytest.raises(asyncio.CancelledError):
+            await task
+    assert active._debug_session is None
+    transport.write_gatt_char.assert_not_called()
+    transport.disconnect.assert_awaited_once()
 
 
 @pytest.fixture
@@ -379,7 +484,9 @@ async def test_debug_service_schema_through_coordinator_and_vendored_clock(
     ha.hass.config_entries.async_get_entry = Mock(return_value=ha.entry)
     ha.hass.services = SimpleNamespace(async_register=Mock())
     await ha.integration.async_setup(ha.hass, {})
-    registration = ha.hass.services.async_register.call_args
+    registration = next(
+        c for c in ha.hass.services.async_register.call_args_list if c.args[1] == "debug_gatt"
+    )
     handler = registration.args[2]
     data = {
         "config_entry_id": "test",
@@ -497,7 +604,9 @@ async def test_old_profile_is_not_saved_by_options_flow(ha):
 async def test_debug_service_is_registered_without_connecting_and_gated(ha):
     ha.hass.services = SimpleNamespace(async_register=Mock())
     await ha.integration.async_setup(ha.hass, {})
-    registration = ha.hass.services.async_register.call_args
+    registration = next(
+        c for c in ha.hass.services.async_register.call_args_list if c.args[1] == "debug_gatt"
+    )
     assert registration.args[:2] == ("taelek", "debug_gatt")
     assert registration.kwargs["supports_response"] == "only"
     handler = registration.args[2]
@@ -524,7 +633,11 @@ async def test_debug_service_is_registered_without_connecting_and_gated(ha):
 async def test_debug_service_rejects_wrong_entry_and_disabled_gatt(ha):
     ha.hass.services = SimpleNamespace(async_register=Mock())
     await ha.integration.async_setup(ha.hass, {})
-    handler = ha.hass.services.async_register.call_args.args[2]
+    handler = next(
+        c.args[2]
+        for c in ha.hass.services.async_register.call_args_list
+        if c.args[1] == "debug_gatt"
+    )
     ha.hass.config_entries.async_get_entry = Mock(return_value=None)
     call = SimpleNamespace(data={"config_entry_id": "missing", "steps": []})
     with pytest.raises(Exception, match="Select a Taelek"):

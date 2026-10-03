@@ -44,4 +44,6 @@ async def _async_options_updated(hass: HomeAssistant, entry: ConfigEntry) -> Non
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    if entry.runtime_data.active is not None:
+        await entry.runtime_data.active.async_shutdown_debug()
     return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

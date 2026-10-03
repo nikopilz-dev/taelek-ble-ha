@@ -13,3 +13,26 @@ debug_gatt:
       default: true
       selector:
         boolean:
+    session_id:
+      description: UUID identifying a sequence containing wait_for_continue.
+      selector:
+        text:
+debug_gatt_control:
+  fields:
+    config_entry_id:
+      required: true
+      selector:
+        config_entry:
+          integration: taelek
+    session_id:
+      required: true
+      selector:
+        text:
+    operation:
+      required: true
+      selector:
+        select:
+          options:
+            - status
+            - continue
+            - abort
