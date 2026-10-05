@@ -14,20 +14,28 @@ async def test_discover_returns_handles_without_reads_or_writes():
     transport = AsyncMock()
     transport.services = [
         SimpleNamespace(
-            uuid="ABC", handle=1,
-            characteristics=[SimpleNamespace(uuid=PRODUCT_PARAM_B.upper(), handle=2,
-                                            properties=["read", "write"])],
+            uuid="ABC",
+            handle=1,
+            characteristics=[
+                SimpleNamespace(
+                    uuid=PRODUCT_PARAM_B.upper(), handle=2, properties=["read", "write"]
+                )
+            ],
         )
     ]
     result = await TaelekClient(AsyncMock(return_value=transport)).debug_gatt(
         [{"operation": "discover"}], sync_time=False
     )
     assert result["success"]
-    assert result["steps"][0]["services"] == [{
-        "uuid": "abc", "handle": 1,
-        "characteristics": [{"uuid": PRODUCT_PARAM_B, "handle": 2,
-                             "properties": ["read", "write"]}],
-    }]
+    assert result["steps"][0]["services"] == [
+        {
+            "uuid": "abc",
+            "handle": 1,
+            "characteristics": [
+                {"uuid": PRODUCT_PARAM_B, "handle": 2, "properties": ["read", "write"]}
+            ],
+        }
+    ]
     transport.read_gatt_char.assert_not_awaited()
     transport.write_gatt_char.assert_not_awaited()
     transport.disconnect.assert_awaited_once()
@@ -37,8 +45,7 @@ async def test_missing_service_table_stops_before_requested_write():
     transport = AsyncMock()
     transport.services = None
     result = await TaelekClient(AsyncMock(return_value=transport)).debug_gatt(
-        [{"operation": "discover"},
-         {"operation": "write", "uuid": PRODUCT_COMMANDS, "hex": "83"}],
+        [{"operation": "discover"}, {"operation": "write", "uuid": PRODUCT_COMMANDS, "hex": "83"}],
         sync_time=False,
     )
     assert not result["success"] and result["error_type"] == "ValueError"
