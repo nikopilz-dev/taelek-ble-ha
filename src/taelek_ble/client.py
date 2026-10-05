@@ -75,6 +75,7 @@ class TaelekClient:
         if wait_budget and not callable(pause):
             raise ValueError("A confirmation callback is required before connecting")
         result = {"success": False, "steps": [], "clock_sync": {"status": "not started"}}
+        cached_reads = {}
         try:
             async with self._session(
                 sync_time=sync_time,
@@ -100,11 +101,23 @@ class TaelekClient:
                         uuid = step["uuid"]
                         observed["uuid"] = uuid
                         if op == "read":
-                            observed["hex"] = bytes(await client.read_gatt_char(uuid)).hex()
+                            raw = bytes(await client.read_gatt_char(uuid))
+                            observed["hex"] = raw.hex()
+                            if "expected_length" in step and len(raw) != step["expected_length"]:
+                                raise ValueError("Read length did not match expected length")
+                            if "expected_data" in step and raw != step["expected_data"]:
+                                raise ValueError("Read buffer did not match expected bytes")
+                            cached_reads[index] = raw
                         else:
                             payload = step["data"]
-                            if op == "patch":
-                                original = bytes(await client.read_gatt_char(uuid))
+                            if op in ("patch", "write_cached"):
+                                if op == "write_cached":
+                                    original = cached_reads[step["source_step"]]
+                                    observed["source_step"] = step["source_step"]
+                                    if len(original) > 512:
+                                        raise ValueError("Cached buffer exceeds 512 bytes")
+                                else:
+                                    original = bytes(await client.read_gatt_char(uuid))
                                 observed["original_hex"] = original.hex()
                                 offset = step["offset"]
                                 if offset + len(payload) > len(original):

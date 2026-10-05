@@ -6,6 +6,7 @@ debug_gatt:
         config_entry:
           integration: taelek
     steps:
+      description: Explicit read/write/patch/write_cached/delay steps; cached writes refer to an earlier read index in the same session.
       required: true
       selector:
         object:

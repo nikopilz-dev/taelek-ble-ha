@@ -1,5 +1,44 @@
 # GATT-kenttätestit ilman uusia integraatioversioita
 
+## 0.1.9: kirjoitus aiemmasta saman session lukupuskurista
+
+`write_cached` ottaa puskurin aiemmasta `read`-vaiheesta, jonka nollasta alkava
+indeksi annetaan `source_step`-kentässä. UUID:n pitää olla sama. Lähde tarkistetaan
+ennen yhteyden avaamista; välimuisti on vain tämän kutsun sisäinen ja sisältää
+muuttumattoman kopion alkuperäisestä luvusta. Myöhempi saman UUID:n luku ei korvaa
+vanhaa indeksiviitettä. Yhteyden päättyessä välimuisti poistuu.
+
+Vaihe ei lue Bluetoothia uudelleen. Ilman `offset`/`hex`-kenttiä se kirjoittaa
+koko alkuperäisen puskurin. Jos haluat muuttaa tavut, anna molemmat kentät;
+muut tavut säilyvät. `response` toimii kuten tavallisessa writessä. Vastauksessa
+ovat `source_step`, `original_hex` ja `written_hex`, jotka säilytetään yksityisesti.
+
+Alkuluvulle voi antaa `expected_length` ja/tai `expected_hex`. Epätäsmäävä
+tulos palautetaan raakana, mutta kaikki seuraavat vaiheet pysähtyvät. Kellon
+automaattinen prelude tapahtuu ennen näitä tarkistuksia, ellei `sync_time: false`.
+Aseta kaikki tarvittavat vartioidut alkuluvut ennen ensimmäistä kirjoitusta.
+
+```yaml
+action: taelek.debug_gatt
+data:
+  config_entry_id: YOUR_TAELEK_CONFIG_ENTRY_ID
+  sync_time: false
+  steps:
+    - operation: read
+      uuid: 2be32db1-5f6b-5bd8-8238-d6dfb1649000
+      expected_length: 16
+    - operation: write_cached
+      uuid: 2be32db1-5f6b-5bd8-8238-d6dfb1649000
+      source_step: 0
+      offset: 2
+      hex: "6400"
+      response: true
+```
+
+Kirjoitukset suoritetaan edelleen peräkkäin odottaen BLE-kutsujen valmistumista.
+Tämä ei jäljittele Androidin rinnakkaista kutsujen käynnistämistä. Ei automaattista
+confirmationia, uudelleenyhdistämistä, palautusta tai kirjoitusretryä.
+
 ## 0.1.8: kuittauksen odotus samassa yhteydessä
 
 `wait_for_continue` pysäyttää vaihelistan samaan Bluetooth-yhteyteen. Se ei

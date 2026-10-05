@@ -521,6 +521,58 @@ async def test_debug_service_schema_through_coordinator_and_vendored_clock(
     client.disconnect.assert_awaited_once()
 
 
+@pytest.mark.parametrize("bad_guard", [False, True])
+async def test_cached_service_through_coordinator_uses_only_initial_read(ha, bad_guard):
+    from custom_components.taelek.taelek_ble.const import PRODUCT_PARAM_B, TIME
+
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tael")
+    transport = AsyncMock()
+    original = bytes(range(16))
+    transport.read_gatt_char.return_value = original
+    ha.coordinator.establish_connection.return_value = transport
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry)
+    ha.entry.domain, ha.entry.state = "taelek", "loaded"
+    ha.entry.options["enable_debug_gatt"] = True
+    ha.entry.runtime_data = SimpleNamespace(active=active)
+    ha.hass.config_entries.async_get_entry = Mock(return_value=ha.entry)
+    ha.hass.services = SimpleNamespace(async_register=Mock())
+    await ha.integration.async_setup(ha.hass, {})
+    registration = next(
+        c for c in ha.hass.services.async_register.call_args_list if c.args[1] == "debug_gatt"
+    )
+    data = {
+        "config_entry_id": "test",
+        "sync_time": False,
+        "steps": [
+            {
+                "operation": "read",
+                "uuid": PRODUCT_PARAM_B,
+                "expected_length": 15 if bad_guard else 16,
+            },
+            {
+                "operation": "write_cached",
+                "uuid": PRODUCT_PARAM_B,
+                "source_step": 0,
+                "offset": 2,
+                "hex": "6400",
+            },
+        ],
+    }
+    result = await registration.args[2](SimpleNamespace(data=registration.kwargs["schema"](data)))
+    transport.read_gatt_char.assert_awaited_once_with(PRODUCT_PARAM_B)
+    assert not any(c.args[0] == TIME for c in transport.write_gatt_char.await_args_list)
+    assert result["success"] is not bad_guard
+    if bad_guard:
+        transport.write_gatt_char.assert_not_called()
+    else:
+        transport.write_gatt_char.assert_awaited_once_with(
+            PRODUCT_PARAM_B, original[:2] + b"\x64\x00" + original[4:], response=True
+        )
+        assert result["steps"][1]["source_step"] == 0
+    transport.disconnect.assert_awaited_once()
+
+
 async def test_nonthermostat_blocks_gatt_and_temperature(ha):
     ha.info.manufacturer_data[1162] = struct.pack("<hBBI10s", 300, 0, 0x55, 123, b"Plug")
     ha.bluetooth.async_last_service_info.return_value = ha.info
