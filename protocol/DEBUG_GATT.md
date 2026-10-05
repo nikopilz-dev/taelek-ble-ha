@@ -1,5 +1,23 @@
 # GATT-kenttätestit ilman uusia integraatioversioita
 
+## 0.1.10: löydettyjen GATT-handlejen kartoitus
+
+`discover` palauttaa yhteyden löydettyjen servicejen ja characteristicien UUID:t,
+handlet ja ominaisuudet. Se ei lue arvoja eikä itse kirjoita mitään. Alla oleva
+`sync_time: false` on välttämätön täysin kirjoituksettomaan kartoitukseen, koska
+muuten normaali kellopreludi on käytössä. Kartoitus käyttää samaa debug-lukitusta
+ja session siivousta kuin muut operaatiot. Puuttuva service-taulu keskeyttää ajon.
+Tulos kuvaa backendin löydettyä/cachettua taulua; se ei ole ATT-radiojälki.
+
+```yaml
+action: taelek.debug_gatt
+data:
+  config_entry_id: YOUR_CONFIG_ENTRY_ID
+  sync_time: false
+  steps:
+    - operation: discover
+```
+
 ## 0.1.9: kirjoitus aiemmasta saman session lukupuskurista
 
 `write_cached` ottaa puskurin aiemmasta `read`-vaiheesta, jonka nollasta alkava

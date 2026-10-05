@@ -24,7 +24,7 @@ from .const import (
     PRODUCT_STATE_A,
     TIME,
 )
-from .debug import validate_steps
+from .debug import describe_services, validate_steps
 from .models import ParamA, ParamB, StateA
 
 _LOGGER = logging.getLogger(__name__)
@@ -91,7 +91,9 @@ class TaelekClient:
                         "started_at": datetime.now(UTC).isoformat(),
                     }
                     result["steps"].append(observed)
-                    if op == "wait_for_continue":
+                    if op == "discover":
+                        observed["services"] = describe_services(client.services)
+                    elif op == "wait_for_continue":
                         observed["status"] = "waiting for explicit continuation"
                         async with asyncio.timeout(step["timeout"]):
                             await pause(result)

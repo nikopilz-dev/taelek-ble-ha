@@ -15,6 +15,7 @@ def validate_steps(steps):
             raise ValueError("Each step must be an object")  # noqa: TRY004 -- uniform validation API
         op = step.get("operation")
         allowed = {
+            "discover": {"operation"},
             "read": {"operation", "uuid", "expected_hex", "expected_length"},
             "write": {"operation", "uuid", "hex", "response"},
             "patch": {"operation", "uuid", "hex", "offset", "response"},
@@ -25,7 +26,9 @@ def validate_steps(steps):
         if not isinstance(op, str) or op not in allowed or set(step) - allowed[op]:
             raise ValueError("Invalid operation or unexpected step fields")
         out = {"operation": op}
-        if op == "wait_for_continue":
+        if op == "discover":
+            pass
+        elif op == "wait_for_continue":
             waits += 1
             timeout = step.get("timeout", 120)
             if (
@@ -112,3 +115,24 @@ def validate_steps(steps):
     if total_delay > 20:
         raise ValueError("Total delay exceeds 20 seconds")
     return validated
+
+
+def describe_services(services):
+    """Return discovered GATT metadata without reading characteristic values."""
+    if services is None:
+        raise ValueError("No discovered GATT service table available")
+    return [
+        {
+            "uuid": str(service.uuid).lower(),
+            "handle": service.handle,
+            "characteristics": [
+                {
+                    "uuid": str(characteristic.uuid).lower(),
+                    "handle": characteristic.handle,
+                    "properties": list(characteristic.properties),
+                }
+                for characteristic in service.characteristics
+            ],
+        }
+        for service in services
+    ]
