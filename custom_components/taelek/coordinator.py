@@ -5,7 +5,7 @@ import logging
 from contextlib import suppress
 from copy import deepcopy
 from dataclasses import replace
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 from time import monotonic
 from uuid import UUID
 
@@ -24,6 +24,7 @@ from .taelek_ble.debug import validate_steps
 from .taelek_ble.discovery import device_unique_id, parse_discovery
 
 _LOGGER = logging.getLogger(__name__)
+_ADVERTISEMENT_LOGGER = logging.getLogger(f"{__package__}.advertisements")
 VERIFIED_ADVERTISEMENT_MAX_AGE = 90
 
 
@@ -56,12 +57,30 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
         if info is not None and bluetooth.async_address_present(
             self.hass, self.address, connectable=False
         ):
-            self._receive(info, None)
+            self._receive(info, None, cached=True)
             # HA's cached startup record is not evidence of a fresh reception.
             self.last_verified_at = None
 
     @callback
-    def _receive(self, info, change):
+    def _receive(self, info, change, *, cached=False):
+        # Explicit debug logging includes ignored layouts; never decode them as
+        # thermostat data. Raw frames may contain private group keys.
+        if _ADVERTISEMENT_LOGGER.isEnabledFor(logging.DEBUG):
+            _ADVERTISEMENT_LOGGER.debug(
+                "raw_advertisement utc=%s cached=%s ha_time=%r address=%s "
+                "name=%r source=%r rssi=%r manufacturer_data=%s service_data=%s "
+                "service_uuids=%r",
+                datetime.now(UTC).isoformat(),
+                cached,
+                getattr(info, "time", None),
+                info.address,
+                info.name,
+                getattr(info, "source", None),
+                getattr(info, "rssi", None),
+                {key: value.hex() for key, value in info.manufacturer_data.items()},
+                {key: value.hex() for key, value in getattr(info, "service_data", {}).items()},
+                getattr(info, "service_uuids", None),
+            )
         advertisement = parse_discovery(info.name, info.manufacturer_data)
         if advertisement is None or not advertisement.thermostat_layout:
             return

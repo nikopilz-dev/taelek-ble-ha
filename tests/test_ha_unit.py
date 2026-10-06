@@ -6,6 +6,7 @@ The separate tests_ha suite must run on supported Linux/Python with real HA.
 
 import asyncio
 import importlib
+import logging
 import struct
 import sys
 from datetime import UTC, datetime, timedelta, timezone
@@ -13,6 +14,35 @@ from types import ModuleType, SimpleNamespace
 from unittest.mock import AsyncMock, Mock
 
 import pytest
+
+
+def test_raw_advertisement_logger_captures_ignored_tae1_before_filter(ha, caplog):
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    passive._receive(ha.info, None)
+    original = passive.data
+    alternate = SimpleNamespace(
+        name="Tae1",
+        address=ha.info.address,
+        manufacturer_data={1162: bytes(6) + b"GROUP123" + bytes(4)},
+        time=123.5,
+        source="test-proxy",
+        rssi=-70,
+        service_data={},
+        service_uuids=[],
+    )
+    with caplog.at_level(logging.DEBUG, logger="custom_components.taelek.advertisements"):
+        passive._receive(alternate, None)
+        passive._receive(alternate, None, cached=True)
+    assert passive.data is original
+    assert len(caplog.records) == 2
+    first, cached = [record.getMessage() for record in caplog.records]
+    assert "name='Tae1'" in first
+    assert alternate.manufacturer_data[1162].hex() in first
+    assert "source='test-proxy' rssi=-70" in first
+    assert "ha_time=123.5" in first
+    assert "cached=False" in first and "cached=True" in cached
+    stamp = first.split("utc=", 1)[1].split(" ", 1)[0]
+    assert datetime.fromisoformat(stamp).utcoffset() == timedelta(0)
 
 
 def test_tae1_preserves_recent_identity_without_becoming_sensor_data(ha, monkeypatch):
