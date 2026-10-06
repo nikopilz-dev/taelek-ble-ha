@@ -29,6 +29,7 @@ def test_raw_advertisement_logger_captures_ignored_tae1_before_filter(ha, caplog
         rssi=-70,
         service_data={},
         service_uuids=[],
+        raw=b"\x05\x09Tae1",
     )
     with caplog.at_level(logging.DEBUG, logger="custom_components.taelek.advertisements"):
         passive._receive(alternate, None)
@@ -40,9 +41,18 @@ def test_raw_advertisement_logger_captures_ignored_tae1_before_filter(ha, caplog
     assert alternate.manufacturer_data[1162].hex() in first
     assert "source='test-proxy' rssi=-70" in first
     assert "ha_time=123.5" in first
+    assert "raw='050954616531'" in first
     assert "cached=False" in first and "cached=True" in cached
     stamp = first.split("utc=", 1)[1].split(" ", 1)[0]
     assert datetime.fromisoformat(stamp).utcoffset() == timedelta(0)
+
+
+def test_raw_advertisement_logger_allows_backend_without_raw(ha, caplog):
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    with caplog.at_level(logging.DEBUG, logger="custom_components.taelek.advertisements"):
+        passive._receive(ha.info, None)
+    assert "raw=None" in caplog.records[-1].getMessage()
+    assert passive.data is not None
 
 
 def test_tae1_preserves_recent_identity_without_becoming_sensor_data(ha, monkeypatch):

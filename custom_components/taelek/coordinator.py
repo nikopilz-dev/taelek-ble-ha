@@ -66,10 +66,11 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
         # Explicit debug logging includes ignored layouts; never decode them as
         # thermostat data. Raw frames may contain private group keys.
         if _ADVERTISEMENT_LOGGER.isEnabledFor(logging.DEBUG):
+            raw = getattr(info, "raw", None)
             _ADVERTISEMENT_LOGGER.debug(
                 "raw_advertisement utc=%s cached=%s ha_time=%r address=%s "
                 "name=%r source=%r rssi=%r manufacturer_data=%s service_data=%s "
-                "service_uuids=%r",
+                "service_uuids=%r raw=%r connectable=%r tx_power=%r",
                 datetime.now(UTC).isoformat(),
                 cached,
                 getattr(info, "time", None),
@@ -80,6 +81,9 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
                 {key: value.hex() for key, value in info.manufacturer_data.items()},
                 {key: value.hex() for key, value in getattr(info, "service_data", {}).items()},
                 getattr(info, "service_uuids", None),
+                raw.hex() if raw is not None else None,
+                getattr(info, "connectable", None),
+                getattr(info, "tx_power", None),
             )
         advertisement = parse_discovery(info.name, info.manufacturer_data)
         if advertisement is None or not advertisement.thermostat_layout:
