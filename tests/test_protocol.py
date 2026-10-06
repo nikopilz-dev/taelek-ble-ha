@@ -118,6 +118,7 @@ def test_discovery_and_stable_identity():
     assert parse_discovery("Other", {999: payload()}) is None
     assert parse_discovery("Tael", {1: payload(), 2: payload()}) is None
     assert parse_discovery("Tael", {0x048A: b"short"}) is None
+    assert parse_discovery("Tae1", {0x048A: bytes(18)}) is None
     for serial in (0, 0xFFFFFFFF):
         assert (
             device_unique_id(decode_manufacturer_payload(payload(serial)), "AA:BB")

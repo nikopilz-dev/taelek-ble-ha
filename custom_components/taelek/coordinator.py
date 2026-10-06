@@ -6,6 +6,7 @@ from contextlib import suppress
 from copy import deepcopy
 from dataclasses import replace
 from datetime import timedelta
+from time import monotonic
 from uuid import UUID
 
 from bleak.exc import BleakError
@@ -23,6 +24,7 @@ from .taelek_ble.debug import validate_steps
 from .taelek_ble.discovery import device_unique_id, parse_discovery
 
 _LOGGER = logging.getLogger(__name__)
+VERIFIED_ADVERTISEMENT_MAX_AGE = 90
 
 
 class AdvertisementCoordinator(DataUpdateCoordinator):
@@ -31,6 +33,7 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
         self.entry = entry
         self.address = entry.data[CONF_ADDRESS]
         self.present = False
+        self.last_verified_at = None
 
     def start(self):
         self.entry.async_on_unload(
@@ -54,6 +57,8 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
             self.hass, self.address, connectable=False
         ):
             self._receive(info, None)
+            # HA's cached startup record is not evidence of a fresh reception.
+            self.last_verified_at = None
 
     @callback
     def _receive(self, info, change):
@@ -65,18 +70,21 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
             self.entry.unique_id.startswith("serial_")
             and device_unique_id(advertisement, info.address) != self.entry.unique_id
         ):
+            self.last_verified_at = None
             return
         self.present = True
+        self.last_verified_at = monotonic()
         self.async_set_updated_data(advertisement)
 
     @callback
     def _unavailable(self, info):
         self.present = False
+        self.last_verified_at = None
         self.async_update_listeners()
 
 
 class ActiveCoordinator(DataUpdateCoordinator):
-    def __init__(self, hass, entry):
+    def __init__(self, hass, entry, *, passive=None):
         super().__init__(
             hass,
             _LOGGER,
@@ -86,6 +94,7 @@ class ActiveCoordinator(DataUpdateCoordinator):
         )
         self.address = entry.data[CONF_ADDRESS]
         self.unique_id = entry.unique_id
+        self.passive = passive
         self.client = TaelekClient(self._connect, clock=dt_util.now)
         self.last_command_test = None
         self._experiment_lock = asyncio.Lock()
@@ -248,7 +257,19 @@ class ActiveCoordinator(DataUpdateCoordinator):
 
     def _get_advertisement(self):
         info = bluetooth.async_last_service_info(self.hass, self.address, connectable=False)
-        advertisement = parse_discovery(info.name, info.manufacturer_data) if info else None
+        if info is not None and info.name == "Tae1":
+            passive = self.passive
+            if (
+                passive is None
+                or not passive.present
+                or passive.last_verified_at is None
+                or not 0 <= monotonic() - passive.last_verified_at <= VERIFIED_ADVERTISEMENT_MAX_AGE
+                or not bluetooth.async_address_present(self.hass, self.address, connectable=False)
+            ):
+                raise UpdateFailed("No recent verified thermostat advertisement alongside Tae1")
+            advertisement = passive.data
+        else:
+            advertisement = parse_discovery(info.name, info.manufacturer_data) if info else None
         if advertisement is None or not advertisement.thermostat_layout:
             raise UpdateFailed("No supported thermostat advertisement available for GATT reads")
         if (

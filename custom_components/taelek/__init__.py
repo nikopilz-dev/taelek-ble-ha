@@ -31,7 +31,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             },
         )
     passive = AdvertisementCoordinator(hass, entry)
-    active = ActiveCoordinator(hass, entry) if entry.options.get(CONF_GATT, False) else None
+    active = (
+        ActiveCoordinator(hass, entry, passive=passive)
+        if entry.options.get(CONF_GATT, False)
+        else None
+    )
     entry.runtime_data = RuntimeData(passive, active)
     passive.start()
     entry.async_on_unload(entry.add_update_listener(_async_options_updated))

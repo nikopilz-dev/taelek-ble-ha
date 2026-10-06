@@ -15,6 +15,79 @@ from unittest.mock import AsyncMock, Mock
 import pytest
 
 
+def test_tae1_preserves_recent_identity_without_becoming_sensor_data(ha, monkeypatch):
+    now = [100.0]
+    monkeypatch.setattr(ha.coordinator, "monotonic", lambda: now[0])
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry, passive=passive)
+    passive._receive(ha.info, None)
+    original = passive.data
+    alternate = SimpleNamespace(
+        name="Tae1",
+        address=ha.info.address,
+        manufacturer_data={1162: bytes(6) + b"GROUP123" + bytes(4)},
+    )
+    ha.bluetooth.async_last_service_info.return_value = alternate
+    passive._receive(alternate, None)
+    assert passive.data is original
+    assert active._get_advertisement() is original
+    now[0] = 191
+    with pytest.raises(Exception, match="No recent verified"):
+        active._get_advertisement()
+    # A fresh matching ordinary frame restores the bounded fallback.
+    passive._receive(ha.info, None)
+    assert active._get_advertisement().serial == 123
+    passive._unavailable(ha.info)
+    with pytest.raises(Exception, match="No recent verified"):
+        active._get_advertisement()
+
+
+def test_tae1_cannot_mask_ordinary_serial_mismatch_or_startup_cache(ha):
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    active = ha.coordinator.ActiveCoordinator(ha.hass, ha.entry, passive=passive)
+    ha.bluetooth.async_last_service_info.return_value = ha.info
+    passive.start()
+    alternate = SimpleNamespace(name="Tae1", manufacturer_data={1162: bytes(18)})
+    ha.bluetooth.async_last_service_info.return_value = alternate
+    with pytest.raises(Exception, match="No recent verified"):
+        active._get_advertisement()
+    passive._receive(ha.info, None)
+    mismatch = SimpleNamespace(
+        name="Tael",
+        address=ha.info.address,
+        manufacturer_data={1162: struct.pack("<hBBI10s", 215, 0x90, 0x22, 999, b"Room")},
+    )
+    ha.bluetooth.async_last_service_info.return_value = mismatch
+    with pytest.raises(Exception, match="serial does not match"):
+        active._get_advertisement()
+    passive._receive(mismatch, None)
+    ha.bluetooth.async_last_service_info.return_value = alternate
+    with pytest.raises(Exception, match="No recent verified"):
+        active._get_advertisement()
+
+
+async def test_tae1_active_read_uses_shared_verified_passive_coordinator(ha):
+    ha.entry.options["enable_gatt"] = True
+    await ha.integration.async_setup_entry(ha.hass, ha.entry)
+    passive, active = ha.entry.runtime_data.passive, ha.entry.runtime_data.active
+    assert active.passive is passive
+    passive._receive(ha.info, None)
+    ha.bluetooth.async_last_service_info.return_value = SimpleNamespace(
+        name="Tae1", manufacturer_data={1162: bytes(18)}
+    )
+    ha.bluetooth.async_ble_device_from_address.return_value = SimpleNamespace(name="Tae1")
+    transport = AsyncMock()
+    transport.read_gatt_char.return_value = bytes(16)
+    ha.coordinator.establish_connection.return_value = transport
+    result = await active.async_debug_gatt(
+        [{"operation": "read", "uuid": "2be32db1-5f6b-5bd8-8238-d6dfb1649000"}],
+        sync_time=False,
+    )
+    assert result["success"]
+    transport.write_gatt_char.assert_not_called()
+    ha.coordinator.establish_connection.assert_awaited_once()
+
+
 async def test_held_debug_service_preserves_connection_and_gates_all_following_writes(ha):
     from uuid import uuid4
 

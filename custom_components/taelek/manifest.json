@@ -1,7 +1,7 @@
 {
   "domain": "taelek",
   "name": "Taelek BLE",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "config_flow": true,
   "dependencies": [
     "bluetooth",

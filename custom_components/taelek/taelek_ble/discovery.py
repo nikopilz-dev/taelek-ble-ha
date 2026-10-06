@@ -15,6 +15,10 @@ def parse_discovery(
     The fallback supports unverified company IDs without guessing between multiple
     manufacturer records. Both matchers remain hypotheses for E-2001 hardware.
     """
+    # Tae1 uses a different manufacturer-data layout, even under the same
+    # company ID and address. Its network bytes are not a thermostat serial.
+    if local_name == "Tae1":
+        return None
     payload = manufacturer_data.get(TAELEK_COMPANY_ID)
     if payload is None and local_name and local_name.startswith("Tael"):
         candidates = [data for data in manufacturer_data.values() if len(data) == 18]
