@@ -1,12 +1,18 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.10, 5.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.11, 6.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
 lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
 
 ## Mitä ensimmäinen versio tekee
+
+Versio 0.1.11 erottaa `Tae1`-mainokset tavallisista termostaattimainoksista.
+Saman laitteen vaihtoehtoinen mainosmuoto ei enää tuota väärää sarjanumeroa.
+Aktiivinen yhteys voi käyttää enintään 90 sekuntia vanhaa, passiivisesti
+vastaanotettua oikean sarjanumeron termostaattimainosta. Tarkempi rajaus:
+[ALTERNATE_ADVERTISEMENTS.md](protocol/ALTERNATE_ADVERTISEMENTS.md).
 
 Versio 0.1.10 lisää debug-kokeisiin `discover`-vaiheen GATT-servicejen,
 characteristicien, handlejen ja ominaisuuksien kartoitukseen. Täysin
