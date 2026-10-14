@@ -19,8 +19,11 @@ STATE = bytes(12)
 
 def step(**changes):
     return {
-        "operation": "tap", "command": 1, "expected_firmware": 54,
-        "key_hex": KEY.hex(), **changes,
+        "operation": "tap",
+        "command": 1,
+        "expected_firmware": 54,
+        "key_hex": KEY.hex(),
+        **changes,
     }
 
 
@@ -47,14 +50,24 @@ def test_ciphertext_matches_independent_ctr_block_vector():
     )
 
 
-@pytest.mark.parametrize("changes", [
-    {"command": True}, {"command": 0}, {"command": 5}, {"key_hex": "00"},
-    {"expected_firmware": 55}, {"expected_firmware": 54.0},
-    {"dry_run": "false"}, {"target_c": 22},
-    {"command": 2}, {"command": 2, "target_c": float("nan")},
-    {"command": 2, "target_c": 21.55}, {"command": 2, "target_c": 41},
-    {"unexpected": True},
-])
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"command": True},
+        {"command": 0},
+        {"command": 5},
+        {"key_hex": "00"},
+        {"expected_firmware": 55},
+        {"expected_firmware": 54.0},
+        {"dry_run": "false"},
+        {"target_c": 22},
+        {"command": 2},
+        {"command": 2, "target_c": float("nan")},
+        {"command": 2, "target_c": 21.55},
+        {"command": 2, "target_c": 41},
+        {"unexpected": True},
+    ],
+)
 def test_invalid_plan_rejected(changes):
     with pytest.raises(ValueError):
         validate_steps([step(**changes)])
@@ -62,12 +75,13 @@ def test_invalid_plan_rejected(changes):
 
 async def test_dry_run_reads_fresh_context_without_any_writes():
     t = transport()
-    result = await TaelekClient(AsyncMock(return_value=t)).debug_gatt(
-        [step()], sync_time=False
-    )
+    result = await TaelekClient(AsyncMock(return_value=t)).debug_gatt([step()], sync_time=False)
     assert result["success"]
     assert [a.args[0] for a in t.read_gatt_char.await_args_list] == [
-        PRODUCT_INFO, PRODUCT_PARAM_B, PRODUCT_STATE_A, NONCE
+        PRODUCT_INFO,
+        PRODUCT_PARAM_B,
+        PRODUCT_STATE_A,
+        NONCE,
     ]
     t.write_gatt_char.assert_not_awaited()
     t.disconnect.assert_awaited_once()
@@ -82,8 +96,15 @@ async def test_tap_requires_clock_disabled_before_connection():
     connector.assert_not_awaited()
 
 
-@pytest.mark.parametrize("info", [INFO[:16], INFO[:14] + bytes([66, 14, 10]),
-    bytes(10) + b"1.7S" + INFO[14:], INFO[:16] + b"\x03"])
+@pytest.mark.parametrize(
+    "info",
+    [
+        INFO[:16],
+        INFO[:14] + bytes([66, 14, 10]),
+        bytes(10) + b"1.7S" + INFO[14:],
+        INFO[:16] + b"\x03",
+    ],
+)
 async def test_identity_gate_stops_before_nonce_or_write(info):
     t = transport([info])
     result = await TaelekClient(AsyncMock(return_value=t)).debug_gatt(

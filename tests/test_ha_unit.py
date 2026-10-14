@@ -63,7 +63,8 @@ def test_tae1_diagnostic_never_refreshes_identity_or_exposes_group(ha, monkeypat
         passive, ha.entry, "wireless_eco_hold_raw", "Wireless ECO hold raw"
     )
     alternate = SimpleNamespace(
-        name="Tae1", address=ha.info.address,
+        name="Tae1",
+        address=ha.info.address,
         manufacturer_data={1162: bytes(4) + b"\x5a\x00" + b"GROUP123" + bytes(4)},
     )
     passive._receive(alternate, None)
@@ -93,7 +94,8 @@ def test_tae1_invalid_length_and_mismatched_serial_do_not_refresh_hold(ha, monke
     passive._receive(SimpleNamespace(name="Tae1", manufacturer_data={1162: bytes(17)}), None)
     assert passive.wireless_eco_hold_raw is None
     mismatch = SimpleNamespace(
-        name="Tael", address=ha.info.address,
+        name="Tael",
+        address=ha.info.address,
         manufacturer_data={1162: struct.pack("<hBBI10s", 215, 0x90, 0x22, 999, b"Room")},
     )
     passive._receive(mismatch, None)

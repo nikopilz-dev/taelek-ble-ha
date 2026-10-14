@@ -158,7 +158,9 @@ class TaelekClient:
         if info[16] == 3:
             raise ValueError("Tap is blocked by the FW66-derived identity gate")
         observed.update(
-            command=step["command"], firmware=info[14], dry_run=step["dry_run"],
+            command=step["command"],
+            firmware=info[14],
+            dry_run=step["dry_run"],
             cipher_profile="experimental CCM direct key/nonce order; not device verified",
         )
         params = decode_param_b(bytes(await client.read_gatt_char(PRODUCT_PARAM_B)))
@@ -172,9 +174,7 @@ class TaelekClient:
         if len(nonce_value) != 16:
             raise ValueError("Tap requires exact 16-byte nonce characteristic")
         nonce = nonce_value[:13]
-        payload = encode_tap(
-            step["command"], nonce, step["key"], target_c=step["target_c"]
-        )
+        payload = encode_tap(step["command"], nonce, step["key"], target_c=step["target_c"])
         observed["nonce_before_hex"] = nonce_value.hex()
         observed["candidate_ciphertext_hex"] = payload.hex()
         if step["dry_run"]:
@@ -189,7 +189,9 @@ class TaelekClient:
         after = decode_param_b(bytes(await client.read_gatt_char(PRODUCT_PARAM_B)))
         observed["after_manual_eco_c"] = after.manual_eco_c
         observed["after_program_selector"] = after.eco_mode
-        observed["outcome"] = "transport completed; command acceptance and physical effect unverified"
+        observed["outcome"] = (
+            "transport completed; command acceptance and physical effect unverified"
+        )
 
     async def test_manual_eco_temperature(self, target, *, device_type=None):
         """Patch only manualEco; no mode switch, commit, retry or automatic restore.

@@ -24,9 +24,7 @@ def validate_steps(steps):
             "write_cached": {"operation", "uuid", "source_step", "hex", "offset", "response"},
             "delay": {"operation", "seconds"},
             "wait_for_continue": {"operation", "timeout"},
-            "tap": {
-                "operation", "command", "expected_firmware", "key_hex", "dry_run", "target_c"
-            },
+            "tap": {"operation", "command", "expected_firmware", "key_hex", "dry_run", "target_c"},
         }
         if not isinstance(op, str) or op not in allowed or set(step) - allowed[op]:
             raise ValueError("Invalid operation or unexpected step fields")
