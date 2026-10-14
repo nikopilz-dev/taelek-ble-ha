@@ -1,6 +1,6 @@
 # Taelek BLE – kokeellinen Home Assistant -integraatio
 
-Versio 0.1.13, 6.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
+Versio 0.1.14, 14.10.2026. Toteutus perustuu MAI Smart 1.0.17:n JavaScriptiin ja
 2.0.3:n purettuun Hermes-bytecodeen. Fyysinen termostaatti on havaittu Bluetooth-
 välityslaitteen kautta ja lisätty Home Assistantiin passiivisia mainoslukemia varten.
 E-2001 BLE -testilaitteen GATT-luku toimii samassa ympäristössä. Ohjausta ja
@@ -11,6 +11,8 @@ lämpötilalukemien tarkkuutta ei ole vielä varmennettu.
 Versio 0.1.13 säilyttää raakalokissa myös paketinkohtaiset `raw`-mainostavut,
 jos HA:n scanneri välittää ne. Tavalliset manufacturer/service-kentät voivat
 olla useasta paketista yhdistettyjä. Tämä ei poista HA:n callback-deduplikointia.
+
+Versio 0.1.14 lisää erikseen ajettavat FW66-pohjaiset Tap-kokeet ja passiivisen Tae1-raaka-ajastimen diagnostiikan. Tap-salausprofiili on vielä laitevarmentamatta. Ohje: [Tap-kokeet](protocol/TAP_EXPERIMENTS.md).
 
 Versio 0.1.12 lisää erikseen sallittavan passiivisten raakamainosten lokin,
 myös `Tae1`:lle ennen dekooderin suodatusta. Se ei avaa GATT-yhteyttä.
@@ -102,7 +104,7 @@ ja [integraation rakenne](https://www.hacs.dev/docs/publish/integration/).
 
 ## Manuaalinen asennus
 
-1. Pura `dist/taelek-ble-0.1.13.zip` Home Assistantin asetuskansioon.
+1. Pura `dist/taelek-ble-0.1.14.zip` Home Assistantin asetuskansioon.
    Tuloksena pitää olla `<config>/custom_components/taelek/manifest.json`.
    Voit myös kopioida tämän projektin `custom_components/taelek`-kansion samaan paikkaan.
 2. Käynnistä Home Assistant uudelleen. Bluetooth-integraation ja käytettävän sovittimen

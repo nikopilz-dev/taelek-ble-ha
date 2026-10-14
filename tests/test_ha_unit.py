@@ -55,6 +55,52 @@ def test_raw_advertisement_logger_allows_backend_without_raw(ha, caplog):
     assert passive.data is not None
 
 
+def test_tae1_diagnostic_never_refreshes_identity_or_exposes_group(ha, monkeypatch):
+    now = [100.0]
+    monkeypatch.setattr(ha.coordinator, "monotonic", lambda: now[0])
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    entity = ha.sensor.TaelekSensor(
+        passive, ha.entry, "wireless_eco_hold_raw", "Wireless ECO hold raw"
+    )
+    alternate = SimpleNamespace(
+        name="Tae1", address=ha.info.address,
+        manufacturer_data={1162: bytes(4) + b"\x5a\x00" + b"GROUP123" + bytes(4)},
+    )
+    passive._receive(alternate, None)
+    assert entity.native_value is None
+    passive._receive(ha.info, None)
+    original = passive.data
+    now[0] = 110
+    passive._receive(alternate, None)
+    assert entity.native_value == 90 and passive.data is original
+    assert passive.last_verified_at == 100
+    assert "GROUP123" not in str(entity.extra_state_attributes)
+    assert entity._attr_entity_registry_enabled_default is False
+    now[0] = 191
+    assert entity.native_value is None
+    passive._receive(ha.info, None)
+    passive._receive(alternate, None, cached=True)
+    assert entity.native_value is not None  # prior hold is still younger than 90s
+    assert passive._tae1_received_at == 110
+    passive._unavailable(ha.info)
+    assert entity.native_value is None
+
+
+def test_tae1_invalid_length_and_mismatched_serial_do_not_refresh_hold(ha, monkeypatch):
+    monkeypatch.setattr(ha.coordinator, "monotonic", lambda: 100.0)
+    passive = ha.coordinator.AdvertisementCoordinator(ha.hass, ha.entry)
+    passive._receive(ha.info, None)
+    passive._receive(SimpleNamespace(name="Tae1", manufacturer_data={1162: bytes(17)}), None)
+    assert passive.wireless_eco_hold_raw is None
+    mismatch = SimpleNamespace(
+        name="Tael", address=ha.info.address,
+        manufacturer_data={1162: struct.pack("<hBBI10s", 215, 0x90, 0x22, 999, b"Room")},
+    )
+    passive._receive(mismatch, None)
+    passive._receive(SimpleNamespace(name="Tae1", manufacturer_data={1162: bytes(18)}), None)
+    assert passive.wireless_eco_hold_raw is None
+
+
 def test_tae1_preserves_recent_identity_without_becoming_sensor_data(ha, monkeypatch):
     now = [100.0]
     monkeypatch.setattr(ha.coordinator, "monotonic", lambda: now[0])

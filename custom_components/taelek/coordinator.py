@@ -19,7 +19,9 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from .const import DOMAIN
+from .taelek_ble.advertisement import decode_tae1_hold
 from .taelek_ble.client import TaelekClient
+from .taelek_ble.const import TAELEK_COMPANY_ID
 from .taelek_ble.debug import validate_steps
 from .taelek_ble.discovery import device_unique_id, parse_discovery
 
@@ -35,6 +37,8 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
         self.address = entry.data[CONF_ADDRESS]
         self.present = False
         self.last_verified_at = None
+        self._tae1_hold = None
+        self._tae1_received_at = None
 
     def start(self):
         self.entry.async_on_unload(
@@ -85,6 +89,21 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
                 getattr(info, "connectable", None),
                 getattr(info, "tx_power", None),
             )
+        if info.name == "Tae1":
+            if (
+                not cached
+                and self.present
+                and self.last_verified_at is not None
+                and 0 <= monotonic() - self.last_verified_at <= VERIFIED_ADVERTISEMENT_MAX_AGE
+            ):
+                try:
+                    hold = decode_tae1_hold(info.manufacturer_data.get(TAELEK_COMPANY_ID, b""))
+                except (ValueError, TypeError):
+                    return
+                self._tae1_hold = hold
+                self._tae1_received_at = monotonic()
+                self.async_update_listeners()
+            return
         advertisement = parse_discovery(info.name, info.manufacturer_data)
         if advertisement is None or not advertisement.thermostat_layout:
             return
@@ -94,6 +113,8 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
             and device_unique_id(advertisement, info.address) != self.entry.unique_id
         ):
             self.last_verified_at = None
+            self._tae1_hold = None
+            self._tae1_received_at = None
             return
         self.present = True
         self.last_verified_at = monotonic()
@@ -103,7 +124,21 @@ class AdvertisementCoordinator(DataUpdateCoordinator):
     def _unavailable(self, info):
         self.present = False
         self.last_verified_at = None
+        self._tae1_hold = None
+        self._tae1_received_at = None
         self.async_update_listeners()
+
+    @property
+    def wireless_eco_hold_raw(self):
+        if (
+            not self.present
+            or self._tae1_received_at is None
+            or self.last_verified_at is None
+            or not 0 <= monotonic() - self._tae1_received_at <= VERIFIED_ADVERTISEMENT_MAX_AGE
+            or not 0 <= monotonic() - self.last_verified_at <= VERIFIED_ADVERTISEMENT_MAX_AGE
+        ):
+            return None
+        return self._tae1_hold
 
 
 class ActiveCoordinator(DataUpdateCoordinator):

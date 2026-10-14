@@ -3,6 +3,8 @@
 import math
 from uuid import UUID
 
+from .tap import validate_tap
+
 
 def validate_steps(steps):
     if not isinstance(steps, list) or not 1 <= len(steps) <= 32:
@@ -22,11 +24,16 @@ def validate_steps(steps):
             "write_cached": {"operation", "uuid", "source_step", "hex", "offset", "response"},
             "delay": {"operation", "seconds"},
             "wait_for_continue": {"operation", "timeout"},
+            "tap": {
+                "operation", "command", "expected_firmware", "key_hex", "dry_run", "target_c"
+            },
         }
         if not isinstance(op, str) or op not in allowed or set(step) - allowed[op]:
             raise ValueError("Invalid operation or unexpected step fields")
         out = {"operation": op}
-        if op == "discover":
+        if op == "tap":
+            out = validate_tap(step)
+        elif op == "discover":
             pass
         elif op == "wait_for_continue":
             waits += 1

@@ -12,6 +12,7 @@ PASSIVE = {
     "error": "Advertisement error code",
     "state": "Advertisement state code",
     "device_type": "Device type code",
+    "wireless_eco_hold_raw": "Wireless ECO hold raw",
 }
 ACTIVE = {
     "measured_floor_c": "Floor temperature",
@@ -57,9 +58,13 @@ class TaelekSensor(TaelekEntity, SensorEntity):
             self._attr_entity_category = EntityCategory.DIAGNOSTIC
         if key in ("measured_air_c", "measured_external_c"):
             self._attr_entity_registry_enabled_default = False
+        if key == "wireless_eco_hold_raw":
+            self._attr_entity_registry_enabled_default = False
 
     @property
     def extra_state_attributes(self):
+        if self._key == "wireless_eco_hold_raw":
+            return {"meaning": "Tae1 raw hold field; units and receiver effect unverified"}
         if self._key == "operation_mode" and self.coordinator.data is not None:
             return {
                 "raw_state_a": self.coordinator.data.raw_data.hex(),
@@ -71,6 +76,8 @@ class TaelekSensor(TaelekEntity, SensorEntity):
 
     @property
     def native_value(self):
+        if self._key == "wireless_eco_hold_raw":
+            return self.coordinator.wireless_eco_hold_raw
         data = self.coordinator.data
         if data is None:
             return None

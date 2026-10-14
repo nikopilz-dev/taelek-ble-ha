@@ -2,7 +2,7 @@ import struct
 
 import pytest
 
-from taelek_ble.advertisement import decode_manufacturer_payload
+from taelek_ble.advertisement import decode_manufacturer_payload, decode_tae1_hold
 from taelek_ble.capabilities import AdvertisementEncoding, DeviceCapabilities
 from taelek_ble.codec import (
     decode_param_b,
@@ -12,6 +12,14 @@ from taelek_ble.codec import (
     patch_param_a,
     patch_param_b,
 )
+
+
+def test_tae1_hold_does_not_interpret_group_as_device_identity():
+    assert decode_tae1_hold(bytes(4) + b"\x5a\x00" + b"GROUP123" + bytes(4)) == 90
+    assert decode_tae1_hold(bytes(18)) == 0
+    for length in (17, 19):
+        with pytest.raises(ValueError):
+            decode_tae1_hold(bytes(length))
 
 
 def test_temp8_roundtrip():

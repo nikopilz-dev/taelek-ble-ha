@@ -8,6 +8,17 @@ from .capabilities import AdvertisementEncoding, DeviceCapabilities, capabilitie
 from .models import Advertisement
 
 
+def decode_tae1_hold(payload: bytes) -> int:
+    """Raw hold/countdown field from FW66's separate 18-byte Tae1 layout.
+
+    Units and applicability to other firmware are unverified. Group-key bytes
+    are deliberately not returned; a hold value is not a relay/ECO state.
+    """
+    if len(payload) != 18:
+        raise ValueError("Tae1 manufacturer payload must be exactly 18 bytes")
+    return int.from_bytes(payload[4:6], "little")
+
+
 def _decode_name(raw: bytes) -> str:
     chars = []
     for b in raw:

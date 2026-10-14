@@ -15,17 +15,20 @@ from .codec import decode_param_a, decode_param_b, decode_state_a, patch_param_b
 from .const import (
     COMMAND_CLOSE,
     COMMAND_NORMAL,
+    NONCE,
     PRODUCT_BUTTONS,
     PRODUCT_BUTTONS_2,
     PRODUCT_COMMANDS,
     PRODUCT_INFO,
     PRODUCT_PARAM_A,
     PRODUCT_PARAM_B,
+    PRODUCT_PASSWORD,
     PRODUCT_STATE_A,
     TIME,
 )
 from .debug import describe_services, validate_steps
 from .models import ParamA, ParamB, StateA
+from .tap import encode_tap
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -71,6 +74,8 @@ class TaelekClient:
         steps = validate_steps(steps)
         if not isinstance(sync_time, bool):
             raise TypeError("sync_time must be a boolean")
+        if sync_time and any(s["operation"] == "tap" for s in steps):
+            raise ValueError("Tap experiments require sync_time: false")
         wait_budget = sum(s["timeout"] for s in steps if s["operation"] == "wait_for_continue")
         if wait_budget and not callable(pause):
             raise ValueError("A confirmation callback is required before connecting")
@@ -91,7 +96,9 @@ class TaelekClient:
                         "started_at": datetime.now(UTC).isoformat(),
                     }
                     result["steps"].append(observed)
-                    if op == "discover":
+                    if op == "tap":
+                        await self._tap_experiment(client, step, observed)
+                    elif op == "discover":
                         observed["services"] = describe_services(client.services)
                     elif op == "wait_for_continue":
                         observed["status"] = "waiting for explicit continuation"
@@ -140,6 +147,49 @@ class TaelekClient:
             result["error"] = str(err)
             result["retry"] = "none"
         return result
+
+    async def _tap_experiment(self, client, step, observed):
+        """One fresh-context command, never retried and never writes a save opcode."""
+        info = bytes(await client.read_gatt_char(PRODUCT_INFO))
+        if len(info) != 17 or info[10:14] != b"1.6S":
+            raise ValueError("Tap requires exact 17-byte productInfo for hardware 1.6S")
+        if info[14] != step["expected_firmware"]:
+            raise ValueError("Tap firmware does not match expected_firmware")
+        if info[16] == 3:
+            raise ValueError("Tap is blocked by the FW66-derived identity gate")
+        observed.update(
+            command=step["command"], firmware=info[14], dry_run=step["dry_run"],
+            cipher_profile="experimental CCM direct key/nonce order; not device verified",
+        )
+        params = decode_param_b(bytes(await client.read_gatt_char(PRODUCT_PARAM_B)))
+        if step["command"] == 2 and params.mode == 4:
+            raise ValueError("Tap temperature experiment is not supported in PWM mode")
+        observed["before_manual_eco_c"] = params.manual_eco_c
+        observed["before_program_selector"] = params.eco_mode
+        observed["before_state_a"] = bytes(await client.read_gatt_char(PRODUCT_STATE_A)).hex()
+        # Last read before encoding/writing; no cached/reconnected nonce is used.
+        nonce_value = bytes(await client.read_gatt_char(NONCE))
+        if len(nonce_value) != 16:
+            raise ValueError("Tap requires exact 16-byte nonce characteristic")
+        nonce = nonce_value[:13]
+        payload = encode_tap(
+            step["command"], nonce, step["key"], target_c=step["target_c"]
+        )
+        observed["nonce_before_hex"] = nonce_value.hex()
+        observed["candidate_ciphertext_hex"] = payload.hex()
+        if step["dry_run"]:
+            observed["outcome"] = "prepared only; no Tap write"
+            return
+        observed["status"] = "write attempted; effect may be unknown"
+        await client.write_gatt_char(PRODUCT_PASSWORD, payload, response=True)
+        observed["bytes_written"] = len(payload)
+        observed["response"] = True
+        observed["nonce_after_hex"] = bytes(await client.read_gatt_char(NONCE)).hex()
+        observed["after_state_a"] = bytes(await client.read_gatt_char(PRODUCT_STATE_A)).hex()
+        after = decode_param_b(bytes(await client.read_gatt_char(PRODUCT_PARAM_B)))
+        observed["after_manual_eco_c"] = after.manual_eco_c
+        observed["after_program_selector"] = after.eco_mode
+        observed["outcome"] = "transport completed; command acceptance and physical effect unverified"
 
     async def test_manual_eco_temperature(self, target, *, device_type=None):
         """Patch only manualEco; no mode switch, commit, retry or automatic restore.
